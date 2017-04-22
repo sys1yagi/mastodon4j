@@ -2,19 +2,31 @@
 
 [![](https://jitpack.io/v/sys1yagi/mastodon4j.svg)](https://jitpack.io/#sys1yagi/mastodon4j)
 
-mastodon client for java, kotlin https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md
+mastodon4j is [mastodon](https://github.com/tootsuite/mastodon) client for Java and Kotlin.
 
-# API Doc
+# Official API Doc
 
 https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md
 
-# Sample
+# Sample App
 
 __Android App__
 
 - https://github.com/sys1yagi/DroiDon
 
 # Get Started
+
+Mastodon4j publish in jitpack.
+Add it in your root build.gradle at the end of repositories:
+
+```groovy
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+	}
+}
+```
 
 ```groovy
 compile 'com.github.sys1yagi.mastodon4j:mastodon4j:$version'
@@ -27,7 +39,7 @@ Check latest version on Jitpack [![](https://jitpack.io/v/sys1yagi/mastodon4j.sv
 
 ## Register App
 
-At first, you need create client credential.
+At first, you need create client credential. see more [docs](https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#apps)
 
 __kotlin__
 
@@ -45,9 +57,6 @@ save(appRegistration) // appRegistration needs to be saved.
 
 AppRegistration has client id and client secret.
 
-__java__
-
-TODO
 
 ## Get Public Timeline
 
@@ -60,13 +69,39 @@ val timelines = Timelines(client)
 val statuses: List<Status> = timelines.getPublic()
 ```
 
-__java__
-
-TODO
-
 ## OAuth login and get Access Token
 
-TODO
+```kotlin
+val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson())
+val clientId = appRegistration.clientId
+val apps = Apps(client)
+
+val url = apps.getOAuthUrl(clientId, Scope(Scope.Name.ALL))
+// url like bellow
+// https://:instance_name/oauth/authorize?client_id=:client_id&redirect_uri=:redirect_uri&response_type=code&scope=read 
+// open url and OAuth login and get auth code
+
+val authCode = //...
+val clientSecret = appRegistration.clientSecret
+val redirectUri = appRegistration.redirectUri
+val accessToken = apps.getAccessToken(
+						clientId,
+						clientSecret,
+						redirectUri,
+						authCode,
+						"authorization_code"
+					)
+// 	accessToken needs to be saved.
+```
+
+## Get Home Timeline
+
+```kotlin
+// Need parameter of accessToken
+val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson(), accessToken)
+
+val statuses: List<Status> = timelines.getHome()
+```
 
 # Implementation Progress
 
@@ -125,7 +160,9 @@ TODO
 
 # Contribution
 
-TODO
+## Reporting Issues
+
+Found a problem? Want a new feature? First of all see if your issue or idea has already been reported. If don't, just open a new clear and descriptive [issues](https://github.com/sys1yagi/mastodon4j/issues)
 
 # License
 

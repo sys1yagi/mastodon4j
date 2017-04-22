@@ -3,8 +3,8 @@ apply plugin: 'kotlin'
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile project(':mastodon4j')
     compile "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    compile 'com.github.sys1yagi.mastodon4j:mastodon4j:0.0.1'
 }
 
 sourceCompatibility = "1.7"

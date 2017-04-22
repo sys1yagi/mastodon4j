@@ -1,5 +1,7 @@
 # mastodon4j
 
+[![](https://jitpack.io/v/sys1yagi/mastodon4j.svg)](https://jitpack.io/#sys1yagi/mastodon4j)
+
 mastodon client for java, kotlin https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md
 
 # API Doc
@@ -14,7 +16,12 @@ __Android App__
 
 # Get Started
 
-TODO
+```groovy
+compile 'com.github.sys1yagi.mastodon4j:mastodon4j:$version'
+compile 'com.github.sys1yagi.mastodon4j:mastodon4j-rx:$version'
+```
+
+Check latest version on Jitpack [![](https://jitpack.io/v/sys1yagi/mastodon4j.svg)](https://jitpack.io/#sys1yagi/mastodon4j)
 
 # Progress
 

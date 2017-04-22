@@ -169,7 +169,7 @@ v0.0.2 or later
 - [x] RxApps
 - [x] RxBlocks
 - [x] RxFavourites
-- [ ] RxFollowRequests
+- [x] RxFollowRequests
 - [ ] RxFollows
 - [ ] RxInstances
 - [ ] RxMedia

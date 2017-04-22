@@ -175,7 +175,7 @@ v0.0.2 or later
 - [x] RxMedia
 - [x] RxMutes
 - [x] RxNotifications
-- [ ] RxReports
+- [x] RxReports
 - [ ] RxSearch
 - [ ] RxStatuses
 - [ ] RxTimelines

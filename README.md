@@ -177,7 +177,7 @@ v0.0.2 or later
 - [x] RxNotifications
 - [x] RxReports
 - [x] RxSearch
-- [ ] RxStatuses
+- [x] RxStatuses
 - [ ] RxTimelines
 
 # Contribution

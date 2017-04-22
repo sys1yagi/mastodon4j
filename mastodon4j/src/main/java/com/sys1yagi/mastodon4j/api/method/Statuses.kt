@@ -2,6 +2,7 @@ package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.Parameter
+import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.*
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
@@ -57,14 +58,10 @@ class Statuses(val client: MastodonClient) {
     }
 
     //  GET /api/v1/reblogged_by
-    fun getRebloggedBy(statusId: Long, maxId: Long? = null, sinceId: Long? = null, limit: Int = 20): List<Account> {
+    fun getRebloggedBy(statusId: Long, range:Range = Range()): List<Account> {
         val response = client.get(
                 "statuses/$statusId/reblogged_by",
-                Parameter().apply {
-                    maxId?.let { append("max_id", it) }
-                    sinceId?.let { append("since_id", it) }
-                    append("limit", limit)
-                }
+                range.toParameter()
         )
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -78,14 +75,10 @@ class Statuses(val client: MastodonClient) {
     }
 
     //  GET /api/v1/favourited_by
-    fun getFavouritedBy(statusId: Long, maxId: Long? = null, sinceId: Long? = null, limit: Int = 20): List<Account> {
+    fun getFavouritedBy(statusId: Long, range:Range = Range()): List<Account> {
         val response = client.get(
                 "statuses/$statusId/favourited_by",
-                Parameter().apply {
-                    maxId?.let { append("max_id", it) }
-                    sinceId?.let { append("since_id", it) }
-                    append("limit", limit)
-                }
+                range.toParameter()
         )
         if (response.isSuccessful) {
             val body = response.body().string()

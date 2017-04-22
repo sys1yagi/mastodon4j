@@ -4,14 +4,14 @@ import com.google.gson.Gson
 import com.sys1yagi.kmockito.any
 import com.sys1yagi.kmockito.invoked
 import com.sys1yagi.kmockito.mock
-import com.sys1yagi.kmockito.spy
 import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.api.Scope
 import com.sys1yagi.mastodon4j.testtool.AssetsUtil
 import okhttp3.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.mockito.ArgumentMatchers
-import org.assertj.core.api.Assertions.assertThat
+
 class AppsTest {
     @Test
     fun createApp() {
@@ -42,7 +42,7 @@ class AppsTest {
     }
 
     @Test
-    fun getOAuthUrl(){
+    fun getOAuthUrl() {
         val client: MastodonClient = mock()
         client.getInstanceName().invoked.thenReturn("mastodon.cloud")
 

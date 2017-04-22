@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Scope
 import com.sys1yagi.mastodon4j.api.entity.auth.AccessToken
 import com.sys1yagi.mastodon4j.api.entity.auth.AppRegistration
@@ -81,4 +82,33 @@ class Apps(private val client: MastodonClient) {
         }
     }
 
+    fun postUserNameAndPassword(
+            clientId: String,
+            clientSecret: String,
+            scope: Scope,
+            userName: String,
+            password: String
+    ): AccessToken {
+        val url = "https://${client.getInstanceName()}/oauth/token"
+        val parameters = listOf(
+                "client_id=$clientId",
+                "client_secret=$clientSecret",
+                "scope=$scope",
+                "username=$userName",
+                "password=$password",
+                "grant_type=password"
+        ).joinToString(separator = "&")
+
+        val response = client.postUrl(url,
+                RequestBody.create(
+                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                        parameters
+                ))
+        if (response.isSuccessful) {
+            val json = response.body().string()
+            return client.getSerializer().fromJson(json, AccessToken::class.java)
+        } else {
+            throw Mastodon4jRequestException(response.message())
+        }
+    }
 }

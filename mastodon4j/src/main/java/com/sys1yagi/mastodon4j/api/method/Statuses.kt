@@ -2,11 +2,9 @@ package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.Parameter
-import com.sys1yagi.mastodon4j.api.entity.Account
-import com.sys1yagi.mastodon4j.api.entity.Card
-import com.sys1yagi.mastodon4j.api.entity.Context
-import com.sys1yagi.mastodon4j.api.entity.Status
+import com.sys1yagi.mastodon4j.api.entity.*
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.extension.emptyRequestBody
 import com.sys1yagi.mastodon4j.extension.genericType
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -142,11 +140,67 @@ class Statuses(val client: MastodonClient) {
         }
     }
 
-//    DELETE /api/v1/statuses/:id
-//    POST /api/v1/statuses/:id/reblog
-//    POST /api/v1/statuses/:id/unreblog
-//    POST /api/v1/statuses/:id/favourite
-//    POST /api/v1/statuses/:id/unfavourite
+    //  DELETE /api/v1/statuses/:id
+    fun deleteStatus(statusId: Long) {
+        val response = client.delete("statuses/$statusId")
+        if (!response.isSuccessful) {
+            throw Mastodon4jRequestException(response.message())
+        }
+    }
 
+    //  POST /api/v1/statuses/:id/reblog
+    fun postReblog(statusId: Long): Status {
+        val response = client.post("statuses/$statusId/reblog", emptyRequestBody())
+        if (response.isSuccessful) {
+            val body = response.body().string()
+            return client.getSerializer().fromJson(
+                    body,
+                    Status::class.java
+            )
+        } else {
+            throw Mastodon4jRequestException(response.message())
+        }
+    }
 
+    //  POST /api/v1/statuses/:id/unreblog
+    fun postUmreblog(statusId: Long): Status {
+        val response = client.post("statuses/$statusId/unreblog", emptyRequestBody())
+        if (response.isSuccessful) {
+            val body = response.body().string()
+            return client.getSerializer().fromJson(
+                    body,
+                    Status::class.java
+            )
+        } else {
+            throw Mastodon4jRequestException(response.message())
+        }
+    }
+
+    //  POST /api/v1/statuses/:id/favourite
+    fun postFavourite(statusId: Long): Status {
+        val response = client.post("statuses/$statusId/favourite", emptyRequestBody())
+        if (response.isSuccessful) {
+            val body = response.body().string()
+            return client.getSerializer().fromJson(
+                    body,
+                    Status::class.java
+            )
+        } else {
+            throw Mastodon4jRequestException(response.message())
+        }
+    }
+
+    //  POST /api/v1/statuses/:id/unfavourite
+    fun postUnfavourite(statusId: Long): Status {
+        val response = client.post("statuses/$statusId/unfavourite", emptyRequestBody())
+        if (response.isSuccessful) {
+            val body = response.body().string()
+            return client.getSerializer().fromJson(
+                    body,
+                    Status::class.java
+            )
+        } else {
+            throw Mastodon4jRequestException(response.message())
+        }
+    }
 }

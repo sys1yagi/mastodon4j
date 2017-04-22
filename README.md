@@ -56,11 +56,11 @@ TODO
 - [x] GET `/api/v1/statuses/:id/reblogged_by`
 - [x] GET `/api/v1/statuses/:id/favourited_by`
 - [x] POST `/api/v1/statuses`
-- [ ] DELETE `/api/v1/statuses/:id`
-- [ ] POST `/api/v1/statuses/:id/reblog`
-- [ ] POST `/api/v1/statuses/:id/unreblog`
-- [ ] POST `/api/v1/statuses/:id/favourite`
-- [ ] POST `/api/v1/statuses/:id/unfavourite`
+- [x] DELETE `/api/v1/statuses/:id`
+- [x] POST `/api/v1/statuses/:id/reblog`
+- [x] POST `/api/v1/statuses/:id/unreblog`
+- [x] POST `/api/v1/statuses/:id/favourite`
+- [x] POST `/api/v1/statuses/:id/unfavourite`
 - [x] GET `/api/v1/timelines/home`
 - [x] GET `/api/v1/timelines/public`
 - [x] GET `/api/v1/timelines/tag/:hashtag`

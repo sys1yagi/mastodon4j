@@ -53,6 +53,17 @@ open class MastodonClient(
         return call.execute()
     }
 
+    fun delete(path: String): Response {
+        val url = "$baseUrl/$path"
+        val call = client.newCall(
+                authorizationHeader(Request.Builder())
+                        .url(url)
+                        .delete()
+                        .build()
+        )
+        return call.execute()
+    }
+
     fun authorizationHeader(builder: Request.Builder) = builder.apply {
         accessToken?.let {
             header("Authorization", String.format("Bearer %s", it));

@@ -168,7 +168,7 @@ v0.0.2 or later
 - [x] RxAccounts
 - [x] RxApps
 - [x] RxBlocks
-- [ ] RxFavourites
+- [x] RxFavourites
 - [ ] RxFollowRequests
 - [ ] RxFollows
 - [ ] RxInstances

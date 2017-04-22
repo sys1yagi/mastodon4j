@@ -12,7 +12,7 @@ import com.sys1yagi.mastodon4j.extension.genericType
 class Favourites(val client: MastodonClient) {
 
     //  GET /api/v1/favourites
-    fun getBlocks(range: Range = Range()): List<Status> {
+    fun getFavourites(range: Range = Range()): List<Status> {
         val response = client.get("favourites", range.toParameter())
         if (response.isSuccessful) {
             val body = response.body().string()

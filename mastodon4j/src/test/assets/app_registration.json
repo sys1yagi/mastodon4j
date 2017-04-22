@@ -1,0 +1,6 @@
+{
+  "id": 4137,
+  "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
+  "client_id": "client id",
+  "client_secret": "client secret"
+}

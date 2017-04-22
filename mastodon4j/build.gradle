@@ -1,0 +1,37 @@
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    compile "com.google.code.gson:gson:$gsonVersion"
+
+    testCompile 'junit:junit:4.12'
+    testCompile "org.assertj:assertj-core:3.6.2"
+    testCompile('com.github.sys1yagi:kmockito:0.1.2') {
+        exclude group: 'org.mockito', module: 'mockito-core'
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
+    }
+    testCompile("com.squareup.okhttp3:mockwebserver:$okhttpVersion") {
+        exclude group: 'com.squareup.okio', 'module': 'okio'
+        exclude group: 'com.squareup.okhttp', 'module': 'okhttp'
+    }
+    testCompile 'org.mockito:mockito-core:2.7.22'
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+buildscript {
+    ext.kotlin_version = '1.1.1'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+repositories {
+    mavenCentral()
+}

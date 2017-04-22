@@ -1,0 +1,35 @@
+buildscript {
+    ext.kotlin_version = '1.1.1'
+    ext.supportTestVersion = '0.5'
+    ext.okhttpVersion = '3.6.0'
+    ext.gradleToolsVersion = '2.3.1'
+    ext.rxJavaVersion = '2.0.8'
+    ext.gsonVersion = '2.8.0'
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:$gradleToolsVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.cookpad.android.licensetools:license-tools-plugin:0.21.1'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
+    }
+}
+apply plugin: 'kotlin'
+
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+}

@@ -42,8 +42,15 @@ open class MastodonClient(
     open fun post(path: String, body: RequestBody) =
             postUrl("$baseUrl/$path", body)
 
-    fun postFile(path:String, body:MultipartBody){
-        postUrl("$baseUrl/$path", body)
+    fun patch(path: String, body: RequestBody): Response {
+        val url = "$baseUrl/$path"
+        val call = client.newCall(
+                authorizationHeader(Request.Builder())
+                        .url(url)
+                        .patch(body)
+                        .build()
+        )
+        return call.execute()
     }
 
     fun authorizationHeader(builder: Request.Builder) = builder.apply {

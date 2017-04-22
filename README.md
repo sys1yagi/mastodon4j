@@ -21,10 +21,10 @@ Add it in your root build.gradle at the end of repositories:
 
 ```groovy
 allprojects {
-	repositories {
-		...
-		maven { url 'https://jitpack.io' }
-	}
+  repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+  }
 }
 ```
 
@@ -47,10 +47,10 @@ __kotlin__
 val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson())
 val apps = Apps(client)
 val appRegistration = apps.createApp(
-        clientName = "client name",
-        redirectUris = "urn:ietf:wg:oauth:2.0:oob",
-        scope = Scope(Scope.Name.ALL),
-        website = "https://sample.com"
+	clientName = "client name",
+	redirectUris = "urn:ietf:wg:oauth:2.0:oob",
+	scope = Scope(Scope.Name.ALL),
+	website = "https://sample.com"
 )        
 save(appRegistration) // appRegistration needs to be saved.
 ```
@@ -85,12 +85,12 @@ val authCode = //...
 val clientSecret = appRegistration.clientSecret
 val redirectUri = appRegistration.redirectUri
 val accessToken = apps.getAccessToken(
-						clientId,
-						clientSecret,
-						redirectUri,
-						authCode,
-						"authorization_code"
-					)
+			clientId,
+			clientSecret,
+			redirectUri,
+			authCode,
+			"authorization_code"
+		)
 // 	accessToken needs to be saved.
 ```
 

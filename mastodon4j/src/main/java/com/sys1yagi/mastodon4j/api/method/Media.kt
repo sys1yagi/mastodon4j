@@ -11,7 +11,12 @@ import okhttp3.MultipartBody
 class Media(val client: MastodonClient) {
     //  POST /api/v1/media
     fun postMedia(file: MultipartBody.Part): Attachment {
-        val response = client.post("media", file.body())
+        val requestBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addPart(file)
+                .build()
+
+        val response = client.post("media", requestBody)
         if (response.isSuccessful) {
             val body = response.body().string()
             return client.getSerializer().fromJson(

@@ -25,4 +25,6 @@ class RxStatuses(val client: MastodonClient) {
             }
         }
     }
+
+
 }

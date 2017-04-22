@@ -29,7 +29,7 @@ class Timelines(val client: MastodonClient) {
 
     fun getPublic(range: Range = Range()): List<Status> {
         val response = client.get(
-                "timelines/pubic",
+                "timelines/public",
                 range.toParameter()
         )
         if (response.isSuccessful) {

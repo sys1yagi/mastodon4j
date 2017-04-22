@@ -11,7 +11,7 @@ open class MastodonClient(
         private val accessToken: String? = null
 ) {
 
-    val baseUrl = "https://${instanceName}/api/v1/"
+    val baseUrl = "https://${instanceName}/api/v1"
 
     open fun getSerializer() = gson
 

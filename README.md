@@ -174,7 +174,7 @@ v0.0.2 or later
 - [x] RxInstances
 - [x] RxMedia
 - [x] RxMutes
-- [ ] RxNotifications
+- [x] RxNotifications
 - [ ] RxReports
 - [ ] RxSearch
 - [ ] RxStatuses

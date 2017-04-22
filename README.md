@@ -1,6 +1,9 @@
 # mastodon4j
 
 [![](https://jitpack.io/v/sys1yagi/mastodon4j.svg)](https://jitpack.io/#sys1yagi/mastodon4j)
+[![wercker status](https://app.wercker.com/status/498944e68f1f37a697fcbab383b0299c/s/master "wercker status")](https://app.wercker.com/project/byKey/498944e68f1f37a697fcbab383b0299c)
+[![codecov](https://codecov.io/gh/sys1yagi/mastodon4j/branch/master/graph/badge.svg)](https://codecov.io/gh/sys1yagi/mastodon4j)
+
 
 mastodon4j is [mastodon](https://github.com/tootsuite/mastodon) client for Java and Kotlin.
 
@@ -155,6 +158,7 @@ val statuses: List<Status> = timelines.getHome()
 ## Auth
 
 - [x] Generate Url for OAuth `/oauth/authorize`
+- [x] POST password authorize `/oauth/authorize` v0.0.2 or later
 - [x] POST `/oauth/authorize`
 
 

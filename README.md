@@ -22,9 +22,9 @@ Separate from https://github.com/sys1yagi/DroiDon later.
 - [x] POST /api/v1/apps
 - [x] GET /api/v1/blocks
 - [x] GET /api/v1/favourites
-- [ ] GET /api/v1/follow_requests
-- [ ] POST /api/v1/follow_requests/:id/authorize
-- [ ] POST /api/v1/follow_requests/:id/reject
+- [x] GET /api/v1/follow_requests
+- [x] POST /api/v1/follow_requests/:id/authorize
+- [x] POST /api/v1/follow_requests/:id/reject
 - [ ] POST /api/v1/follows
 - [ ] GET /api/v1/instance
 - [ ] POST /api/v1/media

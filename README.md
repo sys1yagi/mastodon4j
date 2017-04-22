@@ -25,7 +25,7 @@ Separate from https://github.com/sys1yagi/DroiDon later.
 - [x] GET /api/v1/follow_requests
 - [x] POST /api/v1/follow_requests/:id/authorize
 - [x] POST /api/v1/follow_requests/:id/reject
-- [ ] POST /api/v1/follows
+- [x] POST /api/v1/follows
 - [ ] GET /api/v1/instance
 - [ ] POST /api/v1/media
 - [ ] GET /api/v1/mutes

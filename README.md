@@ -172,8 +172,8 @@ v0.0.2 or later
 - [x] RxFollowRequests
 - [x] RxFollows
 - [x] RxInstances
-- [ ] RxMedia
-- [ ] RxMutes
+- [x] RxMedia
+- [x] RxMutes
 - [ ] RxNotifications
 - [ ] RxReports
 - [ ] RxSearch

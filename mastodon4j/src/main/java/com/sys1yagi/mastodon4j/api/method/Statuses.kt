@@ -117,7 +117,7 @@ class Statuses(val client: MastodonClient) {
                 append("in_reply_to_id", it)
             }
             mediaIds?.let {
-                append("media_ids", it.joinToString(separator = ","))
+                append("media_ids", it)
             }
             append("sensitive", sensitive)
             spoilerText?.let {
@@ -125,7 +125,7 @@ class Statuses(val client: MastodonClient) {
             }
             append("visibility", visibility.value)
         }.build()
-        
+
         val response = client.post("statuses",
                 RequestBody.create(
                         MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),

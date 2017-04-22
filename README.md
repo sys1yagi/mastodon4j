@@ -23,7 +23,52 @@ compile 'com.github.sys1yagi.mastodon4j:mastodon4j-rx:$version'
 
 Check latest version on Jitpack [![](https://jitpack.io/v/sys1yagi/mastodon4j.svg)](https://jitpack.io/#sys1yagi/mastodon4j)
 
-# Progress
+# Usage
+
+## Register App
+
+At first, you need create client credential.
+
+__kotlin__
+
+```kotlin
+val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson())
+val apps = Apps(client)
+val appRegistration = apps.createApp(
+        clientName = "client name",
+        redirectUris = "urn:ietf:wg:oauth:2.0:oob",
+        scope = Scope(Scope.Name.ALL),
+        website = "https://sample.com"
+)        
+save(appRegistration) // appRegistration needs to be saved.
+```
+
+AppRegistration has client id and client secret.
+
+__java__
+
+TODO
+
+## Get Public Timeline
+
+__kotlin__
+
+```kotlin
+val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson())
+        
+val timelines = Timelines(client)
+val statuses: List<Status> = timelines.getPublic()
+```
+
+__java__
+
+TODO
+
+## OAuth login and get Access Token
+
+TODO
+
+# Implementation Progress
 
 ## Methods
 

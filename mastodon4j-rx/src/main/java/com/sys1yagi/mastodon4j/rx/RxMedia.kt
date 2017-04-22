@@ -6,7 +6,7 @@ import com.sys1yagi.mastodon4j.api.method.Media
 import io.reactivex.Single
 import okhttp3.MultipartBody
 
-class RxMedia(val client: MastodonClient) {
+class RxMedia(client: MastodonClient) {
     val media = Media(client)
 
     fun postMedia(part: MultipartBody.Part): Single<Attachment> {

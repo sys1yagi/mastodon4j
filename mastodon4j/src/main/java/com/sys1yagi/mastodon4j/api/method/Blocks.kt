@@ -11,6 +11,7 @@ import com.sys1yagi.mastodon4j.extension.genericType
  */
 class Blocks(val client: MastodonClient) {
 
+    //  GET /api/v1/blocks
     fun getBlocks(range: Range = Range()): List<Account> {
         val response = client.get("blocks", range.toParameter())
         if (response.isSuccessful) {

@@ -14,6 +14,7 @@ import okhttp3.RequestBody
  */
 class Statuses(val client: MastodonClient) {
 
+    //  GET /api/v1/statuses/:id
     fun getStatus(statusId: Long): Status {
         val response = client.get("statuses/$statusId")
         if (response.isSuccessful) {
@@ -27,6 +28,7 @@ class Statuses(val client: MastodonClient) {
         }
     }
 
+    //  GET /api/v1/statuses/:id/context
     fun getContext(statusId: Long): Context {
         val response = client.get("statuses/$statusId/context")
         if (response.isSuccessful) {
@@ -40,6 +42,7 @@ class Statuses(val client: MastodonClient) {
         }
     }
 
+    //  GET /api/v1/statuses/:id/card
     fun getCard(statusId: Long): Card {
         val response = client.get("statuses/$statusId/card")
         if (response.isSuccessful) {
@@ -53,6 +56,7 @@ class Statuses(val client: MastodonClient) {
         }
     }
 
+    //  GET /api/v1/reblogged_by
     fun getRebloggedBy(statusId: Long, maxId: Long? = null, sinceId: Long? = null, limit: Int = 20): List<Account> {
         val response = client.get(
                 "statuses/$statusId/reblogged_by",
@@ -73,6 +77,7 @@ class Statuses(val client: MastodonClient) {
         }
     }
 
+    //  GET /api/v1/favourited_by
     fun getFavouritedBy(statusId: Long, maxId: Long? = null, sinceId: Long? = null, limit: Int = 20): List<Account> {
         val response = client.get(
                 "statuses/$statusId/favourited_by",
@@ -94,6 +99,7 @@ class Statuses(val client: MastodonClient) {
     }
 
     /**
+     * POST /api/v1/status
      * status: The text of the status
      * in_reply_to_id (optional): local ID of the status you want to reply to
      * media_ids (optional): array of media IDs to attach to the status (maximum 4)

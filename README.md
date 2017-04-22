@@ -158,8 +158,8 @@ val statuses: List<Status> = timelines.getHome()
 ## Auth
 
 - [x] Generate Url for OAuth `/oauth/authorize`
-- [x] POST password authorize `/oauth/authorize` v0.0.2 or later
-- [x] POST `/oauth/authorize`
+- [x] POST password authorize `/oauth/token` v0.0.2 or later
+- [x] POST `/oauth/token`
 
 
 # Contribution

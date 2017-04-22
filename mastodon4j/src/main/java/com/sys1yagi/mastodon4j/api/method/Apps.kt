@@ -14,6 +14,7 @@ import java.net.URLEncoder
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#apps
  */
 class Apps(private val client: MastodonClient) {
+    // POST /api/v1/apps
     fun createApp(clientName: String, redirectUris: String = "urn:ietf:wg:oauth:2.0:oob", scope: Scope, website: String? = null): AppRegistration {
         scope.validate()
         val response = client.post("apps",
@@ -52,6 +53,7 @@ class Apps(private val client: MastodonClient) {
         return "https://${client.getInstanceName()}$endpoint?${parameters}"
     }
 
+    // POST /oauth/token
     fun getAccessToken(
             clientId: String,
             clientSecret: String,
@@ -82,6 +84,7 @@ class Apps(private val client: MastodonClient) {
         }
     }
 
+    // POST /oauth/token
     fun postUserNameAndPassword(
             clientId: String,
             clientSecret: String,

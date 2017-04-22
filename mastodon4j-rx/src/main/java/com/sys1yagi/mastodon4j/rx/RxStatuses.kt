@@ -5,7 +5,7 @@ import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.method.Statuses
 import io.reactivex.Single
 
-class RxStatuses(val client: MastodonClient) {
+class RxStatuses(client: MastodonClient) {
     val statuses = Statuses(client)
 
     fun postStatus(

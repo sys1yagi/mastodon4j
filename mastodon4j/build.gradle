@@ -7,7 +7,7 @@ jacoco {
 }
 jacocoTestReport {
     reports {
-        xml.enabled false
+        xml.enabled true
         csv.enabled false
         html.destination "${buildDir}/reports/jacoco"
     }

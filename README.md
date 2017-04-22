@@ -41,7 +41,7 @@ __Android App__
 - [x] POST `/api/v1/notifications/clear`
 - [x] GET `/api/v1/reports`
 - [x] POST `/api/v1/reports`
-- [ ] GET `/api/v1/search`
+- [x] GET `/api/v1/search`
 - [x] GET `/api/v1/statuses/:id`
 - [x] GET `/api/v1/statuses/:id/context`
 - [x] GET `/api/v1/statuses/:id/card`

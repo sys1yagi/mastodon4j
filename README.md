@@ -170,7 +170,7 @@ v0.0.2 or later
 - [x] RxBlocks
 - [x] RxFavourites
 - [x] RxFollowRequests
-- [ ] RxFollows
+- [x] RxFollows
 - [ ] RxInstances
 - [ ] RxMedia
 - [ ] RxMutes

@@ -161,6 +161,24 @@ val statuses: List<Status> = timelines.getHome()
 - [x] POST password authorize `/oauth/token` v0.0.2 or later
 - [x] POST `/oauth/token`
 
+## Rx
+
+v0.0.2 or later
+
+- [x] RxAccounts
+- [x] RxApps
+- [x] RxBlocks
+- [ ] RxFavourites
+- [ ] RxFollowRequests
+- [ ] RxFollows
+- [ ] RxInstances
+- [ ] RxMedia
+- [ ] RxMutes
+- [ ] RxNotifications
+- [ ] RxReports
+- [ ] RxSearch
+- [ ] RxStatuses
+- [ ] RxTimelines
 
 # Contribution
 

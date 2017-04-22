@@ -29,4 +29,13 @@ class ParameterTest {
                         .build()
         ).isEqualTo("test=value&id=3&max=10&is_staff=false")
     }
+
+    @Test
+    fun parameterArray() {
+        assertThat(
+                Parameter()
+                        .append("media_ids", listOf(1, 3, 4))
+                        .build()
+        ).isEqualTo("media_ids[]=1&media_ids[]=3&media_ids[]=4")
+    }
 }

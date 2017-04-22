@@ -17,6 +17,13 @@ class Parameter {
 
     fun append(key: String, value: Boolean): Parameter = append(key, value.toString())
 
+    fun <T> append(key: String, value: List<T>): Parameter {
+        value.forEach {
+            append("$key[]", it.toString())
+        }
+        return this
+    }
+
     fun build(): String =
             parameters
                     .map {

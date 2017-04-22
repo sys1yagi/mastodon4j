@@ -1,7 +1,12 @@
 # mastodon4j
 
-Separate from https://github.com/sys1yagi/DroiDon later.
+mastodon client for java, kotlin https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md
 
+# Sample
+
+__Android App__
+
+- https://github.com/sys1yagi/DroiDon
 
 # Progress
 
@@ -26,7 +31,7 @@ Separate from https://github.com/sys1yagi/DroiDon later.
 - [x] POST /api/v1/follow_requests/:id/authorize
 - [x] POST /api/v1/follow_requests/:id/reject
 - [x] POST /api/v1/follows
-- [ ] GET /api/v1/instance
+- [x] GET /api/v1/instance
 - [ ] POST /api/v1/media
 - [ ] GET /api/v1/mutes
 - [ ] GET /api/v1/notifications

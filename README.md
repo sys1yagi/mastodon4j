@@ -33,7 +33,7 @@ __Android App__
 - [x] POST /api/v1/follows
 - [x] GET /api/v1/instance
 - [ ] POST /api/v1/media
-- [ ] GET /api/v1/mutes
+- [x] GET /api/v1/mutes
 - [ ] GET /api/v1/notifications
 - [ ] GET /api/v1/notifications/:id
 - [ ] POST /api/v1/notifications/clear

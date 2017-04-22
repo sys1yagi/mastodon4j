@@ -2,10 +2,7 @@ package com.sys1yagi.mastodon4j
 
 import com.google.gson.Gson
 import com.sys1yagi.mastodon4j.api.entity.auth.AppRegistration
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
-import okhttp3.Response
+import okhttp3.*
 
 open class MastodonClient(
         private val instanceName: String,
@@ -44,6 +41,10 @@ open class MastodonClient(
 
     open fun post(path: String, body: RequestBody) =
             postUrl("$baseUrl/$path", body)
+
+    fun postFile(path:String, body:MultipartBody){
+        postUrl("$baseUrl/$path", body)
+    }
 
     fun authorizationHeader(builder: Request.Builder) = builder.apply {
         accessToken?.let {

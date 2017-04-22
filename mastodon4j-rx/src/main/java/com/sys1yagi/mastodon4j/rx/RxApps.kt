@@ -32,8 +32,25 @@ class RxApps(client: MastodonClient) {
             grantType: String = "authorization_code"): Single<AccessToken> {
         return Single.create {
             try {
-                val registration = apps.getAccessToken(clientId, clientSecret, redirectUri, code, grantType)
-                it.onSuccess(registration)
+                val accessToken = apps.getAccessToken(clientId, clientSecret, redirectUri, code, grantType)
+                it.onSuccess(accessToken)
+            } catch(throwable: Throwable) {
+                it.onErrorIfNotDisposed(throwable)
+            }
+        }
+    }
+
+    fun postUserNameAndPassword(
+            clientId: String,
+            clientSecret: String,
+            scope: Scope,
+            userName: String,
+            password: String
+    ): Single<AccessToken> {
+        return Single.create {
+            try {
+                val accessToken = apps.postUserNameAndPassword(clientId, clientSecret, scope, userName, password)
+                it.onSuccess(accessToken)
             } catch(throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }

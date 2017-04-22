@@ -10,7 +10,9 @@ import com.sys1yagi.mastodon4j.extension.genericType
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#favourites
  */
 class Favourites(val client: MastodonClient) {
-    fun getBlocks(range: Range = Range()): List<Status> {
+
+    //  GET /api/v1/favourites
+    fun getFavourites(range: Range = Range()): List<Status> {
         val response = client.get("favourites", range.toParameter())
         if (response.isSuccessful) {
             val body = response.body().string()

@@ -15,7 +15,7 @@ class Follows(val client: MastodonClient) {
      * POST /api/v1/follows
      * @param uri: username@domain of the person you want to follow
      */
-    fun postRemoveFollow(uri: String): Account {
+    fun postRemoteFollow(uri: String): Account {
         val parameters = Parameter()
                 .append("uri", uri)
                 .build()

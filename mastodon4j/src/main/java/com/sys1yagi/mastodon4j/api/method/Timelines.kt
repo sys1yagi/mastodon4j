@@ -11,6 +11,7 @@ import com.sys1yagi.mastodon4j.extension.genericType
  */
 class Timelines(val client: MastodonClient) {
 
+    //  GET /api/v1/timelines/home
     fun getHome(range: Range = Range()): List<Status> {
         val response = client.get(
                 "timelines/home",
@@ -27,6 +28,7 @@ class Timelines(val client: MastodonClient) {
         }
     }
 
+    //  GET /api/v1/timelines/public
     fun getPublic(range: Range = Range()): List<Status> {
         val response = client.get(
                 "timelines/public",
@@ -43,6 +45,7 @@ class Timelines(val client: MastodonClient) {
         }
     }
 
+    //  GET /api/v1/timelines/tag/:tag
     fun getTag(tag: String, range: Range = Range()): List<Status> {
         val response = client.get(
                 "timelines/tag/$tag",

@@ -2,6 +2,7 @@ package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.Parameter
+import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.*
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
@@ -14,6 +15,7 @@ import okhttp3.RequestBody
  */
 class Statuses(val client: MastodonClient) {
 
+    //  GET /api/v1/statuses/:id
     fun getStatus(statusId: Long): Status {
         val response = client.get("statuses/$statusId")
         if (response.isSuccessful) {
@@ -27,6 +29,7 @@ class Statuses(val client: MastodonClient) {
         }
     }
 
+    //  GET /api/v1/statuses/:id/context
     fun getContext(statusId: Long): Context {
         val response = client.get("statuses/$statusId/context")
         if (response.isSuccessful) {
@@ -40,6 +43,7 @@ class Statuses(val client: MastodonClient) {
         }
     }
 
+    //  GET /api/v1/statuses/:id/card
     fun getCard(statusId: Long): Card {
         val response = client.get("statuses/$statusId/card")
         if (response.isSuccessful) {
@@ -53,14 +57,11 @@ class Statuses(val client: MastodonClient) {
         }
     }
 
-    fun getRebloggedBy(statusId: Long, maxId: Long? = null, sinceId: Long? = null, limit: Int = 20): List<Account> {
+    //  GET /api/v1/reblogged_by
+    fun getRebloggedBy(statusId: Long, range:Range = Range()): List<Account> {
         val response = client.get(
                 "statuses/$statusId/reblogged_by",
-                Parameter().apply {
-                    maxId?.let { append("max_id", it) }
-                    sinceId?.let { append("since_id", it) }
-                    append("limit", limit)
-                }
+                range.toParameter()
         )
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -73,14 +74,11 @@ class Statuses(val client: MastodonClient) {
         }
     }
 
-    fun getFavouritedBy(statusId: Long, maxId: Long? = null, sinceId: Long? = null, limit: Int = 20): List<Account> {
+    //  GET /api/v1/favourited_by
+    fun getFavouritedBy(statusId: Long, range:Range = Range()): List<Account> {
         val response = client.get(
                 "statuses/$statusId/favourited_by",
-                Parameter().apply {
-                    maxId?.let { append("max_id", it) }
-                    sinceId?.let { append("since_id", it) }
-                    append("limit", limit)
-                }
+                range.toParameter()
         )
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -94,6 +92,7 @@ class Statuses(val client: MastodonClient) {
     }
 
     /**
+     * POST /api/v1/status
      * status: The text of the status
      * in_reply_to_id (optional): local ID of the status you want to reply to
      * media_ids (optional): array of media IDs to attach to the status (maximum 4)

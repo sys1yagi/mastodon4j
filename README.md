@@ -34,9 +34,9 @@ __Android App__
 - [x] GET /api/v1/instance
 - [ ] POST /api/v1/media
 - [x] GET /api/v1/mutes
-- [ ] GET /api/v1/notifications
-- [ ] GET /api/v1/notifications/:id
-- [ ] POST /api/v1/notifications/clear
+- [x] GET /api/v1/notifications
+- [x] GET /api/v1/notifications/:id
+- [x] POST /api/v1/notifications/clear
 - [ ] GET /api/v1/reports
 - [ ] POST /api/v1/reports
 - [ ] GET /api/v1/search

@@ -1,0 +1,12 @@
+box: java:8
+
+build:
+  steps:
+    - script:
+        name: gradlew
+        code: |
+          ./gradlew
+    - script:
+      name: gradle test
+      code: |
+        ./gradlew test

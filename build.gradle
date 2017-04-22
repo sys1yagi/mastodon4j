@@ -13,7 +13,6 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$gradleToolsVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.cookpad.android.licensetools:license-tools-plugin:0.21.1'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
     }

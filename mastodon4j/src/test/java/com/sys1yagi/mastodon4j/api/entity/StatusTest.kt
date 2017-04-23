@@ -2,22 +2,22 @@ package com.sys1yagi.mastodon4j.api.entity
 
 import com.google.gson.Gson
 import com.sys1yagi.mastodon4j.testtool.AssetsUtil
+import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
-import org.assertj.core.api.Assertions.assertThat
 
 class StatusTest {
 
     @Test
     fun deserialize() {
         val json = AssetsUtil.readFromAssets("status.json")
-        val status:Status = Gson().fromJson(json, Status::class.java)
-        assertThat(status.id).isEqualTo(172429L)
-        assertThat(status.visibility).isEqualTo(Status.Visibility.Public.value)
-        assertThat(status.content).isEqualTo("Test Status")
+        val status: Status = Gson().fromJson(json, Status::class.java)
+        status.id shouldEqualTo 172429L
+        status.visibility shouldEqualTo Status.Visibility.Public.value
+        status.content shouldEqualTo "Test Status"
         val account = status.account
         requireNotNull(account)
-        account?.let{
-            assertThat(it.id).isEqualTo(14476L)
+        account?.let {
+            it.id shouldEqualTo 14476L
         }
     }
 }

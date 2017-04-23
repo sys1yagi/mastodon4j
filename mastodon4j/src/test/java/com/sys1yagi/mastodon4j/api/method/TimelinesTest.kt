@@ -6,7 +6,7 @@ import com.sys1yagi.kmockito.mock
 import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.testtool.AssetsUtil
 import okhttp3.*
-import org.assertj.core.api.Assertions.assertThat
+import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
@@ -34,7 +34,7 @@ class TimelinesTest {
         val client = mockClient("public_timeline.json")
         val timelines = Timelines(client)
         val statuses = timelines.getPublic()
-        assertThat(statuses.size).isEqualTo(20)
+        statuses.size shouldEqualTo 20
     }
 
     @Test
@@ -42,6 +42,6 @@ class TimelinesTest {
         val client = mockClient("tag.json")
         val timelines = Timelines(client)
         val statuses = timelines.getTag("mastodon")
-        assertThat(statuses.size).isEqualTo(20)
+        statuses.size shouldEqualTo 20
     }
 }

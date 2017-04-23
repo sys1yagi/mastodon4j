@@ -3,7 +3,7 @@ package com.sys1yagi.mastodon4j.api
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/OAuth-details.md
  */
-class Scope(vararg private val scopes: Name) {
+class Scope(vararg private val scopes: Name = arrayOf(Name.ALL)) {
     enum class Name(val scopeName: String) {
         READ("read"),
         WRITE("write"),
@@ -12,8 +12,8 @@ class Scope(vararg private val scopes: Name) {
     }
 
     fun validate() {
-        if (scopes.isEmpty()) {
-            throw IllegalArgumentException("Should set at least one. ex: Scope(Type.READ)")
+        if (scopes.size != scopes.distinct().size) {
+            throw IllegalArgumentException("There is a duplicate scope. : $this")
         }
     }
 

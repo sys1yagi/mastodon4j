@@ -8,7 +8,7 @@ import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.api.Scope
 import com.sys1yagi.mastodon4j.testtool.AssetsUtil
 import okhttp3.*
-import org.assertj.core.api.Assertions.assertThat
+import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
 import org.mockito.ArgumentMatchers
 
@@ -35,10 +35,10 @@ class AppsTest {
                 scope = Scope(Scope.Name.ALL)
         )
 
-        assertThat(registration.instanceName).isEqualTo("mastodon.cloud")
-        assertThat(registration.clientId).isEqualTo("client id")
-        assertThat(registration.clientSecret).isEqualTo("client secret")
-        assertThat(registration.redirectUri).isEqualTo("urn:ietf:wg:oauth:2.0:oob")
+        registration.instanceName shouldEqualTo "mastodon.cloud"
+        registration.clientId shouldEqualTo "client id"
+        registration.clientSecret shouldEqualTo "client secret"
+        registration.redirectUri shouldEqualTo "urn:ietf:wg:oauth:2.0:oob"
     }
 
     @Test
@@ -47,6 +47,6 @@ class AppsTest {
         client.getInstanceName().invoked.thenReturn("mastodon.cloud")
 
         val url = Apps(client).getOAuthUrl("client_id", Scope(Scope.Name.ALL))
-        assertThat(url).isEqualTo("https://mastodon.cloud/oauth/authorize?client_id=client_id&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=read write follow")
+        url shouldEqualTo "https://mastodon.cloud/oauth/authorize?client_id=client_id&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=read write follow"
     }
 }

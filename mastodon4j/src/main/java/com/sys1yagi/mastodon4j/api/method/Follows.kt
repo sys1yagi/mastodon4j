@@ -32,7 +32,7 @@ class Follows(val client: MastodonClient) {
                     Account::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 }

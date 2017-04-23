@@ -26,7 +26,7 @@ class Accounts(val client: MastodonClient) {
                     Account::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -40,7 +40,7 @@ class Accounts(val client: MastodonClient) {
                     Account::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -78,7 +78,7 @@ class Accounts(val client: MastodonClient) {
                     Account::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -95,7 +95,7 @@ class Accounts(val client: MastodonClient) {
                     genericType<List<Account>>()
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -112,7 +112,7 @@ class Accounts(val client: MastodonClient) {
                     genericType<List<Account>>()
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -129,7 +129,7 @@ class Accounts(val client: MastodonClient) {
                     genericType<List<Status>>()
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -143,7 +143,7 @@ class Accounts(val client: MastodonClient) {
                     Relationship::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -157,7 +157,7 @@ class Accounts(val client: MastodonClient) {
                     Relationship::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -171,7 +171,7 @@ class Accounts(val client: MastodonClient) {
                     Relationship::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -185,7 +185,7 @@ class Accounts(val client: MastodonClient) {
                     Relationship::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -199,7 +199,7 @@ class Accounts(val client: MastodonClient) {
                     Relationship::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -213,7 +213,7 @@ class Accounts(val client: MastodonClient) {
                     Relationship::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -230,7 +230,7 @@ class Accounts(val client: MastodonClient) {
                     genericType<List<Relationship>>()
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -253,7 +253,7 @@ class Accounts(val client: MastodonClient) {
                     genericType<List<Account>>()
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 }

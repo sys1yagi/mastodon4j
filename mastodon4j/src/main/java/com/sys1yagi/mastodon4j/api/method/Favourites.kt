@@ -21,7 +21,7 @@ class Favourites(val client: MastodonClient) {
                     genericType<List<Status>>()
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 }

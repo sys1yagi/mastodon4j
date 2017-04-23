@@ -38,7 +38,7 @@ class Apps(private val client: MastodonClient) {
                         instanceName = client.getInstanceName()
                     }
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -80,7 +80,7 @@ class Apps(private val client: MastodonClient) {
             val json = response.body().string()
             return client.getSerializer().fromJson(json, AccessToken::class.java)
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -111,7 +111,7 @@ class Apps(private val client: MastodonClient) {
             val json = response.body().string()
             return client.getSerializer().fromJson(json, AccessToken::class.java)
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 }

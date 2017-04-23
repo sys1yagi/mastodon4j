@@ -24,7 +24,7 @@ class Notifications(val client: MastodonClient) {
                     genericType<List<Notification>>()
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -38,7 +38,7 @@ class Notifications(val client: MastodonClient) {
                     Notification::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -48,7 +48,7 @@ class Notifications(val client: MastodonClient) {
                 emptyRequestBody()
         )
         if (!response.isSuccessful) {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 }

@@ -26,7 +26,7 @@ class Reports(val client: MastodonClient) {
                     genericType<List<Report>>()
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -55,7 +55,7 @@ class Reports(val client: MastodonClient) {
                     Report::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 }

@@ -30,7 +30,7 @@ class Search(val client: MastodonClient) {
                     Results::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 }

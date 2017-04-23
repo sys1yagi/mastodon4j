@@ -25,7 +25,7 @@ class Statuses(val client: MastodonClient) {
                     Status::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -39,7 +39,7 @@ class Statuses(val client: MastodonClient) {
                     Context::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -53,7 +53,7 @@ class Statuses(val client: MastodonClient) {
                     Card::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -70,7 +70,7 @@ class Statuses(val client: MastodonClient) {
                     genericType<List<Account>>()
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -87,7 +87,7 @@ class Statuses(val client: MastodonClient) {
                     genericType<List<Account>>()
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -135,7 +135,7 @@ class Statuses(val client: MastodonClient) {
                     Status::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -143,7 +143,7 @@ class Statuses(val client: MastodonClient) {
     fun deleteStatus(statusId: Long) {
         val response = client.delete("statuses/$statusId")
         if (!response.isSuccessful) {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -157,7 +157,7 @@ class Statuses(val client: MastodonClient) {
                     Status::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -171,7 +171,7 @@ class Statuses(val client: MastodonClient) {
                     Status::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -185,7 +185,7 @@ class Statuses(val client: MastodonClient) {
                     Status::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -199,7 +199,7 @@ class Statuses(val client: MastodonClient) {
                     Status::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 }

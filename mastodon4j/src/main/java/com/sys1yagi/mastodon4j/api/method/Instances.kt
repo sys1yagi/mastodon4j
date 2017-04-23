@@ -19,7 +19,7 @@ class Instances(val client: MastodonClient) {
                     Instance::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 }

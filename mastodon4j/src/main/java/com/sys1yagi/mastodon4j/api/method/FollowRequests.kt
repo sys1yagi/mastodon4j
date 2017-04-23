@@ -21,7 +21,7 @@ class FollowRequests(val client: MastodonClient) {
                     genericType<List<Account>>()
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -29,7 +29,7 @@ class FollowRequests(val client: MastodonClient) {
     fun postAuthorize(accountId: Long){
         val response = client.post("follow_requests/$accountId/authorize", emptyRequestBody())
         if (!response.isSuccessful) {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 
@@ -37,7 +37,7 @@ class FollowRequests(val client: MastodonClient) {
     fun postReject(accountId: Long) {
         val response = client.post("follow_requests/$accountId/reject", emptyRequestBody())
         if (!response.isSuccessful) {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 }

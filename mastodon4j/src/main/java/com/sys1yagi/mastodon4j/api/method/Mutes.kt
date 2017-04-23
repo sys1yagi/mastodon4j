@@ -20,7 +20,7 @@ class Mutes(val client: MastodonClient) {
                     genericType<List<Account>>()
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 }

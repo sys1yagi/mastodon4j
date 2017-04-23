@@ -24,7 +24,7 @@ class Media(val client: MastodonClient) {
                     Attachment::class.java
             )
         } else {
-            throw Mastodon4jRequestException(response.message())
+            throw Mastodon4jRequestException(response)
         }
     }
 }

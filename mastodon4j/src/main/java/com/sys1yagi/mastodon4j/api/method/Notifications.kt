@@ -4,15 +4,16 @@ import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Notification
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.api.method.contract.NotificationsContract
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
 import com.sys1yagi.mastodon4j.extension.genericType
 
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#notifications
  */
-class Notifications(val client: MastodonClient) {
+class Notifications(val client: MastodonClient) : NotificationsContract.Public, NotificationsContract.AuthRequired {
     // GET /api/v1/notifications
-    fun getNotifications(range: Range): List<Notification> {
+    override fun getNotifications(range: Range): List<Notification> {
         val response = client.get(
                 "notifications",
                 range.toParameter()
@@ -29,7 +30,7 @@ class Notifications(val client: MastodonClient) {
     }
 
     // GET /api/v1/notifications/:id
-    fun getNotification(id: Long): Notification {
+    override fun getNotification(id: Long): Notification {
         val response = client.get("notifications/$id")
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -43,7 +44,7 @@ class Notifications(val client: MastodonClient) {
     }
 
     //  POST /api/v1/notifications/clear
-    fun clearNotifications() {
+    override fun clearNotifications() {
         val response = client.post("notifications/clear",
                 emptyRequestBody()
         )

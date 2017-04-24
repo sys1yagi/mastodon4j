@@ -4,18 +4,19 @@ import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.entity.Account
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.api.method.contract.FollowsContract
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#follows
  */
-class Follows(val client: MastodonClient) {
+class Follows(val client: MastodonClient): FollowsContract.Public, FollowsContract.AuthRequired {
     /**
      * POST /api/v1/follows
      * @param uri: username@domain of the person you want to follow
      */
-    fun postRemoteFollow(uri: String): Account {
+    override fun postRemoteFollow(uri: String): Account {
         val parameters = Parameter()
                 .append("uri", uri)
                 .build()

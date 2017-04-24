@@ -4,7 +4,7 @@ import com.sys1yagi.mastodon4j.api.entity.Results
 
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#search
- * https://github.com/tootsuite/mastodon/blob/master/app/controllers/api/v1/search_controller.rb
+ * api implementation: https://github.com/tootsuite/mastodon/blob/master/app/controllers/api/v1/search_controller.rb
  */
 interface SearchContract {
     interface Public {

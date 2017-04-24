@@ -40,9 +40,38 @@ Check latest version on Jitpack [![](https://jitpack.io/v/sys1yagi/mastodon4j.sv
 
 # Usage
 
+## Get Public Timeline
+
+__kotlin__
+
+```kotlin
+val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson())
+        
+val timelines = Timelines(client)
+val statuses: List<Status> = timelines.getPublic()
+```
+
+__java__
+
+```
+MastodonClient client = new MastodonClient("mstdn.jp", new OkHttpClient(), new Gson());
+Timelines timelines = new Timelines(client);
+
+try {
+  List<Status> statuses = timelines.getPublic(new Range());
+  statuses.forEach(status->{
+    System.out.println("=============");
+    System.out.println(status.getAccount().getDisplayName());
+    System.out.println(status.getContent());
+  });
+} catch (Mastodon4jRequestException e) {
+  e.printStackTrace();
+}
+```
+
 ## Register App
 
-At first, you need create client credential. see more [docs](https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#apps)
+If you want to access the auth required API, you need create client credential and get access token. see more [docs](https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#apps)
 
 __kotlin__
 
@@ -78,35 +107,6 @@ try {
 } catch (Mastodon4jRequestException e) {
 	int statusCode = e.getResponse().code();
 	// error handling.
-}
-```
-
-## Get Public Timeline
-
-__kotlin__
-
-```kotlin
-val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson())
-        
-val timelines = Timelines(client)
-val statuses: List<Status> = timelines.getPublic()
-```
-
-__java__
-
-```
-MastodonClient client = new MastodonClient("mstdn.jp", new OkHttpClient(), new Gson());
-Timelines timelines = new Timelines(client);
-
-try {
-	List<Status> statuses = timelines.getPublic(new Range());
-	statuses.forEach(status->{
-	    System.out.println("=============");
-	    System.out.println(status.getAccount().getDisplayName());
-	    System.out.println(status.getContent());
-	});
-} catch (Mastodon4jRequestException e) {
-    e.printStackTrace();
 }
 ```
 

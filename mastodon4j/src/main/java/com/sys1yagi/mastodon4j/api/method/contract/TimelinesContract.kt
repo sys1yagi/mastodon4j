@@ -1,4 +1,4 @@
-package com.sys1yagi.mastodon4j.api.method.`interface`
+package com.sys1yagi.mastodon4j.api.method.contract
 
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Status
@@ -6,7 +6,7 @@ import com.sys1yagi.mastodon4j.api.entity.Status
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
  */
-interface TimelinesInterface {
+interface TimelinesContract {
     interface Public {
         fun getPublic(range: Range = Range()): List<Status>
         fun getTag(tag: String, range: Range = Range()): List<Status>

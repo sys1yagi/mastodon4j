@@ -4,13 +4,13 @@ import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import com.sys1yagi.mastodon4j.api.method.`interface`.TimelinesInterface
+import com.sys1yagi.mastodon4j.api.method.contract.TimelinesContract
 import com.sys1yagi.mastodon4j.extension.genericType
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
  */
-class Timelines(val client: MastodonClient) : TimelinesInterface.Public, TimelinesInterface.AuthRequired {
+class Timelines(val client: MastodonClient) : TimelinesContract.Public, TimelinesContract.AuthRequired {
 
     //  GET /api/v1/timelines/home
     override fun getHome(range: Range): List<Status> {

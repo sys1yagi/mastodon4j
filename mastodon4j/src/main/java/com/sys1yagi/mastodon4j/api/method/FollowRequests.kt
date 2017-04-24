@@ -13,6 +13,7 @@ import com.sys1yagi.mastodon4j.extension.genericType
  */
 class FollowRequests(val client: MastodonClient) : FollowRequestsContract.Public, FollowRequestsContract.AuthRequired {
     // GET /api/v1/follow_requests
+    @Throws(Mastodon4jRequestException::class)
     override fun getFollowRequests(range: Range): List<Account> {
         val response = client.get("follow_requests", range.toParameter())
         if (response.isSuccessful) {
@@ -27,6 +28,7 @@ class FollowRequests(val client: MastodonClient) : FollowRequestsContract.Public
     }
 
     //  POST /api/v1/follow_requests/:id/authorize
+    @Throws(Mastodon4jRequestException::class)
     override fun postAuthorize(accountId: Long) {
         val response = client.post("follow_requests/$accountId/authorize", emptyRequestBody())
         if (!response.isSuccessful) {
@@ -35,6 +37,7 @@ class FollowRequests(val client: MastodonClient) : FollowRequestsContract.Public
     }
 
     //  POST /api/v1/follow_requests/:id/reject
+    @Throws(Mastodon4jRequestException::class)
     override fun postReject(accountId: Long) {
         val response = client.post("follow_requests/$accountId/reject", emptyRequestBody())
         if (!response.isSuccessful) {

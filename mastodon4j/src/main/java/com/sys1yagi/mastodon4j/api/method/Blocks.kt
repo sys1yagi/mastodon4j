@@ -13,6 +13,7 @@ import com.sys1yagi.mastodon4j.extension.genericType
 class Blocks(val client: MastodonClient) : BlocksContract.Public, BlocksContract.AuthRequired {
 
     //  GET /api/v1/blocks
+    @Throws(Mastodon4jRequestException::class)
     override fun getBlocks(range: Range): List<Account> {
         val response = client.get("blocks", range.toParameter())
         if (response.isSuccessful) {

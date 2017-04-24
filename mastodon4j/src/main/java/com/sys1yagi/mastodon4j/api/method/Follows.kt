@@ -16,6 +16,7 @@ class Follows(val client: MastodonClient): FollowsContract.Public, FollowsContra
      * POST /api/v1/follows
      * @param uri: username@domain of the person you want to follow
      */
+    @Throws(Mastodon4jRequestException::class)
     override fun postRemoteFollow(uri: String): Account {
         val parameters = Parameter()
                 .append("uri", uri)

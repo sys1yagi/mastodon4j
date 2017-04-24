@@ -17,6 +17,7 @@ import okhttp3.RequestBody
 class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesContract.AuthRequired {
 
     //  GET /api/v1/statuses/:id
+    @Throws(Mastodon4jRequestException::class)
     override fun getStatus(statusId: Long): Status {
         val response = client.get("statuses/$statusId")
         if (response.isSuccessful) {
@@ -31,6 +32,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
     }
 
     //  GET /api/v1/statuses/:id/context
+    @Throws(Mastodon4jRequestException::class)
     override fun getContext(statusId: Long): Context {
         val response = client.get("statuses/$statusId/context")
         if (response.isSuccessful) {
@@ -45,6 +47,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
     }
 
     //  GET /api/v1/statuses/:id/card
+    @Throws(Mastodon4jRequestException::class)
     override fun getCard(statusId: Long): Card {
         val response = client.get("statuses/$statusId/card")
         if (response.isSuccessful) {
@@ -59,6 +62,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
     }
 
     //  GET /api/v1/reblogged_by
+    @Throws(Mastodon4jRequestException::class)
     override fun getRebloggedBy(statusId: Long, range: Range): List<Account> {
         val response = client.get(
                 "statuses/$statusId/reblogged_by",
@@ -76,6 +80,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
     }
 
     //  GET /api/v1/favourited_by
+    @Throws(Mastodon4jRequestException::class)
     override fun getFavouritedBy(statusId: Long, range: Range): List<Account> {
         val response = client.get(
                 "statuses/$statusId/favourited_by",
@@ -101,6 +106,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
      * spoiler_text (optional): text to be shown as a warning before the actual content
      * visibility (optional): either "direct", "private", "unlisted" or "public"
      */
+    @Throws(Mastodon4jRequestException::class)
     override fun postStatus(
             status: String,
             inReplyToId: Long?,
@@ -141,6 +147,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
     }
 
     //  DELETE /api/v1/statuses/:id
+    @Throws(Mastodon4jRequestException::class)
     override fun deleteStatus(statusId: Long) {
         val response = client.delete("statuses/$statusId")
         if (!response.isSuccessful) {
@@ -149,6 +156,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
     }
 
     //  POST /api/v1/statuses/:id/reblog
+    @Throws(Mastodon4jRequestException::class)
     override fun postReblog(statusId: Long): Status {
         val response = client.post("statuses/$statusId/reblog", emptyRequestBody())
         if (response.isSuccessful) {
@@ -163,6 +171,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
     }
 
     //  POST /api/v1/statuses/:id/unreblog
+    @Throws(Mastodon4jRequestException::class)
     override fun postUmreblog(statusId: Long): Status {
         val response = client.post("statuses/$statusId/unreblog", emptyRequestBody())
         if (response.isSuccessful) {
@@ -177,6 +186,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
     }
 
     //  POST /api/v1/statuses/:id/favourite
+    @Throws(Mastodon4jRequestException::class)
     override fun postFavourite(statusId: Long): Status {
         val response = client.post("statuses/$statusId/favourite", emptyRequestBody())
         if (response.isSuccessful) {
@@ -191,6 +201,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
     }
 
     //  POST /api/v1/statuses/:id/unfavourite
+    @Throws(Mastodon4jRequestException::class)
     override fun postUnfavourite(statusId: Long): Status {
         val response = client.post("statuses/$statusId/unfavourite", emptyRequestBody())
         if (response.isSuccessful) {

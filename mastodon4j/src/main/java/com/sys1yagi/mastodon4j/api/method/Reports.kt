@@ -15,6 +15,7 @@ import okhttp3.RequestBody
  */
 class Reports(val client: MastodonClient) : ReportsContract.Public, ReportsContract.AuthRequired {
     // GET /api/v1/reports
+    @Throws(Mastodon4jRequestException::class)
     override fun getReports(range: Range): List<Report> {
         val response = client.get(
                 "reports",
@@ -37,6 +38,7 @@ class Reports(val client: MastodonClient) : ReportsContract.Public, ReportsContr
      * status_ids: The IDs of statuses to report (can be an array)
      * comment: A comment to associate with the report.
      */
+    @Throws(Mastodon4jRequestException::class)
     override fun postReport(accountId: Long, statusId: Long, comment: String): Report {
         val parameters = Parameter().apply {
             append("account_id", accountId)

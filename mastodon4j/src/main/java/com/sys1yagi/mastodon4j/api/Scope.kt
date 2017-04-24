@@ -3,7 +3,9 @@ package com.sys1yagi.mastodon4j.api
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/OAuth-details.md
  */
-class Scope(vararg private val scopes: Name = arrayOf(Name.ALL)) {
+class Scope
+@JvmOverloads
+constructor(vararg private val scopes: Name = arrayOf(Name.ALL)) {
     enum class Name(val scopeName: String) {
         READ("read"),
         WRITE("write"),

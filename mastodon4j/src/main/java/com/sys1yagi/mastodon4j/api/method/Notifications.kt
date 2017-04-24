@@ -13,6 +13,7 @@ import com.sys1yagi.mastodon4j.extension.genericType
  */
 class Notifications(val client: MastodonClient) : NotificationsContract.Public, NotificationsContract.AuthRequired {
     // GET /api/v1/notifications
+    @Throws(Mastodon4jRequestException::class)
     override fun getNotifications(range: Range): List<Notification> {
         val response = client.get(
                 "notifications",
@@ -30,6 +31,7 @@ class Notifications(val client: MastodonClient) : NotificationsContract.Public, 
     }
 
     // GET /api/v1/notifications/:id
+    @Throws(Mastodon4jRequestException::class)
     override fun getNotification(id: Long): Notification {
         val response = client.get("notifications/$id")
         if (response.isSuccessful) {
@@ -44,6 +46,7 @@ class Notifications(val client: MastodonClient) : NotificationsContract.Public, 
     }
 
     //  POST /api/v1/notifications/clear
+    @Throws(Mastodon4jRequestException::class)
     override fun clearNotifications() {
         val response = client.post("notifications/clear",
                 emptyRequestBody()

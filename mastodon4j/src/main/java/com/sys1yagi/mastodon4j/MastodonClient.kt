@@ -4,7 +4,10 @@ import com.google.gson.Gson
 import com.sys1yagi.mastodon4j.api.entity.auth.AppRegistration
 import okhttp3.*
 
-open class MastodonClient(
+
+open class MastodonClient
+@JvmOverloads
+constructor(
         private val instanceName: String,
         private val client: OkHttpClient,
         private val gson: Gson,

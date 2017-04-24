@@ -13,7 +13,7 @@ import com.sys1yagi.mastodon4j.extension.genericType
 class Favourites(val client: MastodonClient): FavouritesContract.Public, FavouritesContract.AuthRequired {
 
     //  GET /api/v1/favourites
-    override fun getFavourites(range: Range = Range()): List<Status> {
+    override fun getFavourites(range: Range): List<Status> {
         val response = client.get("favourites", range.toParameter())
         if (response.isSuccessful) {
             val body = response.body().string()

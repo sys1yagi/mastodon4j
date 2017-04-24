@@ -9,8 +9,18 @@ import com.sys1yagi.mastodon4j.api.entity.Status
  */
 interface TimelinesContract {
     interface Public {
+        @Deprecated("Use getLocalPublic() or getFederatedPublic() instead")
         fun getPublic(range: Range = Range()): List<Status>
+
+        @Deprecated("Use getLocalTag() or getFederatedTag() instead")
         fun getTag(tag: String, range: Range = Range()): List<Status>
+
+        fun getLocalPublic(range: Range = Range()): List<Status>
+        fun getFederatedPublic(range: Range = Range()): List<Status>
+
+        fun getLocalTag(tag: String, range: Range = Range()): List<Status>
+        fun getFederatedTag(tag: String, range: Range = Range()): List<Status>
+
     }
 
     interface AuthRequired {

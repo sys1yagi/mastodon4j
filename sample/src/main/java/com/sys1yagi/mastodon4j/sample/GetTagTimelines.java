@@ -10,13 +10,13 @@ import okhttp3.OkHttpClient;
 
 import java.util.List;
 
-public class GetPublicTimelines {
+public class GetTagTimelines {
     public static void main(String[] args) {
         MastodonClient client = new MastodonClient("mstdn.jp", new OkHttpClient(), new Gson());
         Timelines timelines = new Timelines(client);
 
         try {
-            List<Status> statuses = timelines.getLocalPublic(new Range());
+            List<Status> statuses = timelines.getFederatedTag("mastodon", new Range());
             statuses.forEach(status -> {
                 System.out.println("=============");
                 System.out.println(status.getAccount().getDisplayName());

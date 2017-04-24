@@ -21,6 +21,7 @@ public class GetPublicTimelines {
                 System.out.println("=============");
                 System.out.println(status.getAccount().getDisplayName());
                 System.out.println(status.getContent());
+                System.out.println(status.isReblogged());
             });
         } catch (Mastodon4jRequestException e) {
             e.printStackTrace();

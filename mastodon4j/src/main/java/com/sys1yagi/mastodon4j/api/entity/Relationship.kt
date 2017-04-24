@@ -10,18 +10,18 @@ class Relationship {
     val id: Long = 0L
 
     @SerializedName("following")
-    val following: Boolean = false
+    val isFollowing: Boolean = false
 
     @SerializedName("followed_by")
-    val followedBy: Boolean = false
+    val isFollowedBy: Boolean = false
 
     @SerializedName("blocking")
-    val blocking: Boolean = false
+    val isBlocking: Boolean = false
 
     @SerializedName("muting")
-    val muting: Boolean = false
+    val isMuting: Boolean = false
 
     @SerializedName("requested")
-    val requested: Boolean = false
+    val isRequested: Boolean = false
 
 }

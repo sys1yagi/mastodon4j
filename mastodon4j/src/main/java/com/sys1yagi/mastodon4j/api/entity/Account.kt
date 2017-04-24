@@ -28,7 +28,7 @@ class Account {
     val header: String = ""
 
     @SerializedName("locked")
-    val locked: Boolean = false
+    val isLocked: Boolean = false
 
     @SerializedName("created_at")
     val createdAt: String = ""

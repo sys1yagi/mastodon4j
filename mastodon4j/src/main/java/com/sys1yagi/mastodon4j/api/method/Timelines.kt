@@ -4,15 +4,16 @@ import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.api.method.`interface`.TimelinesInterface
 import com.sys1yagi.mastodon4j.extension.genericType
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
  */
-class Timelines(val client: MastodonClient) {
+class Timelines(val client: MastodonClient) : TimelinesInterface.Public, TimelinesInterface.AuthRequired {
 
     //  GET /api/v1/timelines/home
-    fun getHome(range: Range = Range()): List<Status> {
+    override fun getHome(range: Range): List<Status> {
         val response = client.get(
                 "timelines/home",
                 range.toParameter()
@@ -29,7 +30,7 @@ class Timelines(val client: MastodonClient) {
     }
 
     //  GET /api/v1/timelines/public
-    fun getPublic(range: Range = Range()): List<Status> {
+    override fun getPublic(range: Range): List<Status> {
         val response = client.get(
                 "timelines/public",
                 range.toParameter()
@@ -46,7 +47,7 @@ class Timelines(val client: MastodonClient) {
     }
 
     //  GET /api/v1/timelines/tag/:tag
-    fun getTag(tag: String, range: Range = Range()): List<Status> {
+    override fun getTag(tag: String, range: Range): List<Status> {
         val response = client.get(
                 "timelines/tag/$tag",
                 range.toParameter()

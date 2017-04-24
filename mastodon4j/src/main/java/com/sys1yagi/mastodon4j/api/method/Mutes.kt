@@ -11,6 +11,7 @@ import com.sys1yagi.mastodon4j.extension.genericType
  */
 class Mutes(val client: MastodonClient) {
     // GET /api/v1/mutes
+    @Throws(Mastodon4jRequestException::class)
     fun getMutes(range: Range = Range()): List<Account> {
         val response = client.get("mutes", range.toParameter())
         if (response.isSuccessful) {

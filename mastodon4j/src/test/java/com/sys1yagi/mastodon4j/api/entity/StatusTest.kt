@@ -19,5 +19,6 @@ class StatusTest {
         account?.let {
             it.id shouldEqualTo 14476L
         }
+        status.isReblogged shouldEqualTo false
     }
 }

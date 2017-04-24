@@ -14,6 +14,7 @@ import okhttp3.RequestBody
  */
 class Apps(private val client: MastodonClient) : AppsContract.Public, AppsContract.AuthRequired {
     // POST /api/v1/apps
+    @Throws(Mastodon4jRequestException::class)
     override fun createApp(clientName: String, redirectUris: String, scope: Scope, website: String?): AppRegistration {
         scope.validate()
         val response = client.post("apps",
@@ -53,6 +54,7 @@ class Apps(private val client: MastodonClient) : AppsContract.Public, AppsContra
     }
 
     // POST /oauth/token
+    @Throws(Mastodon4jRequestException::class)
     override fun getAccessToken(
             clientId: String,
             clientSecret: String,
@@ -84,6 +86,7 @@ class Apps(private val client: MastodonClient) : AppsContract.Public, AppsContra
     }
 
     // POST /oauth/token
+    @Throws(Mastodon4jRequestException::class)
     override fun postUserNameAndPassword(
             clientId: String,
             clientSecret: String,

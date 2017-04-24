@@ -11,6 +11,7 @@ import com.sys1yagi.mastodon4j.api.method.contract.InstancesContract
 class Instances(val client: MastodonClient): InstancesContract.Public, InstancesContract.AuthRequired {
 
     //  GET /api/v1/instance
+    @Throws(Mastodon4jRequestException::class)
     override fun getInstance(): Instance {
         val response = client.get("instance")
         if (response.isSuccessful) {

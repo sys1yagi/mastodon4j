@@ -13,6 +13,7 @@ import com.sys1yagi.mastodon4j.extension.genericType
 class Timelines(val client: MastodonClient) : TimelinesContract.Public, TimelinesContract.AuthRequired {
 
     //  GET /api/v1/timelines/home
+    @Throws(Mastodon4jRequestException::class)
     override fun getHome(range: Range): List<Status> {
         val response = client.get(
                 "timelines/home",
@@ -30,6 +31,7 @@ class Timelines(val client: MastodonClient) : TimelinesContract.Public, Timeline
     }
 
     //  GET /api/v1/timelines/public
+    @Throws(Mastodon4jRequestException::class)
     override fun getPublic(range: Range): List<Status> {
         val response = client.get(
                 "timelines/public",
@@ -47,6 +49,7 @@ class Timelines(val client: MastodonClient) : TimelinesContract.Public, Timeline
     }
 
     //  GET /api/v1/timelines/tag/:tag
+    @Throws(Mastodon4jRequestException::class)
     override fun getTag(tag: String, range: Range): List<Status> {
         val response = client.get(
                 "timelines/tag/$tag",

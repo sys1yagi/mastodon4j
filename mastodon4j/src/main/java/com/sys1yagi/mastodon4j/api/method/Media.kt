@@ -11,6 +11,7 @@ import okhttp3.MultipartBody
  */
 class Media(val client: MastodonClient): MediaContract.Public, MediaContract.AuthRequired {
     //  POST /api/v1/media
+    @Throws(Mastodon4jRequestException::class)
     override fun postMedia(file: MultipartBody.Part): Attachment {
         val requestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)

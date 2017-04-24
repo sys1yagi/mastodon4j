@@ -18,6 +18,7 @@ import okhttp3.RequestBody
  */
 class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsContract.AuthRequired {
     // GET /api/v1/accounts/:id
+    @Throws(Mastodon4jRequestException::class)
     override fun getAccount(accountId: Long): Account {
         val response = client.get("accounts/$accountId")
         if (response.isSuccessful) {
@@ -32,6 +33,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
     }
 
     //  GET /api/v1/accounts/verify_credentials
+    @Throws(Mastodon4jRequestException::class)
     override fun getVerifyCredentials(): Account {
         val response = client.get("accounts/verify_credentials")
         if (response.isSuccessful) {
@@ -52,6 +54,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
      * avatar: A base64 encoded image to display as the user's avatar (e.g. data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAADrCAYAAAA...)
      * header: A base64 encoded image to display as the user's header image (e.g. data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAADrCAYAAAA...)
      */
+    @Throws(Mastodon4jRequestException::class)
     override fun updateCredential(displayName: String?, note: String?, avatar: String?, header: String?): Account {
         val parameters = Parameter().apply {
             displayName?.let {
@@ -84,6 +87,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
     }
 
     //  GET /api/v1/accounts/:id/followers
+    @Throws(Mastodon4jRequestException::class)
     override fun getFollowers(accountId: Long, range: Range): List<Account> {
         val response = client.get(
                 "accounts/$accountId/followers",
@@ -101,6 +105,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
     }
 
     //  GET /api/v1/accounts/:id/following
+    @Throws(Mastodon4jRequestException::class)
     override fun getFollowing(accountId: Long, range: Range): List<Account> {
         val response = client.get(
                 "accounts/$accountId/following",
@@ -118,6 +123,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
     }
 
     //  GET /api/v1/accounts/:id/statuses
+    @Throws(Mastodon4jRequestException::class)
     override fun getStatuses(accountId: Long, range: Range): List<Status> {
         val response = client.get(
                 "accounts/$accountId/statuses",
@@ -135,6 +141,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
     }
 
     //  POST /api/v1/accounts/:id/follow
+    @Throws(Mastodon4jRequestException::class)
     override fun postFollow(accountId: Long): Relationship {
         val response = client.post("accounts/$accountId/follow", emptyRequestBody())
         if (response.isSuccessful) {
@@ -149,6 +156,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
     }
 
     //  POST /api/v1/accounts/:id/unfollow
+    @Throws(Mastodon4jRequestException::class)
     override fun postUnFollow(accountId: Long): Relationship {
         val response = client.post("accounts/$accountId/unfollow", emptyRequestBody())
         if (response.isSuccessful) {
@@ -163,6 +171,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
     }
 
     //  POST /api/v1/accounts/:id/block
+    @Throws(Mastodon4jRequestException::class)
     override fun postBlock(accountId: Long): Relationship {
         val response = client.post("accounts/$accountId/block", emptyRequestBody())
         if (response.isSuccessful) {
@@ -177,6 +186,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
     }
 
     //  POST /api/v1/accounts/:id/unblock
+    @Throws(Mastodon4jRequestException::class)
     override fun postUnblock(accountId: Long): Relationship {
         val response = client.post("accounts/$accountId/unblock", emptyRequestBody())
         if (response.isSuccessful) {
@@ -191,6 +201,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
     }
 
     //  POST /api/v1/accounts/:id/mute
+    @Throws(Mastodon4jRequestException::class)
     override fun postMute(accountId: Long): Relationship {
         val response = client.post("accounts/$accountId/mute", emptyRequestBody())
         if (response.isSuccessful) {
@@ -205,6 +216,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
     }
 
     //  POST /api/v1/accounts/:id/unmute
+    @Throws(Mastodon4jRequestException::class)
     override fun postUnmute(accountId: Long): Relationship {
         val response = client.post("accounts/$accountId/unmute", emptyRequestBody())
         if (response.isSuccessful) {
@@ -219,6 +231,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
     }
 
     //  GET /api/v1/accounts/relationships
+    @Throws(Mastodon4jRequestException::class)
     override fun getRelationships(accountIds: List<Long>): List<Relationship> {
         val response = client.get(
                 "accounts/relationships",
@@ -240,6 +253,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
      * q: What to search for
      * limit: Maximum number of matching accounts to return (default: 40)
      */
+    @Throws(Mastodon4jRequestException::class)
     override fun getAccountSearch(query: String, limit: Int): List<Account> {
         val response = client.get(
                 "accounts/search",

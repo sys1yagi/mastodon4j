@@ -16,6 +16,7 @@ class Search(val client: MastodonClient) : SearchContract.Public, SearchContract
      * q: The search query
      * resolve: Whether to resolve non-local accounts
      */
+    @Throws(Mastodon4jRequestException::class)
     override fun getSearch(query: String, resolve: Boolean): Results {
         val response = client.get(
                 "search",

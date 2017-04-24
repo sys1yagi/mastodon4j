@@ -60,6 +60,26 @@ save(appRegistration) // appRegistration needs to be saved.
 
 AppRegistration has client id and client secret.
 
+__java__
+
+```java
+MastodonClient client = new MastodonClient("mstdn.jp", new OkHttpClient(), new Gson());
+Apps apps = new Apps(client);
+try {
+	AppRegistration registration = apps.createApp(
+	    "mastodon4j-sample-app",
+	    "urn:ietf:wg:oauth:2.0:oob",
+	    new Scope(Scope.Name.ALL),
+        "https://sample.com"
+    );
+    System.out.println("instance=" + registration.getInstanceName());
+    System.out.println("client_id=" + registration.getClientId());
+    System.out.println("client_secret=" + registration.getClientSecret());
+} catch (Mastodon4jRequestException e) {
+	int statusCode = e.getResponse().code();
+	// error handling.
+}
+```
 
 ## Get Public Timeline
 
@@ -72,7 +92,27 @@ val timelines = Timelines(client)
 val statuses: List<Status> = timelines.getPublic()
 ```
 
+__java__
+
+```
+MastodonClient client = new MastodonClient("mstdn.jp", new OkHttpClient(), new Gson());
+Timelines timelines = new Timelines(client);
+
+try {
+	List<Status> statuses = timelines.getPublic(new Range());
+	statuses.forEach(status->{
+	    System.out.println("=============");
+	    System.out.println(status.getAccount().getDisplayName());
+	    System.out.println(status.getContent());
+	});
+} catch (Mastodon4jRequestException e) {
+    e.printStackTrace();
+}
+```
+
 ## OAuth login and get Access Token
+
+__kotlin__
 
 ```kotlin
 val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson())
@@ -98,6 +138,8 @@ val accessToken = apps.getAccessToken(
 ```
 
 ## Get Home Timeline
+
+__kotlin__
 
 ```kotlin
 // Need parameter of accessToken

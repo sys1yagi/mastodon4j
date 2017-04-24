@@ -1,21 +1,20 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
-import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Scope
 import com.sys1yagi.mastodon4j.api.entity.auth.AccessToken
 import com.sys1yagi.mastodon4j.api.entity.auth.AppRegistration
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.api.method.contract.AppsContract
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import java.net.URLEncoder
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#apps
  */
-class Apps(private val client: MastodonClient) {
+class Apps(private val client: MastodonClient) : AppsContract.Public, AppsContract.AuthRequired {
     // POST /api/v1/apps
-    fun createApp(clientName: String, redirectUris: String = "urn:ietf:wg:oauth:2.0:oob", scope: Scope, website: String? = null): AppRegistration {
+    override fun createApp(clientName: String, redirectUris: String, scope: Scope, website: String?): AppRegistration {
         scope.validate()
         val response = client.post("apps",
                 RequestBody.create(
@@ -42,7 +41,7 @@ class Apps(private val client: MastodonClient) {
         }
     }
 
-    fun getOAuthUrl(clientId: String, scope: Scope, redirectUri: String = "urn:ietf:wg:oauth:2.0:oob"): String {
+    override fun getOAuthUrl(clientId: String, scope: Scope, redirectUri: String): String {
         val endpoint = "/oauth/authorize"
         val parameters = listOf(
                 "client_id=$clientId",
@@ -54,12 +53,12 @@ class Apps(private val client: MastodonClient) {
     }
 
     // POST /oauth/token
-    fun getAccessToken(
+    override fun getAccessToken(
             clientId: String,
             clientSecret: String,
-            redirectUri: String = "urn:ietf:wg:oauth:2.0:oob",
+            redirectUri: String,
             code: String,
-            grantType: String = "authorization_code"): AccessToken {
+            grantType: String): AccessToken {
 
         val url = "https://${client.getInstanceName()}/oauth/token"
         val parameters = listOf(
@@ -85,7 +84,7 @@ class Apps(private val client: MastodonClient) {
     }
 
     // POST /oauth/token
-    fun postUserNameAndPassword(
+    override fun postUserNameAndPassword(
             clientId: String,
             clientSecret: String,
             scope: Scope,

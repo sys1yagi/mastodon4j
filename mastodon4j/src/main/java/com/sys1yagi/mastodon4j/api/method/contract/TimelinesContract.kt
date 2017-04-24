@@ -5,6 +5,7 @@ import com.sys1yagi.mastodon4j.api.entity.Status
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
+ * api implementation: https://github.com/tootsuite/mastodon/blob/master/app/controllers/api/v1/timelines_controller.rb
  */
 interface TimelinesContract {
     interface Public {

@@ -5,6 +5,7 @@ import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.*
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.api.method.contract.StatusesContract
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
 import com.sys1yagi.mastodon4j.extension.genericType
 import okhttp3.MediaType
@@ -13,10 +14,10 @@ import okhttp3.RequestBody
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#statuses
  */
-class Statuses(val client: MastodonClient) {
+class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesContract.AuthRequired {
 
     //  GET /api/v1/statuses/:id
-    fun getStatus(statusId: Long): Status {
+    override fun getStatus(statusId: Long): Status {
         val response = client.get("statuses/$statusId")
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -30,7 +31,7 @@ class Statuses(val client: MastodonClient) {
     }
 
     //  GET /api/v1/statuses/:id/context
-    fun getContext(statusId: Long): Context {
+    override fun getContext(statusId: Long): Context {
         val response = client.get("statuses/$statusId/context")
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -44,7 +45,7 @@ class Statuses(val client: MastodonClient) {
     }
 
     //  GET /api/v1/statuses/:id/card
-    fun getCard(statusId: Long): Card {
+    override fun getCard(statusId: Long): Card {
         val response = client.get("statuses/$statusId/card")
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -58,7 +59,7 @@ class Statuses(val client: MastodonClient) {
     }
 
     //  GET /api/v1/reblogged_by
-    fun getRebloggedBy(statusId: Long, range:Range = Range()): List<Account> {
+    override fun getRebloggedBy(statusId: Long, range: Range): List<Account> {
         val response = client.get(
                 "statuses/$statusId/reblogged_by",
                 range.toParameter()
@@ -75,7 +76,7 @@ class Statuses(val client: MastodonClient) {
     }
 
     //  GET /api/v1/favourited_by
-    fun getFavouritedBy(statusId: Long, range:Range = Range()): List<Account> {
+    override fun getFavouritedBy(statusId: Long, range: Range): List<Account> {
         val response = client.get(
                 "statuses/$statusId/favourited_by",
                 range.toParameter()
@@ -100,13 +101,13 @@ class Statuses(val client: MastodonClient) {
      * spoiler_text (optional): text to be shown as a warning before the actual content
      * visibility (optional): either "direct", "private", "unlisted" or "public"
      */
-    fun postStatus(
+    override fun postStatus(
             status: String,
-            inReplyToId: Long? = null,
-            mediaIds: List<Long>? = null,
-            sensitive: Boolean = false,
-            spoilerText: String? = null,
-            visibility: Status.Visibility = Status.Visibility.Public
+            inReplyToId: Long?,
+            mediaIds: List<Long>?,
+            sensitive: Boolean,
+            spoilerText: String?,
+            visibility: Status.Visibility
     ): Status {
         val parameters = Parameter().apply {
             append("status", status)
@@ -140,7 +141,7 @@ class Statuses(val client: MastodonClient) {
     }
 
     //  DELETE /api/v1/statuses/:id
-    fun deleteStatus(statusId: Long) {
+    override fun deleteStatus(statusId: Long) {
         val response = client.delete("statuses/$statusId")
         if (!response.isSuccessful) {
             throw Mastodon4jRequestException(response)
@@ -148,7 +149,7 @@ class Statuses(val client: MastodonClient) {
     }
 
     //  POST /api/v1/statuses/:id/reblog
-    fun postReblog(statusId: Long): Status {
+    override fun postReblog(statusId: Long): Status {
         val response = client.post("statuses/$statusId/reblog", emptyRequestBody())
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -162,7 +163,7 @@ class Statuses(val client: MastodonClient) {
     }
 
     //  POST /api/v1/statuses/:id/unreblog
-    fun postUmreblog(statusId: Long): Status {
+    override fun postUmreblog(statusId: Long): Status {
         val response = client.post("statuses/$statusId/unreblog", emptyRequestBody())
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -176,7 +177,7 @@ class Statuses(val client: MastodonClient) {
     }
 
     //  POST /api/v1/statuses/:id/favourite
-    fun postFavourite(statusId: Long): Status {
+    override fun postFavourite(statusId: Long): Status {
         val response = client.post("statuses/$statusId/favourite", emptyRequestBody())
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -190,7 +191,7 @@ class Statuses(val client: MastodonClient) {
     }
 
     //  POST /api/v1/statuses/:id/unfavourite
-    fun postUnfavourite(statusId: Long): Status {
+    override fun postUnfavourite(statusId: Long): Status {
         val response = client.post("statuses/$statusId/unfavourite", emptyRequestBody())
         if (response.isSuccessful) {
             val body = response.body().string()

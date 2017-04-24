@@ -16,7 +16,7 @@ public class GetPublicTimelines {
         Timelines timelines = new Timelines(client);
 
         try {
-            List<Status> statuses = timelines.getPublic(new Range());
+            List<Status> statuses = timelines.getLocalPublic(new Range());
             statuses.forEach(status -> {
                 System.out.println("=============");
                 System.out.println(status.getAccount().getDisplayName());

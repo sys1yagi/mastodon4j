@@ -18,12 +18,13 @@ class Link(
             var prevPath = ""
             var sinceId = 0L
             links.forEach {
-                nextRel.matchEntire(it)?.let {
+                val link = it.trim()
+                nextRel.matchEntire(link)?.let {
                     nextPath = it.value.replace("; rel=\"next\"", "")
                     maxId = it.groupValues.get(1).toLong()
                 }
 
-                prevRel.matchEntire(it)?.let {
+                prevRel.matchEntire(link)?.let {
                     prevPath = it.value.replace("; rel=\"prev\"", "")
                     sinceId = it.groupValues.get(1).toLong()
                 }

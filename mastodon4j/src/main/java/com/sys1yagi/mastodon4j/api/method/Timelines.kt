@@ -57,7 +57,6 @@ class Timelines(val client: MastodonClient) : TimelinesContract.Public, Timeline
         )
         if (response.isSuccessful) {
             val body = response.body().string()
-            println(body)
             return client.getSerializer().fromJson<List<Status>>(
                     body,
                     genericType<List<Status>>()
@@ -100,7 +99,6 @@ class Timelines(val client: MastodonClient) : TimelinesContract.Public, Timeline
         )
         if (response.isSuccessful) {
             val body = response.body().string()
-            println(body)
             return client.getSerializer().fromJson<List<Status>>(
                     body,
                     genericType<List<Status>>()

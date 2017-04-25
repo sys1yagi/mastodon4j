@@ -9,7 +9,7 @@ class TimelinesTest {
     fun public() {
         val client = MockClient.mock("public_timeline.json")
         val timelines = Timelines(client)
-        val statuses = timelines.getPublic()
+        val statuses = timelines.getLocalPublic()
         statuses.size shouldEqualTo 20
     }
 
@@ -17,7 +17,7 @@ class TimelinesTest {
     fun tag() {
         val client = MockClient.mock("tag.json")
         val timelines = Timelines(client)
-        val statuses = timelines.getTag("mastodon")
+        val statuses = timelines.getLocalTag("mastodon")
         statuses.size shouldEqualTo 20
     }
 }

@@ -28,18 +28,4 @@ class RxTimelines(client: MastodonClient) {
             timelines.getFederatedPublic(range)
         }
     }
-
-    @Deprecated("Use getLocalPublic() or getFederatedPublic() instead")
-    fun getPublic(range: Range = Range()): Single<List<Status>> {
-        return single {
-            timelines.getPublic(range)
-        }
-    }
-
-    @Deprecated("Use getLocalPublic() or getFederatedPublic() instead")
-    fun getTag(tag: String, range: Range = Range()): Single<List<Status>> {
-        return single {
-            timelines.getTag(tag, range)
-        }
-    }
 }

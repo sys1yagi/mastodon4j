@@ -2,6 +2,7 @@ package com.sys1yagi.mastodon4j.sample;
 
 import com.google.gson.Gson;
 import com.sys1yagi.mastodon4j.MastodonClient;
+import com.sys1yagi.mastodon4j.api.Pageable;
 import com.sys1yagi.mastodon4j.api.Range;
 import com.sys1yagi.mastodon4j.api.entity.Status;
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException;
@@ -16,8 +17,8 @@ public class GetPublicTimelines {
         Timelines timelines = new Timelines(client);
 
         try {
-            List<Status> statuses = timelines.getLocalPublic(new Range());
-            statuses.forEach(status -> {
+            Pageable<Status> statuses = timelines.getLocalPublic(new Range());
+            statuses.getPart().forEach(status -> {
                 System.out.println("=============");
                 System.out.println(status.getAccount().getDisplayName());
                 System.out.println(status.getContent());

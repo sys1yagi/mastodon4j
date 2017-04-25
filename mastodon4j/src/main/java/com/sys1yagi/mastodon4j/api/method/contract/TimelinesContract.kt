@@ -1,5 +1,6 @@
 package com.sys1yagi.mastodon4j.api.method.contract
 
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Status
 
@@ -9,15 +10,14 @@ import com.sys1yagi.mastodon4j.api.entity.Status
  */
 interface TimelinesContract {
     interface Public {
-        fun getLocalPublic(range: Range = Range()): List<Status>
-        fun getFederatedPublic(range: Range = Range()): List<Status>
+        fun getLocalPublic(range: Range = Range()): Pageable<Status>
+        fun getFederatedPublic(range: Range = Range()): Pageable<Status>
 
-        fun getLocalTag(tag: String, range: Range = Range()): List<Status>
-        fun getFederatedTag(tag: String, range: Range = Range()): List<Status>
-
+        fun getLocalTag(tag: String, range: Range = Range()): Pageable<Status>
+        fun getFederatedTag(tag: String, range: Range = Range()): Pageable<Status>
     }
 
     interface AuthRequired {
-        fun getHome(range: Range = Range()): List<Status>
+        fun getHome(range: Range = Range()): Pageable<Status>
     }
 }

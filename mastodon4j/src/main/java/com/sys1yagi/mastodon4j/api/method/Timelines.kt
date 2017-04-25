@@ -31,24 +31,6 @@ class Timelines(val client: MastodonClient) : TimelinesContract.Public, Timeline
     }
 
     //  GET /api/v1/timelines/public
-    @Throws(Mastodon4jRequestException::class)
-    @Deprecated("Use getLocalPublic() or getFederatedPublic() instead")
-    override fun getPublic(range: Range): List<Status> {
-        val response = client.get(
-                "timelines/public",
-                range.toParameter()
-        )
-        if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Status>>(
-                    body,
-                    genericType<List<Status>>()
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
-    }
-
     private fun getPublic(local: Boolean, range: Range): List<Status> {
         val response = client.get(
                 "timelines/public",
@@ -73,24 +55,6 @@ class Timelines(val client: MastodonClient) : TimelinesContract.Public, Timeline
     override fun getFederatedPublic(range: Range) = getPublic(false, range)
 
     //  GET /api/v1/timelines/tag/:tag
-    @Throws(Mastodon4jRequestException::class)
-    @Deprecated("Use getLocalTag() or getFederatedTag() instead")
-    override fun getTag(tag: String, range: Range): List<Status> {
-        val response = client.get(
-                "timelines/tag/$tag",
-                range.toParameter()
-        )
-        if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Status>>(
-                    body,
-                    genericType<List<Status>>()
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
-    }
-
     private fun getTag(tag: String, local: Boolean, range: Range): List<Status> {
         val response = client.get(
                 "timelines/tag/$tag",

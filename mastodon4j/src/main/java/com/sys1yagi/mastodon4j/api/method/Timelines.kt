@@ -32,10 +32,13 @@ class Timelines(val client: MastodonClient) : TimelinesContract.Public, Timeline
 
     //  GET /api/v1/timelines/public
     private fun getPublic(local: Boolean, range: Range): List<Status> {
+        val parameter = range.toParameter()
+        if (local) {
+            parameter.append("local", local)
+        }
         val response = client.get(
                 "timelines/public",
-                range.toParameter()
-                        .append("local", local)
+                parameter
         )
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -56,10 +59,13 @@ class Timelines(val client: MastodonClient) : TimelinesContract.Public, Timeline
 
     //  GET /api/v1/timelines/tag/:tag
     private fun getTag(tag: String, local: Boolean, range: Range): List<Status> {
+        val parameter = range.toParameter()
+        if (local) {
+            parameter.append("local", local)
+        }
         val response = client.get(
                 "timelines/tag/$tag",
-                range.toParameter()
-                        .append("local", local)
+                parameter
         )
         if (response.isSuccessful) {
             val body = response.body().string()

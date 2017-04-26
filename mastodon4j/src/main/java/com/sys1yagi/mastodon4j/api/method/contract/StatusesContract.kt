@@ -1,5 +1,6 @@
 package com.sys1yagi.mastodon4j.api.method.contract
 
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Account
 import com.sys1yagi.mastodon4j.api.entity.Card
@@ -23,9 +24,9 @@ interface StatusesContract {
 
         fun getCard(statusId: Long): Card
 
-        fun getRebloggedBy(statusId: Long, range: Range = Range()): List<Account>
+        fun getRebloggedBy(statusId: Long, range: Range = Range()): Pageable<Account>
 
-        fun getFavouritedBy(statusId: Long, range: Range = Range()): List<Account>
+        fun getFavouritedBy(statusId: Long, range: Range = Range()): Pageable<Account>
 
         fun postStatus(
                 status: String,

@@ -1,5 +1,6 @@
 package com.sys1yagi.mastodon4j.api.method.contract
 
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Notification
 
@@ -13,7 +14,7 @@ interface NotificationsContract {
     }
 
     interface AuthRequired {
-        fun getNotifications(range: Range): List<Notification>
+        fun getNotifications(range: Range): Pageable<Notification>
         fun getNotification(id: Long): Notification
         fun clearNotifications()
     }

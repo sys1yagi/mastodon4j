@@ -2,6 +2,7 @@ package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.Parameter
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Account
 import com.sys1yagi.mastodon4j.api.entity.Relationship
@@ -10,6 +11,7 @@ import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.api.method.contract.AccountsContract
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
 import com.sys1yagi.mastodon4j.extension.genericType
+import com.sys1yagi.mastodon4j.extension.toPageable
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
@@ -88,7 +90,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
 
     //  GET /api/v1/accounts/:id/followers
     @Throws(Mastodon4jRequestException::class)
-    override fun getFollowers(accountId: Long, range: Range): List<Account> {
+    override fun getFollowers(accountId: Long, range: Range): Pageable<Account> {
         val response = client.get(
                 "accounts/$accountId/followers",
                 range.toParameter()
@@ -98,7 +100,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
             return client.getSerializer().fromJson<List<Account>>(
                     body,
                     genericType<List<Account>>()
-            )
+            ).toPageable(response)
         } else {
             throw Mastodon4jRequestException(response)
         }
@@ -106,7 +108,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
 
     //  GET /api/v1/accounts/:id/following
     @Throws(Mastodon4jRequestException::class)
-    override fun getFollowing(accountId: Long, range: Range): List<Account> {
+    override fun getFollowing(accountId: Long, range: Range): Pageable<Account> {
         val response = client.get(
                 "accounts/$accountId/following",
                 range.toParameter()
@@ -116,7 +118,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
             return client.getSerializer().fromJson<List<Account>>(
                     body,
                     genericType<List<Account>>()
-            )
+            ).toPageable(response)
         } else {
             throw Mastodon4jRequestException(response)
         }
@@ -124,7 +126,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
 
     //  GET /api/v1/accounts/:id/statuses
     @Throws(Mastodon4jRequestException::class)
-    override fun getStatuses(accountId: Long, onlyMedia: Boolean, range: Range): List<Status> {
+    override fun getStatuses(accountId: Long, onlyMedia: Boolean, range: Range): Pageable<Status> {
         val parameters = range.toParameter()
         if (onlyMedia) {
             parameters.append("only_media", true)
@@ -138,7 +140,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
             return client.getSerializer().fromJson<List<Status>>(
                     body,
                     genericType<List<Status>>()
-            )
+            ).toPageable(response)
         } else {
             throw Mastodon4jRequestException(response)
         }
@@ -236,7 +238,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
 
     //  GET /api/v1/accounts/relationships
     @Throws(Mastodon4jRequestException::class)
-    override fun getRelationships(accountIds: List<Long>): List<Relationship> {
+    override fun getRelationships(accountIds: List<Long>): Pageable<Relationship> {
         val response = client.get(
                 "accounts/relationships",
                 Parameter().append("id", accountIds)
@@ -246,7 +248,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
             return client.getSerializer().fromJson<List<Relationship>>(
                     body,
                     genericType<List<Relationship>>()
-            )
+            ).toPageable(response)
         } else {
             throw Mastodon4jRequestException(response)
         }
@@ -258,7 +260,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
      * limit: Maximum number of matching accounts to return (default: 40)
      */
     @Throws(Mastodon4jRequestException::class)
-    override fun getAccountSearch(query: String, limit: Int): List<Account> {
+    override fun getAccountSearch(query: String, limit: Int): Pageable<Account> {
         val response = client.get(
                 "accounts/search",
                 Parameter()
@@ -270,7 +272,7 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
             return client.getSerializer().fromJson<List<Account>>(
                     body,
                     genericType<List<Account>>()
-            )
+            ).toPageable(response)
         } else {
             throw Mastodon4jRequestException(response)
         }

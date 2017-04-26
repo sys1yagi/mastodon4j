@@ -2,11 +2,13 @@ package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.Parameter
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Report
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.api.method.contract.ReportsContract
 import com.sys1yagi.mastodon4j.extension.genericType
+import com.sys1yagi.mastodon4j.extension.toPageable
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
@@ -16,7 +18,7 @@ import okhttp3.RequestBody
 class Reports(val client: MastodonClient) : ReportsContract.Public, ReportsContract.AuthRequired {
     // GET /api/v1/reports
     @Throws(Mastodon4jRequestException::class)
-    override fun getReports(range: Range): List<Report> {
+    override fun getReports(range: Range): Pageable<Report> {
         val response = client.get(
                 "reports",
                 range.toParameter()
@@ -26,7 +28,7 @@ class Reports(val client: MastodonClient) : ReportsContract.Public, ReportsContr
             return client.getSerializer().fromJson<List<Report>>(
                     body,
                     genericType<List<Report>>()
-            )
+            ).toPageable(response)
         } else {
             throw Mastodon4jRequestException(response)
         }

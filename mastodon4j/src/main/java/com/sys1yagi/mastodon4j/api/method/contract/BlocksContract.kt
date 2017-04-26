@@ -1,5 +1,6 @@
 package com.sys1yagi.mastodon4j.api.method.contract
 
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Account
 
@@ -13,6 +14,6 @@ interface BlocksContract {
     }
 
     interface AuthRequired {
-        fun getBlocks(range: Range = Range()): List<Account>
+        fun getBlocks(range: Range = Range()): Pageable<Account>
     }
 }

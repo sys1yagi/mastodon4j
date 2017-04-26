@@ -1,5 +1,6 @@
 package com.sys1yagi.mastodon4j.api.method.contract
 
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Account
 import com.sys1yagi.mastodon4j.api.entity.Relationship
@@ -19,16 +20,16 @@ interface AccountsContract {
         fun getAccount(accountId: Long): Account
         fun getVerifyCredentials(): Account
         fun updateCredential(displayName: String?, note: String?, avatar: String?, header: String?): Account
-        fun getFollowers(accountId: Long, range: Range): List<Account>
-        fun getFollowing(accountId: Long, range: Range): List<Account>
-        fun getStatuses(accountId: Long, onlyMedia: Boolean, range: Range): List<Status>
+        fun getFollowers(accountId: Long, range: Range): Pageable<Account>
+        fun getFollowing(accountId: Long, range: Range): Pageable<Account>
+        fun getStatuses(accountId: Long, onlyMedia: Boolean, range: Range): Pageable<Status>
         fun postFollow(accountId: Long): Relationship
         fun postUnFollow(accountId: Long): Relationship
         fun postBlock(accountId: Long): Relationship
         fun postUnblock(accountId: Long): Relationship
         fun postMute(accountId: Long): Relationship
         fun postUnmute(accountId: Long): Relationship
-        fun getRelationships(accountIds: List<Long>): List<Relationship>
-        fun getAccountSearch(query: String, limit: Int = 40): List<Account>
+        fun getRelationships(accountIds: List<Long>): Pageable<Relationship>
+        fun getAccountSearch(query: String, limit: Int = 40): Pageable<Account>
     }
 }

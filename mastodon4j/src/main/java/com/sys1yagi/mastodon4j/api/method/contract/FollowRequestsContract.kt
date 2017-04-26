@@ -1,5 +1,6 @@
 package com.sys1yagi.mastodon4j.api.method.contract
 
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Account
 
@@ -9,11 +10,11 @@ import com.sys1yagi.mastodon4j.api.entity.Account
  */
 interface FollowRequestsContract {
     interface Public {
-
+        // none
     }
 
     interface AuthRequired {
-        fun getFollowRequests(range: Range = Range()): List<Account>
+        fun getFollowRequests(range: Range = Range()): Pageable<Account>
         fun postAuthorize(accountId: Long)
         fun postReject(accountId: Long)
     }

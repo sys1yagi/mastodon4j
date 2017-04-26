@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.rx
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Account
 import com.sys1yagi.mastodon4j.api.method.Blocks
@@ -10,7 +11,7 @@ import io.reactivex.Single
 class RxBlocks(client: MastodonClient) {
     val blocks = Blocks(client)
 
-    fun getBlocks(range: Range = Range()): Single<List<Account>> {
+    fun getBlocks(range: Range = Range()): Single<Pageable<Account>> {
         return Single.create {
             try {
                 val blocks = blocks.getBlocks(range)

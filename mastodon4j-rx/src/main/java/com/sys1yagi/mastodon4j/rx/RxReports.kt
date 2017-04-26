@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.rx
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Report
 import com.sys1yagi.mastodon4j.api.method.Reports
@@ -9,7 +10,7 @@ import io.reactivex.Single
 class RxReports(client: MastodonClient) {
     val reports = Reports(client)
 
-    fun getReports(range: Range = Range()): Single<List<Report>> {
+    fun getReports(range: Range = Range()): Single<Pageable<Report>> {
         return Single.create {
             try {
                 val reports = reports.getReports(range)

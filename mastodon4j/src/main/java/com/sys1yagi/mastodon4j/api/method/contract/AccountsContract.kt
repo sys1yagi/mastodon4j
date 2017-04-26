@@ -21,7 +21,7 @@ interface AccountsContract {
         fun updateCredential(displayName: String?, note: String?, avatar: String?, header: String?): Account
         fun getFollowers(accountId: Long, range: Range): List<Account>
         fun getFollowing(accountId: Long, range: Range): List<Account>
-        fun getStatuses(accountId: Long, range: Range): List<Status>
+        fun getStatuses(accountId: Long, onlyMedia: Boolean?, range: Range): List<Status>
         fun postFollow(accountId: Long): Relationship
         fun postUnFollow(accountId: Long): Relationship
         fun postBlock(accountId: Long): Relationship

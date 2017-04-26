@@ -124,11 +124,10 @@ class Accounts(val client: MastodonClient) : AccountsContract.Public, AccountsCo
 
     //  GET /api/v1/accounts/:id/statuses
     @Throws(Mastodon4jRequestException::class)
-    override fun getStatuses(accountId: Long, onlyMedia: Boolean?, range: Range): List<Status> {
-        val parameters = range.toParameter().apply {
-            onlyMedia?.let {
-                append("only_media", it)
-            }
+    override fun getStatuses(accountId: Long, onlyMedia: Boolean, range: Range): List<Status> {
+        val parameters = range.toParameter()
+        if (onlyMedia) {
+            parameters.append("only_media", true)
         }
         val response = client.get(
                 "accounts/$accountId/statuses",

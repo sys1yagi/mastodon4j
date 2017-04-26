@@ -26,3 +26,6 @@ build/
 local.properties
 
 *.iml
+
+// for sample
+credential.properties

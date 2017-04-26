@@ -2,12 +2,14 @@ package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.Parameter
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.*
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.api.method.contract.StatusesContract
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
 import com.sys1yagi.mastodon4j.extension.genericType
+import com.sys1yagi.mastodon4j.extension.toPageable
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
@@ -63,17 +65,17 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
 
     //  GET /api/v1/reblogged_by
     @Throws(Mastodon4jRequestException::class)
-    override fun getRebloggedBy(statusId: Long, range: Range): List<Account> {
+    override fun getRebloggedBy(statusId: Long, range: Range): Pageable<Account> {
         val response = client.get(
                 "statuses/$statusId/reblogged_by",
                 range.toParameter()
         )
         if (response.isSuccessful) {
             val body = response.body().string()
-            return client.getSerializer().fromJson(
+            return client.getSerializer().fromJson<List<Account>>(
                     body,
                     genericType<List<Account>>()
-            )
+            ).toPageable(response)
         } else {
             throw Mastodon4jRequestException(response)
         }
@@ -81,17 +83,17 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
 
     //  GET /api/v1/favourited_by
     @Throws(Mastodon4jRequestException::class)
-    override fun getFavouritedBy(statusId: Long, range: Range): List<Account> {
+    override fun getFavouritedBy(statusId: Long, range: Range): Pageable<Account> {
         val response = client.get(
                 "statuses/$statusId/favourited_by",
                 range.toParameter()
         )
         if (response.isSuccessful) {
             val body = response.body().string()
-            return client.getSerializer().fromJson(
+            return client.getSerializer().fromJson<List<Account>>(
                     body,
                     genericType<List<Account>>()
-            )
+            ).toPageable(response)
         } else {
             throw Mastodon4jRequestException(response)
         }

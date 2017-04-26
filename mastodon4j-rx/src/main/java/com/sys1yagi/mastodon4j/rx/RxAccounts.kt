@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.rx
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Account
 import com.sys1yagi.mastodon4j.api.entity.Relationship
@@ -45,7 +46,7 @@ class RxAccounts(client: MastodonClient) {
         }
     }
 
-    fun getFollowers(accountId: Long, range: Range): Single<List<Account>> {
+    fun getFollowers(accountId: Long, range: Range): Single<Pageable<Account>> {
         return Single.create {
             try {
                 val followers = accounts.getFollowers(accountId, range)
@@ -56,7 +57,7 @@ class RxAccounts(client: MastodonClient) {
         }
     }
 
-    fun getFollowing(accountId: Long, range: Range): Single<List<Account>> {
+    fun getFollowing(accountId: Long, range: Range): Single<Pageable<Account>> {
         return Single.create {
             try {
                 val following = accounts.getFollowing(accountId, range)
@@ -67,10 +68,10 @@ class RxAccounts(client: MastodonClient) {
         }
     }
 
-    fun getStatuses(accountId: Long, range: Range): Single<List<Status>> {
+    fun getStatuses(accountId: Long, onlyMedia: Boolean, range: Range): Single<Pageable<Status>> {
         return Single.create {
             try {
-                val statuses = accounts.getStatuses(accountId, range)
+                val statuses = accounts.getStatuses(accountId, onlyMedia, range)
                 it.onSuccess(statuses)
             } catch(throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
@@ -144,7 +145,7 @@ class RxAccounts(client: MastodonClient) {
         }
     }
 
-    fun getRelationships(accountIds: List<Long>): Single<List<Relationship>> {
+    fun getRelationships(accountIds: List<Long>): Single<Pageable<Relationship>> {
         return Single.create {
             try {
                 val relationships = accounts.getRelationships(accountIds)
@@ -155,7 +156,7 @@ class RxAccounts(client: MastodonClient) {
         }
     }
 
-    fun getAccountSearch(query: String, limit: Int = 40): Single<List<Account>> {
+    fun getAccountSearch(query: String, limit: Int = 40): Single<Pageable<Account>> {
         return Single.create {
             try {
                 val accounts = accounts.getAccountSearch(query, limit)

@@ -1,5 +1,6 @@
 package com.sys1yagi.mastodon4j.api.method.contract
 
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Status
 
@@ -13,6 +14,6 @@ interface FavouritesContract{
     }
 
     interface AuthRequired{
-        fun getFavourites(range: Range = Range()): List<Status>
+        fun getFavourites(range: Range = Range()): Pageable<Status>
     }
 }

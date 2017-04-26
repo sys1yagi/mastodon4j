@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.rx
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Notification
 import com.sys1yagi.mastodon4j.api.method.Notifications
@@ -10,7 +11,7 @@ import io.reactivex.Single
 class RxNotifications(client: MastodonClient) {
     val notifications = Notifications(client)
 
-    fun getNotifications(range: Range): Single<List<Notification>> {
+    fun getNotifications(range: Range): Single<Pageable<Notification>> {
         return Single.create {
             try {
                 val notifications = notifications.getNotifications(range)

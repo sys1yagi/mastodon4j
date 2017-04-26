@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.rx
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.method.Timelines
@@ -11,19 +12,19 @@ import io.reactivex.Single
 class RxTimelines(client: MastodonClient) {
     val timelines = Timelines(client)
 
-    fun getHome(range: Range = Range()): Single<List<Status>> {
+    fun getHome(range: Range = Range()): Single<Pageable<Status>> {
         return single {
             timelines.getHome(range)
         }
     }
 
-    fun getLocalPublic(range: Range = Range()): Single<List<Status>> {
+    fun getLocalPublic(range: Range = Range()): Single<Pageable<Status>> {
         return single {
             timelines.getLocalPublic(range)
         }
     }
 
-    fun getFederatedPublic(range: Range = Range()): Single<List<Status>> {
+    fun getFederatedPublic(range: Range = Range()): Single<Pageable<Status>> {
         return single {
             timelines.getFederatedPublic(range)
         }

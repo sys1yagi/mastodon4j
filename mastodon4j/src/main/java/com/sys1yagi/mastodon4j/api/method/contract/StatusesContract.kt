@@ -41,7 +41,7 @@ interface StatusesContract {
 
         fun postReblog(statusId: Long): Status
 
-        fun postUmreblog(statusId: Long): Status
+        fun postUnreblog(statusId: Long): Status
 
         fun postFavourite(statusId: Long): Status
 

@@ -174,7 +174,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
 
     //  POST /api/v1/statuses/:id/unreblog
     @Throws(Mastodon4jRequestException::class)
-    override fun postUmreblog(statusId: Long): Status {
+    override fun postUnreblog(statusId: Long): Status {
         val response = client.post("statuses/$statusId/unreblog", emptyRequestBody())
         if (response.isSuccessful) {
             val body = response.body().string()

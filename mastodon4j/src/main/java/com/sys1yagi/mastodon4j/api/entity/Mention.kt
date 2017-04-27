@@ -16,7 +16,7 @@ class Mention {
     @SerializedName("acct")
     val acct: String = ""
 
-    @SerializedName("id	")
+    @SerializedName("id")
     val id: Long = 0
 
 }

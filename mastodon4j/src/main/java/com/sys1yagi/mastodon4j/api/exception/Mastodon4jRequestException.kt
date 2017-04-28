@@ -8,7 +8,10 @@ class Mastodon4jRequestException : Exception {
     constructor(response: Response) : super(response.message()) {
         this.response = response
     }
+
     constructor(e : Exception) : super(e) {
         this.response = null
     }
+
+    fun isErrorResponse() = response != null
 }

@@ -29,4 +29,16 @@ class RxTimelines(client: MastodonClient) {
             timelines.getFederatedPublic(range)
         }
     }
+
+    fun getLocalTag(tag: String, range: Range = Range()): Single<Pageable<Status>> {
+        return single {
+            timelines.getLocalTag(tag, range)
+        }
+    }
+
+    fun getFederatedTag(tag: String, range: Range = Range()): Single<Pageable<Status>> {
+        return single {
+            timelines.getFederatedTag(tag, range)
+        }
+    }
 }

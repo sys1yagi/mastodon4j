@@ -8,6 +8,7 @@ import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.api.method.contract.AppsContract
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import java.io.IOException
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#apps
@@ -32,11 +33,15 @@ class Apps(private val client: MastodonClient) : AppsContract.Public, AppsContra
                 ))
 
         if (response.isSuccessful) {
-            val json = response.body().string()
-            return client.getSerializer().fromJson(json, AppRegistration::class.java)
-                    .apply {
-                        instanceName = client.getInstanceName()
-                    }
+            try {
+                val json = response.body().string()
+                return client.getSerializer().fromJson(json, AppRegistration::class.java)
+                        .apply {
+                            instanceName = client.getInstanceName()
+                        }
+            } catch (e : IOException) {
+                throw Mastodon4jRequestException(e)
+            }
         } else {
             throw Mastodon4jRequestException(response)
         }

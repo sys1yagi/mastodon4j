@@ -5,7 +5,6 @@ import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Notification
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import com.sys1yagi.mastodon4j.api.method.contract.NotificationsContract
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
 import com.sys1yagi.mastodon4j.extension.genericType
 import com.sys1yagi.mastodon4j.extension.toPageable
@@ -13,10 +12,11 @@ import com.sys1yagi.mastodon4j.extension.toPageable
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#notifications
  */
-class Notifications(val client: MastodonClient) : NotificationsContract.Public, NotificationsContract.AuthRequired {
+class Notifications(private val client: MastodonClient) {
     // GET /api/v1/notifications
+    @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    override fun getNotifications(range: Range): Pageable<Notification> {
+    fun getNotifications(range: Range = Range()): Pageable<Notification> {
         val response = client.get(
                 "notifications",
                 range.toParameter()
@@ -34,7 +34,7 @@ class Notifications(val client: MastodonClient) : NotificationsContract.Public, 
 
     // GET /api/v1/notifications/:id
     @Throws(Mastodon4jRequestException::class)
-    override fun getNotification(id: Long): Notification {
+    fun getNotification(id: Long): Notification {
         val response = client.get("notifications/$id")
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -49,7 +49,7 @@ class Notifications(val client: MastodonClient) : NotificationsContract.Public, 
 
     //  POST /api/v1/notifications/clear
     @Throws(Mastodon4jRequestException::class)
-    override fun clearNotifications() {
+    fun clearNotifications() {
         val response = client.post("notifications/clear",
                 emptyRequestBody()
         )

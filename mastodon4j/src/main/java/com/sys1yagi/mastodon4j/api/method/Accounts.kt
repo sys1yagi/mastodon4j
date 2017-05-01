@@ -17,7 +17,7 @@ import okhttp3.RequestBody
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#accounts
  */
-class Accounts(val client: MastodonClient) {
+class Accounts(private val client: MastodonClient) {
     // GET /api/v1/accounts/:id
     @Throws(Mastodon4jRequestException::class)
     fun getAccount(accountId: Long): Account {

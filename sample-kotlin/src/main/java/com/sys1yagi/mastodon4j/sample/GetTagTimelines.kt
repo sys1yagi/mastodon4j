@@ -4,16 +4,17 @@ import com.google.gson.Gson
 import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.api.method.Public
 import com.sys1yagi.mastodon4j.api.method.Timelines
 import okhttp3.OkHttpClient
 
 object GetTagTimelines {
     fun main(args: Array<String>) {
         val client = MastodonClient("mstdn.jp", OkHttpClient(), Gson())
-        val timelines = Timelines(client)
+        val publicMethods = Public(client)
 
         try {
-            val statuses = timelines.getFederatedTag("mastodon", Range())
+            val statuses = publicMethods.getFederatedTag("mastodon", Range())
             statuses.part.forEach({ status ->
                 System.out.println("=============")
                 System.out.println(status.account?.displayName)

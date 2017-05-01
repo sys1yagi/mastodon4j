@@ -5,18 +5,18 @@ import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Account
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import com.sys1yagi.mastodon4j.api.method.contract.BlocksContract
 import com.sys1yagi.mastodon4j.extension.genericType
 import com.sys1yagi.mastodon4j.extension.toPageable
 
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#blocks
  */
-class Blocks(val client: MastodonClient) : BlocksContract.Public, BlocksContract.AuthRequired {
+class Blocks(private val client: MastodonClient) {
 
     //  GET /api/v1/blocks
+    @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    override fun getBlocks(range: Range): Pageable<Account> {
+    fun getBlocks(range: Range = Range()): Pageable<Account> {
         val response = client.get("blocks", range.toParameter())
         if (response.isSuccessful) {
             val body = response.body().string()

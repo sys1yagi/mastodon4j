@@ -6,7 +6,6 @@ import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.*
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import com.sys1yagi.mastodon4j.api.method.contract.StatusesContract
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
 import com.sys1yagi.mastodon4j.extension.genericType
 import com.sys1yagi.mastodon4j.extension.toPageable
@@ -16,11 +15,11 @@ import okhttp3.RequestBody
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#statuses
  */
-class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesContract.AuthRequired {
+class Statuses(private val client: MastodonClient) {
 
     //  GET /api/v1/statuses/:id
     @Throws(Mastodon4jRequestException::class)
-    override fun getStatus(statusId: Long): Status {
+    fun getStatus(statusId: Long): Status {
         val response = client.get("statuses/$statusId")
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -35,7 +34,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
 
     //  GET /api/v1/statuses/:id/context
     @Throws(Mastodon4jRequestException::class)
-    override fun getContext(statusId: Long): Context {
+    fun getContext(statusId: Long): Context {
         val response = client.get("statuses/$statusId/context")
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -50,7 +49,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
 
     //  GET /api/v1/statuses/:id/card
     @Throws(Mastodon4jRequestException::class)
-    override fun getCard(statusId: Long): Card {
+    fun getCard(statusId: Long): Card {
         val response = client.get("statuses/$statusId/card")
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -64,8 +63,9 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
     }
 
     //  GET /api/v1/reblogged_by
+    @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    override fun getRebloggedBy(statusId: Long, range: Range): Pageable<Account> {
+    fun getRebloggedBy(statusId: Long, range: Range = Range()): Pageable<Account> {
         val response = client.get(
                 "statuses/$statusId/reblogged_by",
                 range.toParameter()
@@ -82,8 +82,9 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
     }
 
     //  GET /api/v1/favourited_by
+    @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    override fun getFavouritedBy(statusId: Long, range: Range): Pageable<Account> {
+    fun getFavouritedBy(statusId: Long, range: Range = Range()): Pageable<Account> {
         val response = client.get(
                 "statuses/$statusId/favourited_by",
                 range.toParameter()
@@ -108,14 +109,15 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
      * spoiler_text (optional): text to be shown as a warning before the actual content
      * visibility (optional): either "direct", "private", "unlisted" or "public"
      */
+    @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    override fun postStatus(
+    fun postStatus(
             status: String,
             inReplyToId: Long?,
             mediaIds: List<Long>?,
             sensitive: Boolean,
             spoilerText: String?,
-            visibility: Status.Visibility
+            visibility: Status.Visibility = Status.Visibility.Public
     ): Status {
         val parameters = Parameter().apply {
             append("status", status)
@@ -150,7 +152,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
 
     //  DELETE /api/v1/statuses/:id
     @Throws(Mastodon4jRequestException::class)
-    override fun deleteStatus(statusId: Long) {
+    fun deleteStatus(statusId: Long) {
         val response = client.delete("statuses/$statusId")
         if (!response.isSuccessful) {
             throw Mastodon4jRequestException(response)
@@ -159,7 +161,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
 
     //  POST /api/v1/statuses/:id/reblog
     @Throws(Mastodon4jRequestException::class)
-    override fun postReblog(statusId: Long): Status {
+    fun postReblog(statusId: Long): Status {
         val response = client.post("statuses/$statusId/reblog", emptyRequestBody())
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -174,7 +176,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
 
     //  POST /api/v1/statuses/:id/unreblog
     @Throws(Mastodon4jRequestException::class)
-    override fun postUnreblog(statusId: Long): Status {
+    fun postUnreblog(statusId: Long): Status {
         val response = client.post("statuses/$statusId/unreblog", emptyRequestBody())
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -189,7 +191,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
 
     //  POST /api/v1/statuses/:id/favourite
     @Throws(Mastodon4jRequestException::class)
-    override fun postFavourite(statusId: Long): Status {
+    fun postFavourite(statusId: Long): Status {
         val response = client.post("statuses/$statusId/favourite", emptyRequestBody())
         if (response.isSuccessful) {
             val body = response.body().string()
@@ -204,7 +206,7 @@ class Statuses(val client: MastodonClient) : StatusesContract.Public, StatusesCo
 
     //  POST /api/v1/statuses/:id/unfavourite
     @Throws(Mastodon4jRequestException::class)
-    override fun postUnfavourite(statusId: Long): Status {
+    fun postUnfavourite(statusId: Long): Status {
         val response = client.post("statuses/$statusId/unfavourite", emptyRequestBody())
         if (response.isSuccessful) {
             val body = response.body().string()

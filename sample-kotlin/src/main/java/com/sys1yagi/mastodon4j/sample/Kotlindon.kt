@@ -9,6 +9,7 @@ import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.entity.auth.AccessToken
 import com.sys1yagi.mastodon4j.api.entity.auth.AppRegistration
 import com.sys1yagi.mastodon4j.api.method.Apps
+import com.sys1yagi.mastodon4j.api.method.Blocks
 import com.sys1yagi.mastodon4j.api.method.Timelines
 import okhttp3.OkHttpClient
 import java.io.File
@@ -25,7 +26,10 @@ class Kotlindon {
             val instanceName = args[0]
             val credentialFilePath = args[1]
             val client = appRegistrationIfNeeded(instanceName, credentialFilePath)
+             listenHome(client)
+        }
 
+        fun listenHome(client: MastodonClient) {
             val timelines = Timelines(client)
             var pageable: Pageable<Status>? = null
             while (true) {
@@ -33,7 +37,7 @@ class Kotlindon {
                     timelines.getHome(it.prevRange(limit = 5))
                 } ?: timelines.getHome(Range(limit = 5))
 
-                result.part.sortedBy{ it.createdAt }.forEach {
+                result.part.sortedBy { it.createdAt }.forEach {
                     println(it.account?.displayName)
                     println(it.content)
                     println(it.createdAt)

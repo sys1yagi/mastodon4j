@@ -5,7 +5,6 @@ import com.sys1yagi.mastodon4j.api.Scope
 import com.sys1yagi.mastodon4j.api.entity.auth.AccessToken
 import com.sys1yagi.mastodon4j.api.entity.auth.AppRegistration
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import com.sys1yagi.mastodon4j.api.method.contract.AppsContract
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.IOException
@@ -13,10 +12,11 @@ import java.io.IOException
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#apps
  */
-class Apps(private val client: MastodonClient) : AppsContract.Public, AppsContract.AuthRequired {
+class Apps(private val client: MastodonClient) {
     // POST /api/v1/apps
+    @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    override fun createApp(clientName: String, redirectUris: String, scope: Scope, website: String?): AppRegistration {
+    fun createApp(clientName: String, redirectUris: String = "urn:ietf:wg:oauth:2.0:oob", scope: Scope = Scope(Scope.Name.ALL), website: String? = null): AppRegistration {
         scope.validate()
         val response = client.post("apps",
                 RequestBody.create(
@@ -39,7 +39,7 @@ class Apps(private val client: MastodonClient) : AppsContract.Public, AppsContra
                         .apply {
                             instanceName = client.getInstanceName()
                         }
-            } catch (e : IOException) {
+            } catch (e: IOException) {
                 throw Mastodon4jRequestException(e)
             }
         } else {
@@ -47,7 +47,7 @@ class Apps(private val client: MastodonClient) : AppsContract.Public, AppsContra
         }
     }
 
-    override fun getOAuthUrl(clientId: String, scope: Scope, redirectUri: String): String {
+    fun getOAuthUrl(clientId: String, scope: Scope, redirectUri: String = "urn:ietf:wg:oauth:2.0:oob"): String {
         val endpoint = "/oauth/authorize"
         val parameters = listOf(
                 "client_id=$clientId",
@@ -59,14 +59,15 @@ class Apps(private val client: MastodonClient) : AppsContract.Public, AppsContra
     }
 
     // POST /oauth/token
+    @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    override fun getAccessToken(
+    fun getAccessToken(
             clientId: String,
             clientSecret: String,
-            redirectUri: String,
+            redirectUri: String = "urn:ietf:wg:oauth:2.0:oob",
             code: String,
-            grantType: String): AccessToken {
-
+            grantType: String = "authorization_code"
+    ): AccessToken {
         val url = "https://${client.getInstanceName()}/oauth/token"
         val parameters = listOf(
                 "client_id=$clientId",
@@ -92,7 +93,7 @@ class Apps(private val client: MastodonClient) : AppsContract.Public, AppsContra
 
     // POST /oauth/token
     @Throws(Mastodon4jRequestException::class)
-    override fun postUserNameAndPassword(
+    fun postUserNameAndPassword(
             clientId: String,
             clientSecret: String,
             scope: Scope,

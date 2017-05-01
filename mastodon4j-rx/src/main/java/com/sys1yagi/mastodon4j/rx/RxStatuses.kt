@@ -112,10 +112,10 @@ class RxStatuses(client: MastodonClient) {
         }
     }
 
-    fun postUmreblog(statusId: Long): Single<Status> {
+    fun postUnreblog(statusId: Long): Single<Status> {
         return Single.create {
             try {
-                val status = statuses.postUmreblog(statusId)
+                val status = statuses.postUnreblog(statusId)
                 it.onSuccess(status)
             } catch (e: Throwable) {
                 it.onError(e)

@@ -6,7 +6,6 @@ import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Report
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import com.sys1yagi.mastodon4j.api.method.contract.ReportsContract
 import com.sys1yagi.mastodon4j.extension.genericType
 import com.sys1yagi.mastodon4j.extension.toPageable
 import okhttp3.MediaType
@@ -15,10 +14,11 @@ import okhttp3.RequestBody
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#reports
  */
-class Reports(val client: MastodonClient) : ReportsContract.Public, ReportsContract.AuthRequired {
+class Reports(private val client: MastodonClient) {
     // GET /api/v1/reports
+    @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    override fun getReports(range: Range): Pageable<Report> {
+    fun getReports(range: Range = Range()): Pageable<Report> {
         val response = client.get(
                 "reports",
                 range.toParameter()
@@ -41,7 +41,7 @@ class Reports(val client: MastodonClient) : ReportsContract.Public, ReportsContr
      * comment: A comment to associate with the report.
      */
     @Throws(Mastodon4jRequestException::class)
-    override fun postReport(accountId: Long, statusId: Long, comment: String): Report {
+    fun postReport(accountId: Long, statusId: Long, comment: String): Report {
         val parameters = Parameter().apply {
             append("account_id", accountId)
             append("status_ids", statusId)

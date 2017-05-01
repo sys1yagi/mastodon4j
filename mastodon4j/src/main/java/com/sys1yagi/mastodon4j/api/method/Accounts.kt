@@ -88,8 +88,9 @@ class Accounts(val client: MastodonClient) {
     }
 
     //  GET /api/v1/accounts/:id/followers
+    @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    fun getFollowers(accountId: Long, range: Range): Pageable<Account> {
+    fun getFollowers(accountId: Long, range: Range = Range()): Pageable<Account> {
         val response = client.get(
                 "accounts/$accountId/followers",
                 range.toParameter()
@@ -106,8 +107,9 @@ class Accounts(val client: MastodonClient) {
     }
 
     //  GET /api/v1/accounts/:id/following
+    @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    fun getFollowing(accountId: Long, range: Range): Pageable<Account> {
+    fun getFollowing(accountId: Long, range: Range = Range()): Pageable<Account> {
         val response = client.get(
                 "accounts/$accountId/following",
                 range.toParameter()
@@ -124,8 +126,9 @@ class Accounts(val client: MastodonClient) {
     }
 
     //  GET /api/v1/accounts/:id/statuses
+    @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    fun getStatuses(accountId: Long, onlyMedia: Boolean, range: Range): Pageable<Status> {
+    fun getStatuses(accountId: Long, onlyMedia: Boolean, range: Range = Range()): Pageable<Status> {
         val parameters = range.toParameter()
         if (onlyMedia) {
             parameters.append("only_media", true)

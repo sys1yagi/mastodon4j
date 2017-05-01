@@ -22,7 +22,7 @@ object GetAppRegistration {
             System.out.println("client_id=" + registration.clientId)
             System.out.println("client_secret=" + registration.clientSecret)
         } catch (e: Mastodon4jRequestException) {
-            val statusCode = e.response.code()
+            e.printStackTrace()
         }
     }
 }

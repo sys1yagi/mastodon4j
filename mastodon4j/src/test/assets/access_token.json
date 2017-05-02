@@ -1,0 +1,6 @@
+{
+  "access_token": "test",
+  "token_type": "bearer",
+  "scope": "read write follow",
+  "created_at": 1493188835
+}

@@ -78,10 +78,8 @@ class Apps(private val client: MastodonClient) {
                         MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
                         parameters
                 ))
-
         if (response.isSuccessful) {
-            val json = response.body().string()
-            return client.getSerializer().fromJson(json, AccessToken::class.java)
+            return response.fromJson(client.getSerializer(), AccessToken::class.java)
         } else {
             throw Mastodon4jRequestException(response)
         }
@@ -112,8 +110,7 @@ class Apps(private val client: MastodonClient) {
                         parameters
                 ))
         if (response.isSuccessful) {
-            val json = response.body().string()
-            return client.getSerializer().fromJson(json, AccessToken::class.java)
+            return response.fromJson(client.getSerializer(), AccessToken::class.java)
         } else {
             throw Mastodon4jRequestException(response)
         }

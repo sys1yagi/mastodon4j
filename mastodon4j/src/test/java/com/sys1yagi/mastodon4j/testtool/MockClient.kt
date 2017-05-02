@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.testtool
 
 import com.google.gson.Gson
+import com.nhaarman.mockito_kotlin.eq
 import com.sys1yagi.kmockito.any
 import com.sys1yagi.kmockito.invoked
 import com.sys1yagi.kmockito.mock
@@ -11,6 +12,14 @@ import org.mockito.ArgumentMatchers
 import java.net.SocketTimeoutException
 
 object MockClient {
+
+    private fun setResponse(client: MastodonClient, response: Response){
+        client.get(ArgumentMatchers.anyString(), eq(null)).invoked.thenReturn(response)
+        client.get(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
+        client.post(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
+        client.postUrl(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
+        client.getSerializer().invoked.thenReturn(Gson())
+    }
     fun mock(jsonName: String, maxId: Long? = null, sinceId: Long? = null): MastodonClient {
         val client: MastodonClient = mock()
         val response: Response = Response.Builder()
@@ -35,10 +44,7 @@ object MockClient {
                     }
                 }
                 .build()
-        client.get(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
-        client.post(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
-        client.postUrl(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
-        client.getSerializer().invoked.thenReturn(Gson())
+        setResponse(client, response)
         return client
     }
 
@@ -56,10 +62,7 @@ object MockClient {
                         source
                 ))
                 .build()
-        client.get(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
-        client.post(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
-        client.postUrl(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
-        client.getSerializer().invoked.thenReturn(Gson())
+        setResponse(client, response)
         return client
     }
 }

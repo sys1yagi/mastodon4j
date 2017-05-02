@@ -6,24 +6,22 @@ import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Account
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
+import com.sys1yagi.mastodon4j.extension.fromJson
 import com.sys1yagi.mastodon4j.extension.genericType
 import com.sys1yagi.mastodon4j.extension.toPageable
 
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#follow-requests
  */
-class FollowRequests(private  val client: MastodonClient) {
+class FollowRequests(private val client: MastodonClient) {
     // GET /api/v1/follow_requests
     @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
     fun getFollowRequests(range: Range = Range()): Pageable<Account> {
         val response = client.get("follow_requests", range.toParameter())
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Account>>(
-                    body,
-                    genericType<List<Account>>()
-            ).toPageable(response)
+            return response.fromJson<List<Account>>(client.getSerializer(), genericType<List<Account>>())
+                    .toPageable(response)
         } else {
             throw Mastodon4jRequestException(response)
         }

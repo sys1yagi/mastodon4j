@@ -4,6 +4,7 @@ import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.entity.Account
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.extension.fromJson
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
@@ -27,11 +28,7 @@ class Follows(private val client: MastodonClient) {
                 )
         )
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
-                    Account::class.java
-            )
+            return response.fromJson(client.getSerializer(), Account::class.java)
         } else {
             throw Mastodon4jRequestException(response)
         }

@@ -5,6 +5,7 @@ import com.sys1yagi.mastodon4j.api.Scope
 import com.sys1yagi.mastodon4j.api.entity.auth.AccessToken
 import com.sys1yagi.mastodon4j.api.entity.auth.AppRegistration
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.extension.fromJson
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.IOException
@@ -33,15 +34,10 @@ class Apps(private val client: MastodonClient) {
                 ))
 
         if (response.isSuccessful) {
-            try {
-                val json = response.body().string()
-                return client.getSerializer().fromJson(json, AppRegistration::class.java)
-                        .apply {
-                            instanceName = client.getInstanceName()
-                        }
-            } catch (e: IOException) {
-                throw Mastodon4jRequestException(e)
-            }
+            return response.fromJson(client.getSerializer(), AppRegistration::class.java)
+                    .apply {
+                        instanceName = client.getInstanceName()
+                    }
         } else {
             throw Mastodon4jRequestException(response)
         }

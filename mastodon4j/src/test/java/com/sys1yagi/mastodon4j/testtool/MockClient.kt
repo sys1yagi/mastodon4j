@@ -35,7 +35,8 @@ object MockClient {
                     }
                 }
                 .build()
-        client.get(ArgumentMatchers.anyString(), ArgumentMatchers.any()).invoked.thenReturn(response)
+        client.get(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
+        client.post(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
         client.getSerializer().invoked.thenReturn(Gson())
         return client
     }
@@ -54,7 +55,8 @@ object MockClient {
                         source
                 ))
                 .build()
-        client.get(ArgumentMatchers.anyString(), ArgumentMatchers.any()).invoked.thenReturn(response)
+        client.get(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
+        client.post(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
         client.getSerializer().invoked.thenReturn(Gson())
         return client
     }

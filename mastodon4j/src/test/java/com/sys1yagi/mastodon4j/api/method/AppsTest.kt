@@ -6,11 +6,14 @@ import com.sys1yagi.kmockito.invoked
 import com.sys1yagi.kmockito.mock
 import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.api.Scope
+import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.testtool.AssetsUtil
+import com.sys1yagi.mastodon4j.testtool.MockClient
 import okhttp3.*
 import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
 import org.mockito.ArgumentMatchers
+import java.net.SocketTimeoutException
 
 class AppsTest {
     @Test
@@ -39,6 +42,17 @@ class AppsTest {
         registration.clientId shouldEqualTo "client id"
         registration.clientSecret shouldEqualTo "client secret"
         registration.redirectUri shouldEqualTo "urn:ietf:wg:oauth:2.0:oob"
+    }
+
+    @Test(expected = Mastodon4jRequestException::class)
+    fun createAppWithException() {
+        val client = MockClient.ioException()
+
+        val apps = Apps(client)
+        apps.createApp(
+                clientName = "mastodon-android-sys1yagi",
+                scope = Scope(Scope.Name.ALL)
+        )
     }
 
     @Test

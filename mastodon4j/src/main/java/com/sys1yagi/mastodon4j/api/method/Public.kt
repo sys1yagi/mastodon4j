@@ -18,14 +18,13 @@ class Public(private val client: MastodonClient) {
      * GET /api/v1/instance
      * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#instances
      */
-    @Throws(Mastodon4jRequestException::class)
     fun getInstance(): MastodonRequest<Instance> {
         return MastodonRequest(
                 {
                     client.get("instance")
                 },
-                {
-                    client.getSerializer().fromJson(it, Instance::class.java)
+                { json ->
+                    client.getSerializer().fromJson(json, Instance::class.java)
                 }
         )
     }
@@ -63,23 +62,19 @@ class Public(private val client: MastodonClient) {
      *  GET /api/v1/timelines/public
      * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
      */
-    private fun getPublic(local: Boolean, range: Range): Pageable<Status> {
+    private fun getPublic(local: Boolean, range: Range): MastodonRequest<Pageable<Status>> {
         val parameter = range.toParameter()
         if (local) {
             parameter.append("local", local)
         }
-        val response = client.get(
-                "timelines/public",
-                parameter
-        )
-        if (response.isSuccessful) {
-            return response.fromJson<List<Status>>(
-                    client.getSerializer(),
-                    genericType<List<Status>>()
-            ).toPageable(response)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+        return MastodonRequest<Pageable<Status>>(
+                {
+                    client.get("timelines/public", parameter)
+                },
+                {
+                    client.getSerializer().fromJson(it, Status::class.java)
+                }
+        ).toPageable()
     }
 
     @JvmOverloads

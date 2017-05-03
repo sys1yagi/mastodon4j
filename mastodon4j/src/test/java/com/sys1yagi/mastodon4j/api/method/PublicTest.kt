@@ -4,6 +4,7 @@ import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.testtool.MockClient
 import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
+import java.util.concurrent.atomic.AtomicInteger
 
 class PublicTest {
     @Test
@@ -67,7 +68,7 @@ class PublicTest {
     fun getLocalPublic() {
         val client = MockClient.mock("public_timeline.json", maxId = 3L, sinceId = 1L)
         val publicMethod = Public(client)
-        val statuses = publicMethod.getLocalPublic()
+        val statuses = publicMethod.getLocalPublic().execute()
         statuses.part.size shouldEqualTo 20
         statuses.link?.let {
             it.nextPath shouldEqualTo "<https://mstdn.jp/api/v1/timelines/public?limit=20&local=true&max_id=3>"
@@ -77,11 +78,24 @@ class PublicTest {
         }
     }
 
+    @Test
+    fun getLocalPublicWithJson() {
+        val atomicInt = AtomicInteger(0)
+        val client = MockClient.mock("public_timeline.json", maxId = 3L, sinceId = 1L)
+        val publicMethod = Public(client)
+        publicMethod.getLocalPublic()
+                .doOnJson {
+                    atomicInt.incrementAndGet()
+                }
+                .execute()
+        atomicInt.get() shouldEqualTo 20
+    }
+
     @Test(expected = Mastodon4jRequestException::class)
     fun getLocalPublicWithException() {
         val client = MockClient.ioException()
         val publicMethod = Public(client)
-        publicMethod.getLocalPublic()
+        publicMethod.getLocalPublic().execute()
     }
 
     @Test

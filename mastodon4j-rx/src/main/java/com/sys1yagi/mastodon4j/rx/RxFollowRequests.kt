@@ -16,7 +16,7 @@ class RxFollowRequests(client: MastodonClient) {
         return Single.create {
             try {
                 val accounts = followRequests.getFollowRequests(range)
-                it.onSuccess(accounts)
+                it.onSuccess(accounts.execute())
             } catch(throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }

@@ -29,7 +29,7 @@ class RxPublic(client: MastodonClient) {
         return Single.create {
             try {
                 val results = publicMethod.getSearch(query, resolve)
-                it.onSuccess(results)
+                it.onSuccess(results.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }
@@ -50,13 +50,13 @@ class RxPublic(client: MastodonClient) {
 
     fun getLocalTag(tag: String, range: Range = Range()): Single<Pageable<Status>> {
         return single {
-            publicMethod.getLocalTag(tag, range)
+            publicMethod.getLocalTag(tag, range).execute()
         }
     }
 
     fun getFederatedTag(tag: String, range: Range = Range()): Single<Pageable<Status>> {
         return single {
-            publicMethod.getFederatedTag(tag, range)
+            publicMethod.getFederatedTag(tag, range).execute()
         }
     }
 }

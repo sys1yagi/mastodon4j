@@ -14,7 +14,7 @@ class RxMutes(client: MastodonClient) {
         return Single.create {
             try {
                 val accounts = mutes.getMutes(range)
-                it.onSuccess(accounts)
+                it.onSuccess(accounts.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }

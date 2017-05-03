@@ -14,7 +14,7 @@ class RxReports(client: MastodonClient) {
         return Single.create {
             try {
                 val reports = reports.getReports(range)
-                it.onSuccess(reports)
+                it.onSuccess(reports.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }
@@ -26,7 +26,7 @@ class RxReports(client: MastodonClient) {
         return Single.create {
             try {
                 val report = reports.postReport(accountId, statusId, comment)
-                it.onSuccess(report)
+                it.onSuccess(report.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }

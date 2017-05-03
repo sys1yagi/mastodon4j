@@ -15,7 +15,7 @@ class RxBlocks(client: MastodonClient) {
         return Single.create {
             try {
                 val blocks = blocks.getBlocks(range)
-                it.onSuccess(blocks)
+                it.onSuccess(blocks.execute())
             } catch(throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }

@@ -14,7 +14,7 @@ class RxTimelines(client: MastodonClient) {
 
     fun getHome(range: Range = Range()): Single<Pageable<Status>> {
         return single {
-            timelines.getHome(range)
+            timelines.getHome(range).execute()
         }
     }
 }

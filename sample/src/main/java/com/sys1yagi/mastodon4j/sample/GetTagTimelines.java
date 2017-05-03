@@ -18,7 +18,7 @@ public class GetTagTimelines {
         Public publicMethod = new Public(client);
 
         try {
-            Pageable<Status> statuses = publicMethod.getFederatedTag("mastodon", new Range());
+            Pageable<Status> statuses = publicMethod.getFederatedTag("mastodon", new Range()).execute();
             statuses.getPart().forEach(status -> {
                 System.out.println("=============");
                 System.out.println(status.getAccount().getDisplayName());

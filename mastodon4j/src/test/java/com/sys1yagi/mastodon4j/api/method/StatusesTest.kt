@@ -12,7 +12,7 @@ class StatusesTest {
     fun getStatus() {
         val client = MockClient.mock("status.json")
         val statuses = Statuses(client)
-        val status = statuses.getStatus(1L)
+        val status = statuses.getStatus(1L).execute()
         status.id shouldEqualTo 11111L
     }
 
@@ -20,14 +20,14 @@ class StatusesTest {
     fun getStatusWithException() {
         val client = MockClient.ioException()
         val statuses = Statuses(client)
-        statuses.getStatus(1L)
+        statuses.getStatus(1L).execute()
     }
 
     @Test
     fun getContext() {
         val client = MockClient.mock("context.json")
         val statuses = Statuses(client)
-        val context = statuses.getContext(1L)
+        val context = statuses.getContext(1L).execute()
         context.ancestors.size shouldEqualTo 2
         context.descendants.size shouldEqualTo 1
     }
@@ -36,14 +36,14 @@ class StatusesTest {
     fun getContextWithException() {
         val client = MockClient.ioException()
         val statuses = Statuses(client)
-        statuses.getContext(1L)
+        statuses.getContext(1L).execute()
     }
 
     @Test
     fun getCard() {
         val client = MockClient.mock("card.json")
         val statuses = Statuses(client)
-        val card = statuses.getCard(1L)
+        val card = statuses.getCard(1L).execute()
         card.url shouldEqualTo "The url associated with the card"
         card.title shouldEqualTo "The title of the card"
         card.description shouldEqualTo "The card description"
@@ -54,14 +54,14 @@ class StatusesTest {
     fun getCardWithExcetpion() {
         val client = MockClient.ioException()
         val statuses = Statuses(client)
-        statuses.getCard(1L)
+        statuses.getCard(1L).execute()
     }
 
     @Test
     fun getRebloggedBy() {
         val client = MockClient.mock("reblogged_by.json")
         val statuses = Statuses(client)
-        val pageable = statuses.getRebloggedBy(1L)
+        val pageable = statuses.getRebloggedBy(1L).execute()
         val account = pageable.part.first()
         account.acct shouldEqualTo "test@test.com"
         account.displayName shouldEqualTo "test"
@@ -72,14 +72,14 @@ class StatusesTest {
     fun getRebloggedByWithException() {
         val client = MockClient.ioException()
         val statuses = Statuses(client)
-        statuses.getRebloggedBy(1L)
+        statuses.getRebloggedBy(1L).execute()
     }
 
     @Test
     fun getFavouritedBy() {
         val client = MockClient.mock("reblogged_by.json")
         val statuses = Statuses(client)
-        val pageable = statuses.getFavouritedBy(1L)
+        val pageable = statuses.getFavouritedBy(1L).execute()
         val account = pageable.part.first()
         account.acct shouldEqualTo "test@test.com"
         account.displayName shouldEqualTo "test"
@@ -90,14 +90,14 @@ class StatusesTest {
     fun getFavouritedByWithException() {
         val client = MockClient.ioException()
         val statuses = Statuses(client)
-        statuses.getFavouritedBy(1L)
+        statuses.getFavouritedBy(1L).execute()
     }
 
     @Test
     fun postStatus() {
         val client = MockClient.mock("status.json")
         val statuses = Statuses(client)
-        val status = statuses.postStatus("a", null, null, false, null)
+        val status = statuses.postStatus("a", null, null, false, null).execute()
         status.id shouldEqualTo 11111L
     }
 
@@ -105,14 +105,14 @@ class StatusesTest {
     fun postStatusWithException() {
         val client = MockClient.ioException()
         val statuses = Statuses(client)
-        statuses.postStatus("a", null, null, false, null)
+        statuses.postStatus("a", null, null, false, null).execute()
     }
 
     @Test
     fun postReblog() {
         val client = MockClient.mock("status.json")
         val statuses = Statuses(client)
-        val status = statuses.postReblog(1L)
+        val status = statuses.postReblog(1L).execute()
         status.id shouldEqualTo 11111L
     }
 
@@ -120,14 +120,14 @@ class StatusesTest {
     fun postReblogWithException() {
         val client = MockClient.ioException()
         val statuses = Statuses(client)
-        statuses.postReblog(1L)
+        statuses.postReblog(1L).execute()
     }
 
     @Test
     fun postUnreblog() {
         val client = MockClient.mock("status.json")
         val statuses = Statuses(client)
-        val status = statuses.postUnreblog(1L)
+        val status = statuses.postUnreblog(1L).execute()
         status.id shouldEqualTo 11111L
     }
 
@@ -135,14 +135,14 @@ class StatusesTest {
     fun postUnreblogWithException() {
         val client = MockClient.ioException()
         val statuses = Statuses(client)
-        statuses.postUnreblog(1L)
+        statuses.postUnreblog(1L).execute()
     }
 
     @Test
     fun postFavourite() {
         val client = MockClient.mock("status.json")
         val statuses = Statuses(client)
-        val status = statuses.postFavourite(1L)
+        val status = statuses.postFavourite(1L).execute()
         status.id shouldEqualTo 11111L
     }
 
@@ -150,14 +150,14 @@ class StatusesTest {
     fun postFavouriteWithException() {
         val client = MockClient.ioException()
         val statuses = Statuses(client)
-        statuses.postFavourite(1L)
+        statuses.postFavourite(1L).execute()
     }
 
     @Test
     fun postUnfavourite() {
         val client = MockClient.mock("status.json")
         val statuses = Statuses(client)
-        val status = statuses.postUnfavourite(1L)
+        val status = statuses.postUnfavourite(1L).execute()
         status.id shouldEqualTo 11111L
     }
 
@@ -165,7 +165,6 @@ class StatusesTest {
     fun postUnfavouriteWithException() {
         val client = MockClient.ioException()
         val statuses = Statuses(client)
-        statuses.postUnfavourite(1L)
+        statuses.postUnfavourite(1L).execute()
     }
-
 }

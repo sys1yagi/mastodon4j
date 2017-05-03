@@ -15,7 +15,7 @@ class RxNotifications(client: MastodonClient) {
         return Single.create {
             try {
                 val notifications = notifications.getNotifications(range)
-                it.onSuccess(notifications)
+                it.onSuccess(notifications.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }
@@ -26,7 +26,7 @@ class RxNotifications(client: MastodonClient) {
         return Single.create {
             try {
                 val notification = notifications.getNotification(id)
-                it.onSuccess(notification)
+                it.onSuccess(notification.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }

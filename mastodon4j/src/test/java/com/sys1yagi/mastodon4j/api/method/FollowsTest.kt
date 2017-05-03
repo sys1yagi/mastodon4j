@@ -13,7 +13,7 @@ class FollowsTest {
         val client = MockClient.mock("follow.json")
 
         val follows = Follows(client)
-        val account = follows.postRemoteFollow("test")
+        val account = follows.postRemoteFollow("test").execute()
         account.acct shouldEqualTo "test@test.com"
         account.displayName shouldEqualTo "test"
         account.userName shouldEqualTo "test"
@@ -23,7 +23,7 @@ class FollowsTest {
     fun postRemoteFollowWithException() {
         val client = MockClient.ioException()
         val follows = Follows(client)
-        follows.postRemoteFollow("test")
+        follows.postRemoteFollow("test").execute()
     }
 
 }

@@ -12,7 +12,7 @@ class TimelinesTest {
     fun getHome() {
         val client = MockClient.mock("timelines.json")
         val timelines = Timelines(client)
-        val pageable = timelines.getHome()
+        val pageable = timelines.getHome().execute()
         val status = pageable.part.first()
         status.id shouldEqualTo 11111L
     }
@@ -21,7 +21,7 @@ class TimelinesTest {
     fun homeWithException() {
         val client = MockClient.ioException()
         val timelines = Timelines(client)
-        timelines.getHome()
+        timelines.getHome().execute()
     }
 
     // TODO 401

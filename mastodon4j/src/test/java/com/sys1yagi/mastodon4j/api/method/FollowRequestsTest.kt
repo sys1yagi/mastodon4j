@@ -11,7 +11,7 @@ class FollowRequestsTest {
         val client = MockClient.mock("follow_requests.json")
 
         val followRequests = FollowRequests(client)
-        val pageable = followRequests.getFollowRequests()
+        val pageable = followRequests.getFollowRequests().execute()
         val account = pageable.part.first()
         account.acct shouldEqualTo "test@test.com"
         account.displayName shouldEqualTo "test"
@@ -22,6 +22,6 @@ class FollowRequestsTest {
     fun getFollowRequestsWithException() {
         val client = MockClient.ioException()
         val followRequests = FollowRequests(client)
-        followRequests.getFollowRequests()
+        followRequests.getFollowRequests().execute()
     }
 }

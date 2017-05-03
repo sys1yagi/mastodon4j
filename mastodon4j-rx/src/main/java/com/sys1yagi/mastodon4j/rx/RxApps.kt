@@ -17,7 +17,7 @@ class RxApps(client: MastodonClient) {
         return Single.create {
             try {
                 val registration = apps.createApp(clientName, redirectUris, scope, website)
-                it.onSuccess(registration)
+                it.onSuccess(registration.execute())
             } catch(throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
@@ -33,7 +33,7 @@ class RxApps(client: MastodonClient) {
         return Single.create {
             try {
                 val accessToken = apps.getAccessToken(clientId, clientSecret, redirectUri, code, grantType)
-                it.onSuccess(accessToken)
+                it.onSuccess(accessToken.execute())
             } catch(throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
@@ -50,7 +50,7 @@ class RxApps(client: MastodonClient) {
         return Single.create {
             try {
                 val accessToken = apps.postUserNameAndPassword(clientId, clientSecret, scope, userName, password)
-                it.onSuccess(accessToken)
+                it.onSuccess(accessToken.execute())
             } catch(throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }

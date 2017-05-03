@@ -20,7 +20,7 @@ class RxStatuses(client: MastodonClient) {
         return Single.create {
             try {
                 val status = statuses.getStatus(statusId)
-                it.onSuccess(status)
+                it.onSuccess(status.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }
@@ -31,7 +31,7 @@ class RxStatuses(client: MastodonClient) {
         return Single.create {
             try {
                 val context = statuses.getContext(statusId)
-                it.onSuccess(context)
+                it.onSuccess(context.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }
@@ -42,7 +42,7 @@ class RxStatuses(client: MastodonClient) {
         return Single.create {
             try {
                 val context = statuses.getCard(statusId)
-                it.onSuccess(context)
+                it.onSuccess(context.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }
@@ -53,7 +53,7 @@ class RxStatuses(client: MastodonClient) {
         return Single.create {
             try {
                 val accounts = statuses.getRebloggedBy(statusId, range)
-                it.onSuccess(accounts)
+                it.onSuccess(accounts.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }
@@ -65,7 +65,7 @@ class RxStatuses(client: MastodonClient) {
         return Single.create {
             try {
                 val accounts = statuses.getFavouritedBy(statusId, range)
-                it.onSuccess(accounts)
+                it.onSuccess(accounts.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }
@@ -83,7 +83,7 @@ class RxStatuses(client: MastodonClient) {
         return Single.create {
             try {
                 val result = statuses.postStatus(status, inReplyToId, mediaIds, sensitive, spoilerText, visibility)
-                it.onSuccess(result)
+                it.onSuccess(result.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }
@@ -105,7 +105,7 @@ class RxStatuses(client: MastodonClient) {
         return Single.create {
             try {
                 val status = statuses.postReblog(statusId)
-                it.onSuccess(status)
+                it.onSuccess(status.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }
@@ -116,7 +116,7 @@ class RxStatuses(client: MastodonClient) {
         return Single.create {
             try {
                 val status = statuses.postUnreblog(statusId)
-                it.onSuccess(status)
+                it.onSuccess(status.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }
@@ -127,7 +127,7 @@ class RxStatuses(client: MastodonClient) {
         return Single.create {
             try {
                 val status = statuses.postFavourite(statusId)
-                it.onSuccess(status)
+                it.onSuccess(status.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }
@@ -138,7 +138,7 @@ class RxStatuses(client: MastodonClient) {
         return Single.create {
             try {
                 val status = statuses.postUnfavourite(statusId)
-                it.onSuccess(status)
+                it.onSuccess(status.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }

@@ -10,7 +10,7 @@ class ReportsTest {
     fun getReports() {
         val client = MockClient.mock("reports.json")
         val reports = Reports(client)
-        val pageable = reports.getReports()
+        val pageable = reports.getReports().execute()
         val report = pageable.part.first()
         report.id shouldEqualTo 100L
         report.actionTaken shouldEqualTo "test"
@@ -20,13 +20,13 @@ class ReportsTest {
     fun getReportsWithException() {
         val client = MockClient.ioException()
         val reports = Reports(client)
-        reports.getReports()
+        reports.getReports().execute()
     }
 
     @Test(expected = Mastodon4jRequestException::class)
     fun postReportWithException() {
         val client = MockClient.ioException()
         val reports = Reports(client)
-        reports.postReport(10, 20, "test")
+        reports.postReport(10, 20, "test").execute()
     }
 }

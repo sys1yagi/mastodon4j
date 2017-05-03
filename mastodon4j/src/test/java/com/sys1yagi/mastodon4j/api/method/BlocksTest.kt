@@ -11,7 +11,7 @@ class BlocksTest {
         val client = MockClient.mock("blocks.json")
 
         val blocks = Blocks(client)
-        val pageable = blocks.getBlocks()
+        val pageable = blocks.getBlocks().execute()
         val block = pageable.part.first()
         block.acct shouldEqualTo "test@test.com"
         block.displayName shouldEqualTo "test"
@@ -23,6 +23,6 @@ class BlocksTest {
         val client = MockClient.ioException()
 
         val blocks = Blocks(client)
-        blocks.getBlocks()
+        blocks.getBlocks().execute()
     }
 }

@@ -13,7 +13,7 @@ class RxMedia(client: MastodonClient) {
         return Single.create {
             try {
                 val result = media.postMedia(part)
-                it.onSuccess(result)
+                it.onSuccess(result.execute())
             } catch (e: Throwable) {
                 it.onError(e)
             }

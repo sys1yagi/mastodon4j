@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.api.Link
 import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
@@ -17,16 +18,17 @@ class Timelines(private val client: MastodonClient) {
     //  GET /api/v1/timelines/home
     @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    fun getHome(range: Range = Range()): Pageable<Status> {
-        val response = client.get(
-                "timelines/home",
-                range.toParameter()
-        )
-        if (response.isSuccessful) {
-            return response.fromJson<List<Status>>(client.getSerializer(), genericType<List<Status>>())
-                    .toPageable(response)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getHome(range: Range = Range()): MastodonRequest<Pageable<Status>> {
+        return MastodonRequest<Pageable<Status>>(
+                {
+                    client.get(
+                            "timelines/home",
+                            range.toParameter()
+                    )
+                },
+                {
+                    client.getSerializer().fromJson(it, Status::class.java)
+                }
+        ).toPageable()
     }
 }

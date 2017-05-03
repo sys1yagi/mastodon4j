@@ -13,7 +13,7 @@ class NotificationsTest {
     fun getNotifications() {
         val client = MockClient.mock("notifications.json")
         val notifications = Notifications(client)
-        val pageable = notifications.getNotifications()
+        val pageable = notifications.getNotifications().execute()
         val notification = pageable.part.first()
         notification.type shouldEqualTo "favourite"
         notification.account shouldNotBe null
@@ -24,13 +24,13 @@ class NotificationsTest {
     fun getNotificationsWithException() {
         val client = MockClient.ioException()
         val notifications = Notifications(client)
-        notifications.getNotifications()
+        notifications.getNotifications().execute()
     }
 
     @Test(expected = Mastodon4jRequestException::class)
     fun getNotificationWithException() {
         val client = MockClient.ioException()
         val notifications = Notifications(client)
-        notifications.getNotification(1L)
+        notifications.getNotification(1L).execute()
     }
 }

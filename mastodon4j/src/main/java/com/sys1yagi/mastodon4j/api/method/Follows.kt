@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.entity.Account
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
@@ -16,21 +17,22 @@ class Follows(private val client: MastodonClient) {
      * POST /api/v1/follows
      * @param uri: username@domain of the person you want to follow
      */
-    @Throws(Mastodon4jRequestException::class)
-    fun postRemoteFollow(uri: String): Account {
+    fun postRemoteFollow(uri: String): MastodonRequest<Account> {
         val parameters = Parameter()
                 .append("uri", uri)
                 .build()
-        val response = client.post("follows",
-                RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
-                        parameters
-                )
+        return MastodonRequest<Account>(
+                {
+                    client.post("follows",
+                            RequestBody.create(
+                                    MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                                    parameters
+                            )
+                    )
+                },
+                {
+                    client.getSerializer().fromJson(it, Account::class.java)
+                }
         )
-        if (response.isSuccessful) {
-            return response.fromJson(client.getSerializer(), Account::class.java)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
     }
 }

@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Notification
@@ -16,29 +17,30 @@ import com.sys1yagi.mastodon4j.extension.toPageable
 class Notifications(private val client: MastodonClient) {
     // GET /api/v1/notifications
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
-    fun getNotifications(range: Range = Range()): Pageable<Notification> {
-        val response = client.get(
-                "notifications",
-                range.toParameter()
-        )
-        if (response.isSuccessful) {
-            return response.fromJson<List<Notification>>(client.getSerializer(), genericType<List<Notification>>())
-                    .toPageable(response)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getNotifications(range: Range = Range()): MastodonRequest<Pageable<Notification>> {
+        return MastodonRequest<Pageable<Notification>>(
+                {
+                    client.get(
+                            "notifications",
+                            range.toParameter()
+                    )
+                },
+                {
+                    client.getSerializer().fromJson(it, Notification::class.java)
+                }
+        ).toPageable()
     }
 
     // GET /api/v1/notifications/:id
-    @Throws(Mastodon4jRequestException::class)
-    fun getNotification(id: Long): Notification {
-        val response = client.get("notifications/$id")
-        if (response.isSuccessful) {
-            return response.fromJson(client.getSerializer(), Notification::class.java)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getNotification(id: Long): MastodonRequest<Notification> {
+        return MastodonRequest<Notification>(
+                {
+                    client.get("notifications/$id")
+                },
+                {
+                    client.getSerializer().fromJson(it, Notification::class.java)
+                }
+        )
     }
 
     //  POST /api/v1/notifications/clear

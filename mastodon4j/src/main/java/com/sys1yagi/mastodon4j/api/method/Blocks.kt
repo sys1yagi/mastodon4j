@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Account
@@ -16,14 +17,14 @@ class Blocks(private val client: MastodonClient) {
 
     //  GET /api/v1/blocks
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
-    fun getBlocks(range: Range = Range()): Pageable<Account> {
-        val response = client.get("blocks", range.toParameter())
-        if (response.isSuccessful) {
-            return response.fromJson<List<Account>>(client.getSerializer(), genericType<List<Account>>())
-                    .toPageable(response)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getBlocks(range: Range = Range()):MastodonRequest<Pageable<Account>> {
+        return MastodonRequest<Pageable<Account>>(
+                {
+                    client.get("blocks", range.toParameter())
+                },
+                {
+                    client.getSerializer().fromJson(it, Account::class.java)
+                }
+        ).toPageable()
     }
 }

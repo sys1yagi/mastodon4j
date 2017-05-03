@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.api.Scope
 import com.sys1yagi.mastodon4j.api.entity.auth.AccessToken
 import com.sys1yagi.mastodon4j.api.entity.auth.AppRegistration
@@ -16,31 +17,30 @@ import java.io.IOException
 class Apps(private val client: MastodonClient) {
     // POST /api/v1/apps
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
-    fun createApp(clientName: String, redirectUris: String = "urn:ietf:wg:oauth:2.0:oob", scope: Scope = Scope(Scope.Name.ALL), website: String? = null): AppRegistration {
+    fun createApp(clientName: String, redirectUris: String = "urn:ietf:wg:oauth:2.0:oob", scope: Scope = Scope(Scope.Name.ALL), website: String? = null): MastodonRequest<AppRegistration> {
         scope.validate()
-        val response = client.post("apps",
-                RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
-                        arrayListOf(
-                                "client_name=$clientName",
-                                "scopes=$scope",
-                                "redirect_uris=$redirectUris"
-                        ).apply {
-                            website?.let {
-                                add("website=${it}")
-                            }
-                        }.joinToString(separator = "&")
-                ))
-
-        if (response.isSuccessful) {
-            return response.fromJson(client.getSerializer(), AppRegistration::class.java)
-                    .apply {
-                        instanceName = client.getInstanceName()
+        return MastodonRequest(
+                {
+                    client.post("apps",
+                            RequestBody.create(
+                                    MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                                    arrayListOf(
+                                            "client_name=$clientName",
+                                            "scopes=$scope",
+                                            "redirect_uris=$redirectUris"
+                                    ).apply {
+                                        website?.let {
+                                            add("website=${it}")
+                                        }
+                                    }.joinToString(separator = "&")
+                            ))
+                },
+                {
+                    client.getSerializer().fromJson(it, AppRegistration::class.java).apply {
+                        this.instanceName = client.getInstanceName()
                     }
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+                }
+        )
     }
 
     fun getOAuthUrl(clientId: String, scope: Scope, redirectUri: String = "urn:ietf:wg:oauth:2.0:oob"): String {
@@ -51,19 +51,18 @@ class Apps(private val client: MastodonClient) {
                 "response_type=code",
                 "scope=$scope"
         ).joinToString(separator = "&")
-        return "https://${client.getInstanceName()}$endpoint?${parameters}"
+        return "https://${client.getInstanceName()}$endpoint?$parameters"
     }
 
     // POST /oauth/token
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
     fun getAccessToken(
             clientId: String,
             clientSecret: String,
             redirectUri: String = "urn:ietf:wg:oauth:2.0:oob",
             code: String,
             grantType: String = "authorization_code"
-    ): AccessToken {
+    ): MastodonRequest<AccessToken> {
         val url = "https://${client.getInstanceName()}/oauth/token"
         val parameters = listOf(
                 "client_id=$clientId",
@@ -72,28 +71,28 @@ class Apps(private val client: MastodonClient) {
                 "code=$code",
                 "grant_type=$grantType"
         ).joinToString(separator = "&")
-
-        val response = client.postUrl(url,
-                RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
-                        parameters
-                ))
-        if (response.isSuccessful) {
-            return response.fromJson(client.getSerializer(), AccessToken::class.java)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+        return MastodonRequest(
+                {
+                    client.postUrl(url,
+                            RequestBody.create(
+                                    MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                                    parameters
+                            ))
+                },
+                {
+                    client.getSerializer().fromJson(it, AccessToken::class.java)
+                }
+        )
     }
 
     // POST /oauth/token
-    @Throws(Mastodon4jRequestException::class)
     fun postUserNameAndPassword(
             clientId: String,
             clientSecret: String,
             scope: Scope,
             userName: String,
             password: String
-    ): AccessToken {
+    ): MastodonRequest<AccessToken> {
         val url = "https://${client.getInstanceName()}/oauth/token"
         val parameters = listOf(
                 "client_id=$clientId",
@@ -103,16 +102,17 @@ class Apps(private val client: MastodonClient) {
                 "password=$password",
                 "grant_type=password"
         ).joinToString(separator = "&")
-
-        val response = client.postUrl(url,
-                RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
-                        parameters
-                ))
-        if (response.isSuccessful) {
-            return response.fromJson(client.getSerializer(), AccessToken::class.java)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+        return MastodonRequest(
+                {
+                    client.postUrl(url,
+                            RequestBody.create(
+                                    MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                                    parameters
+                            ))
+                },
+                {
+                    client.getSerializer().fromJson(it, AccessToken::class.java)
+                }
+        )
     }
 }

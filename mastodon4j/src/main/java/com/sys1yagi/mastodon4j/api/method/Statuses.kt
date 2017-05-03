@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
@@ -20,80 +21,75 @@ class Statuses(private val client: MastodonClient) {
 
     //  GET /api/v1/statuses/:id
     @Throws(Mastodon4jRequestException::class)
-    fun getStatus(statusId: Long): Status {
-        val response = client.get("statuses/$statusId")
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Status::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getStatus(statusId: Long): MastodonRequest<Status> {
+        return MastodonRequest<Status>(
+                {
+                    client.get("statuses/$statusId")
+                },
+                {
+                    client.getSerializer().fromJson(it, Status::class.java)
+                }
+        )
     }
 
     //  GET /api/v1/statuses/:id/context
     @Throws(Mastodon4jRequestException::class)
-    fun getContext(statusId: Long): Context {
-        val response = client.get("statuses/$statusId/context")
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Context::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getContext(statusId: Long): MastodonRequest<Context> {
+        return MastodonRequest<Context>(
+                {
+                    client.get("statuses/$statusId/context")
+                },
+                {
+                    client.getSerializer().fromJson(it, Context::class.java)
+                }
+        )
     }
 
     //  GET /api/v1/statuses/:id/card
     @Throws(Mastodon4jRequestException::class)
-    fun getCard(statusId: Long): Card {
-        val response = client.get("statuses/$statusId/card")
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Card::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getCard(statusId: Long): MastodonRequest<Card> {
+        return MastodonRequest<Card>(
+                {
+                    client.get("statuses/$statusId/card")
+                },
+                {
+                    client.getSerializer().fromJson(it, Card::class.java)
+                }
+        )
     }
 
     //  GET /api/v1/reblogged_by
     @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    fun getRebloggedBy(statusId: Long, range: Range = Range()): Pageable<Account> {
-        val response = client.get(
-                "statuses/$statusId/reblogged_by",
-                range.toParameter()
-        )
-        if (response.isSuccessful) {
-            return response.fromJson<List<Account>>(
-                    client.getSerializer(),
-                    genericType<List<Account>>()
-            ).toPageable(response)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getRebloggedBy(statusId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
+        return MastodonRequest<Pageable<Account>>(
+                {
+                    client.get(
+                            "statuses/$statusId/reblogged_by",
+                            range.toParameter()
+                    )
+                },
+                {
+                    client.getSerializer().fromJson(it, Account::class.java)
+                }
+        ).toPageable()
     }
 
     //  GET /api/v1/favourited_by
     @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    fun getFavouritedBy(statusId: Long, range: Range = Range()): Pageable<Account> {
-        val response = client.get(
-                "statuses/$statusId/favourited_by",
-                range.toParameter()
-        )
-        if (response.isSuccessful) {
-            return response.fromJson<List<Account>>(
-                    client.getSerializer(),
-                    genericType<List<Account>>()
-            ).toPageable(response)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getFavouritedBy(statusId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
+        return MastodonRequest<Pageable<Account>>(
+                {
+                    client.get(
+                            "statuses/$statusId/favourited_by",
+                            range.toParameter()
+                    )
+                },
+                {
+                    client.getSerializer().fromJson(it, Account::class.java)
+                }
+        ).toPageable()
     }
 
     /**
@@ -114,7 +110,7 @@ class Statuses(private val client: MastodonClient) {
             sensitive: Boolean,
             spoilerText: String?,
             visibility: Status.Visibility = Status.Visibility.Public
-    ): Status {
+    ): MastodonRequest<Status> {
         val parameters = Parameter().apply {
             append("status", status)
             inReplyToId?.let {
@@ -130,19 +126,18 @@ class Statuses(private val client: MastodonClient) {
             append("visibility", visibility.value)
         }.build()
 
-        val response = client.post("statuses",
-                RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
-                        parameters
-                ))
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Status::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+        return MastodonRequest<Status>(
+                {
+                    client.post("statuses",
+                            RequestBody.create(
+                                    MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                                    parameters
+                            ))
+                },
+                {
+                    client.getSerializer().fromJson(it, Status::class.java)
+                }
+        )
     }
 
     //  DELETE /api/v1/statuses/:id
@@ -156,57 +151,53 @@ class Statuses(private val client: MastodonClient) {
 
     //  POST /api/v1/statuses/:id/reblog
     @Throws(Mastodon4jRequestException::class)
-    fun postReblog(statusId: Long): Status {
-        val response = client.post("statuses/$statusId/reblog", emptyRequestBody())
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Status::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun postReblog(statusId: Long): MastodonRequest<Status> {
+        return MastodonRequest<Status>(
+                {
+                    client.post("statuses/$statusId/reblog", emptyRequestBody())
+                },
+                {
+                    client.getSerializer().fromJson(it, Status::class.java)
+                }
+        )
     }
 
     //  POST /api/v1/statuses/:id/unreblog
     @Throws(Mastodon4jRequestException::class)
-    fun postUnreblog(statusId: Long): Status {
-        val response = client.post("statuses/$statusId/unreblog", emptyRequestBody())
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Status::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun postUnreblog(statusId: Long): MastodonRequest<Status> {
+        return MastodonRequest<Status>(
+                {
+                    client.post("statuses/$statusId/unreblog", emptyRequestBody())
+                },
+                {
+                    client.getSerializer().fromJson(it, Status::class.java)
+                }
+        )
     }
 
     //  POST /api/v1/statuses/:id/favourite
     @Throws(Mastodon4jRequestException::class)
-    fun postFavourite(statusId: Long): Status {
-        val response = client.post("statuses/$statusId/favourite", emptyRequestBody())
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Status::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun postFavourite(statusId: Long): MastodonRequest<Status> {
+        return MastodonRequest<Status>(
+                {
+                    client.post("statuses/$statusId/favourite", emptyRequestBody())
+                },
+                {
+                    client.getSerializer().fromJson(it, Status::class.java)
+                }
+        )
     }
 
     //  POST /api/v1/statuses/:id/unfavourite
     @Throws(Mastodon4jRequestException::class)
-    fun postUnfavourite(statusId: Long): Status {
-        val response = client.post("statuses/$statusId/unfavourite", emptyRequestBody())
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Status::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun postUnfavourite(statusId: Long): MastodonRequest<Status> {
+        return MastodonRequest<Status>(
+                {
+                    client.post("statuses/$statusId/unfavourite", emptyRequestBody())
+                },
+                {
+                    client.getSerializer().fromJson(it, Status::class.java)
+                }
+        )
     }
 }

@@ -145,7 +145,7 @@ class RxAccounts(client: MastodonClient) {
         }
     }
 
-    fun getRelationships(accountIds: List<Long>): Single<Pageable<Relationship>> {
+    fun getRelationships(accountIds: List<Long>): Single<List<Relationship>> {
         return Single.create {
             try {
                 val relationships = accounts.getRelationships(accountIds)
@@ -156,7 +156,7 @@ class RxAccounts(client: MastodonClient) {
         }
     }
 
-    fun getAccountSearch(query: String, limit: Int = 40): Single<Pageable<Account>> {
+    fun getAccountSearch(query: String, limit: Int = 40): Single<List<Account>> {
         return Single.create {
             try {
                 val accounts = accounts.getAccountSearch(query, limit)

@@ -54,7 +54,7 @@ constructor(
     open fun post(path: String, body: RequestBody) =
             postUrl("$baseUrl/$path", body)
 
-    fun patch(path: String, body: RequestBody): Response {
+    open fun patch(path: String, body: RequestBody): Response {
         try {
             val url = "$baseUrl/$path"
             val call = client.newCall(
@@ -69,7 +69,7 @@ constructor(
         }
     }
 
-    fun delete(path: String): Response {
+    open fun delete(path: String): Response {
         try {
             val url = "$baseUrl/$path"
             val call = client.newCall(

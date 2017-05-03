@@ -13,13 +13,15 @@ import java.net.SocketTimeoutException
 
 object MockClient {
 
-    private fun setResponse(client: MastodonClient, response: Response){
+    private fun setResponse(client: MastodonClient, response: Response) {
         client.get(ArgumentMatchers.anyString(), eq(null)).invoked.thenReturn(response)
         client.get(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
         client.post(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
         client.postUrl(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
+        client.patch(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
         client.getSerializer().invoked.thenReturn(Gson())
     }
+
     fun mock(jsonName: String, maxId: Long? = null, sinceId: Long? = null): MastodonClient {
         val client: MastodonClient = mock()
         val response: Response = Response.Builder()

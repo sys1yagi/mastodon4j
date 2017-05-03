@@ -18,7 +18,6 @@ import okhttp3.RequestBody
  */
 class Accounts(private val client: MastodonClient) {
     // GET /api/v1/accounts/:id
-    @Throws(Mastodon4jRequestException::class)
     fun getAccount(accountId: Long): MastodonRequest<Account> {
         return MastodonRequest(
                 { client.get("accounts/$accountId") },
@@ -27,7 +26,6 @@ class Accounts(private val client: MastodonClient) {
     }
 
     //  GET /api/v1/accounts/verify_credentials
-    @Throws(Mastodon4jRequestException::class)
     fun getVerifyCredentials(): MastodonRequest<Account> {
         return MastodonRequest(
                 { client.get("accounts/verify_credentials") },
@@ -42,7 +40,6 @@ class Accounts(private val client: MastodonClient) {
      * avatar: A base64 encoded image to display as the user's avatar (e.g. data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAADrCAYAAAA...)
      * header: A base64 encoded image to display as the user's header image (e.g. data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAADrCAYAAAA...)
      */
-    @Throws(Mastodon4jRequestException::class)
     fun updateCredential(displayName: String?, note: String?, avatar: String?, header: String?): MastodonRequest<Account> {
         val parameters = Parameter().apply {
             displayName?.let {
@@ -74,7 +71,6 @@ class Accounts(private val client: MastodonClient) {
 
     //  GET /api/v1/accounts/:id/followers
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
     fun getFollowers(accountId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
         return MastodonRequest<Pageable<Account>>(
                 {
@@ -91,7 +87,6 @@ class Accounts(private val client: MastodonClient) {
 
     //  GET /api/v1/accounts/:id/following
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
     fun getFollowing(accountId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
         return MastodonRequest<Pageable<Account>>(
                 {
@@ -107,7 +102,6 @@ class Accounts(private val client: MastodonClient) {
 
     //  GET /api/v1/accounts/:id/statuses
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
     fun getStatuses(accountId: Long, onlyMedia: Boolean, range: Range = Range()): MastodonRequest<Pageable<Status>> {
         val parameters = range.toParameter()
         if (onlyMedia) {
@@ -127,7 +121,6 @@ class Accounts(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/accounts/:id/follow
-    @Throws(Mastodon4jRequestException::class)
     fun postFollow(accountId: Long): MastodonRequest<Relationship> {
         return MastodonRequest<Relationship>(
                 {
@@ -140,7 +133,6 @@ class Accounts(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/accounts/:id/unfollow
-    @Throws(Mastodon4jRequestException::class)
     fun postUnFollow(accountId: Long): MastodonRequest<Relationship> {
         return MastodonRequest<Relationship>(
                 {
@@ -153,7 +145,6 @@ class Accounts(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/accounts/:id/block
-    @Throws(Mastodon4jRequestException::class)
     fun postBlock(accountId: Long): MastodonRequest<Relationship> {
         return MastodonRequest<Relationship>(
                 {
@@ -166,7 +157,6 @@ class Accounts(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/accounts/:id/unblock
-    @Throws(Mastodon4jRequestException::class)
     fun postUnblock(accountId: Long): MastodonRequest<Relationship> {
         return MastodonRequest<Relationship>(
                 {
@@ -179,7 +169,6 @@ class Accounts(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/accounts/:id/mute
-    @Throws(Mastodon4jRequestException::class)
     fun postMute(accountId: Long): MastodonRequest<Relationship> {
         return MastodonRequest<Relationship>(
                 {
@@ -192,7 +181,6 @@ class Accounts(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/accounts/:id/unmute
-    @Throws(Mastodon4jRequestException::class)
     fun postUnmute(accountId: Long): MastodonRequest<Relationship> {
         return MastodonRequest<Relationship>(
                 {
@@ -205,7 +193,6 @@ class Accounts(private val client: MastodonClient) {
     }
 
     //  GET /api/v1/accounts/relationships
-    @Throws(Mastodon4jRequestException::class)
     fun getRelationships(accountIds: List<Long>): MastodonRequest<List<Relationship>> {
         return MastodonRequest(
                 {
@@ -226,7 +213,6 @@ class Accounts(private val client: MastodonClient) {
      * limit: Maximum number of matching accounts to return (default: 40)
      */
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
     fun getAccountSearch(query: String, limit: Int = 40): MastodonRequest<List<Account>> {
         return MastodonRequest(
                 {

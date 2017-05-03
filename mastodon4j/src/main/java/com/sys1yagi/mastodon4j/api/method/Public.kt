@@ -8,6 +8,7 @@ import com.sys1yagi.mastodon4j.api.entity.Instance
 import com.sys1yagi.mastodon4j.api.entity.Results
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.extension.fromJson
 import com.sys1yagi.mastodon4j.extension.genericType
 import com.sys1yagi.mastodon4j.extension.toPageable
 
@@ -20,9 +21,8 @@ class Public(private val client: MastodonClient) {
     fun getInstance(): Instance {
         val response = client.get("instance")
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Instance::class.java
             )
         } else {
@@ -50,9 +50,8 @@ class Public(private val client: MastodonClient) {
         )
 
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<Results>(
-                    body,
+            return response.fromJson<Results>(
+                    client.getSerializer(),
                     Results::class.java
             )
         } else {
@@ -74,9 +73,8 @@ class Public(private val client: MastodonClient) {
                 parameter
         )
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Status>>(
-                    body,
+            return response.fromJson<List<Status>>(
+                    client.getSerializer(),
                     genericType<List<Status>>()
             ).toPageable(response)
         } else {
@@ -106,9 +104,8 @@ class Public(private val client: MastodonClient) {
                 parameter
         )
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Status>>(
-                    body,
+            return response.fromJson<List<Status>>(
+                    client.getSerializer(),
                     genericType<List<Status>>()
             ).toPageable(response)
         } else {

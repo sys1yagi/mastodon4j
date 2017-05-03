@@ -48,17 +48,17 @@ __kotlin__
 val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson())
         
 val timelines = Timelines(client)
-val statuses: List<Status> = timelines.getPublic()
+val statuses: List<Status> = timelines.getPublic().execute()
 ```
 
 __java__
 
-```
+```java
 MastodonClient client = new MastodonClient("mstdn.jp", new OkHttpClient(), new Gson());
 Timelines timelines = new Timelines(client);
 
 try {
-  List<Status> statuses = timelines.getPublic(new Range());
+  List<Status> statuses = timelines.getPublic(new Range()).execute();
   statuses.forEach(status->{
     System.out.println("=============");
     System.out.println(status.getAccount().getDisplayName());
@@ -83,7 +83,7 @@ val appRegistration = apps.createApp(
 	redirectUris = "urn:ietf:wg:oauth:2.0:oob",
 	scope = Scope(Scope.Name.ALL),
 	website = "https://sample.com"
-)        
+).execute()
 save(appRegistration) // appRegistration needs to be saved.
 ```
 
@@ -100,7 +100,7 @@ try {
 	    "urn:ietf:wg:oauth:2.0:oob",
 	    new Scope(Scope.Name.ALL),
         "https://sample.com"
-    );
+    ).execute();
     System.out.println("instance=" + registration.getInstanceName());
     System.out.println("client_id=" + registration.getClientId());
     System.out.println("client_secret=" + registration.getClientSecret());
@@ -145,7 +145,26 @@ __kotlin__
 // Need parameter of accessToken
 val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson(), accessToken)
 
-val statuses: List<Status> = timelines.getHome()
+val statuses: List<Status> = timelines.getHome().execute()
+```
+
+## Get raw json
+
+v0.0.7 or later
+
+__kotlin__
+
+```kotlin
+val client = //
+val publicMethod = Public(client)
+
+publicMethod.getLocalPublic()
+  .doOnJson { jsonString -> 
+    // You can get raw json for each element.
+    println(jsonString)
+  }
+  .execute() 
+
 ```
 
 # Implementation Progress

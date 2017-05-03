@@ -19,7 +19,7 @@ class AppsTest {
         val registration = apps.createApp(
                 clientName = "mastodon-android-sys1yagi",
                 scope = Scope(Scope.Name.ALL)
-        )
+        ).execute()
 
         registration.instanceName shouldEqualTo "mastodon.cloud"
         registration.clientId shouldEqualTo "client id"
@@ -35,7 +35,7 @@ class AppsTest {
         apps.createApp(
                 clientName = "mastodon-android-sys1yagi",
                 scope = Scope(Scope.Name.ALL)
-        )
+        ).execute()
     }
 
     @Test
@@ -51,7 +51,7 @@ class AppsTest {
     fun getAccessToken() {
         val client: MastodonClient = MockClient.mock("access_token.json")
         val apps = Apps(client)
-        val accessToken = apps.getAccessToken("test", "test", code = "test")
+        val accessToken = apps.getAccessToken("test", "test", code = "test").execute()
         accessToken.accessToken shouldEqualTo "test"
         accessToken.scope shouldEqualTo "read write follow"
         accessToken.tokenType shouldEqualTo "bearer"
@@ -62,14 +62,14 @@ class AppsTest {
     fun getAccessTokenWithException() {
         val client: MastodonClient = MockClient.ioException()
         val apps = Apps(client)
-        apps.getAccessToken("test", "test", code = "test")
+        apps.getAccessToken("test", "test", code = "test").execute()
     }
 
     @Test
     fun postUserNameAndPassword() {
         val client: MastodonClient = MockClient.mock("access_token.json")
         val apps = Apps(client)
-        val accessToken = apps.postUserNameAndPassword("test", "test", Scope(Scope.Name.ALL), "test", "test")
+        val accessToken = apps.postUserNameAndPassword("test", "test", Scope(Scope.Name.ALL), "test", "test").execute()
         accessToken.accessToken shouldEqualTo "test"
         accessToken.scope shouldEqualTo "read write follow"
         accessToken.tokenType shouldEqualTo "bearer"
@@ -80,6 +80,6 @@ class AppsTest {
     fun postUserNameAndPasswordWithException() {
         val client: MastodonClient = MockClient.ioException()
         val apps = Apps(client)
-        apps.postUserNameAndPassword("test", "test", Scope(Scope.Name.ALL), "test", "test")
+        apps.postUserNameAndPassword("test", "test", Scope(Scope.Name.ALL), "test", "test").execute()
     }
 }

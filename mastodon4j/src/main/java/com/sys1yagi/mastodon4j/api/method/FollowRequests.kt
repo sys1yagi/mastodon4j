@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Account
@@ -17,14 +18,13 @@ class FollowRequests(private val client: MastodonClient) {
     // GET /api/v1/follow_requests
     @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    fun getFollowRequests(range: Range = Range()): Pageable<Account> {
-        val response = client.get("follow_requests", range.toParameter())
-        if (response.isSuccessful) {
-            return response.fromJson<List<Account>>(client.getSerializer(), genericType<List<Account>>())
-                    .toPageable(response)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getFollowRequests(range: Range = Range()): MastodonRequest<Pageable<Account>> {
+        return MastodonRequest<Pageable<Account>>(
+                { client.get("follow_requests", range.toParameter()) },
+                {
+                    client.getSerializer().fromJson(it, Account::class.java)
+                }
+        ).toPageable()
     }
 
     //  POST /api/v1/follow_requests/:id/authorize

@@ -14,7 +14,7 @@ object GetTagTimelines {
         val publicMethods = Public(client)
 
         try {
-            val statuses = publicMethods.getFederatedTag("mastodon", Range())
+            val statuses = publicMethods.getFederatedTag("mastodon", Range()).execute()
             statuses.part.forEach({ status ->
                 System.out.println("=============")
                 System.out.println(status.account?.displayName)

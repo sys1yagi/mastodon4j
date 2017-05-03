@@ -18,7 +18,7 @@ public class GetAppRegistration {
                     "urn:ietf:wg:oauth:2.0:oob",
                     new Scope(Scope.Name.ALL),
                     ""
-            );
+            ).execute();
             System.out.println("instance=" + registration.getInstanceName());
             System.out.println("client_id=" + registration.getClientId());
             System.out.println("client_secret=" + registration.getClientSecret());

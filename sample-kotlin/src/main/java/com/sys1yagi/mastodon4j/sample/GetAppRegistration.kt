@@ -17,7 +17,7 @@ object GetAppRegistration {
                     "urn:ietf:wg:oauth:2.0:oob",
                     Scope(Scope.Name.ALL),
                     ""
-            )
+            ).execute()
             System.out.println("instance=" + registration.instanceName)
             System.out.println("client_id=" + registration.clientId)
             System.out.println("client_secret=" + registration.clientSecret)

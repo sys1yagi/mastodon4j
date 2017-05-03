@@ -6,6 +6,7 @@ import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.extension.fromJson
 import com.sys1yagi.mastodon4j.extension.genericType
 import com.sys1yagi.mastodon4j.extension.toPageable
 
@@ -22,11 +23,8 @@ class Timelines(private val client: MastodonClient) {
                 range.toParameter()
         )
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Status>>(
-                    body,
-                    genericType<List<Status>>()
-            ).toPageable(response)
+            return response.fromJson<List<Status>>(client.getSerializer(), genericType<List<Status>>())
+                    .toPageable(response)
         } else {
             throw Mastodon4jRequestException(response)
         }

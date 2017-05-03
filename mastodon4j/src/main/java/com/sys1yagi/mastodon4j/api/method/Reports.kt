@@ -1,14 +1,12 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Report
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import com.sys1yagi.mastodon4j.extension.fromJson
-import com.sys1yagi.mastodon4j.extension.genericType
-import com.sys1yagi.mastodon4j.extension.toPageable
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
@@ -19,17 +17,18 @@ class Reports(private val client: MastodonClient) {
     // GET /api/v1/reports
     @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    fun getReports(range: Range = Range()): Pageable<Report> {
-        val response = client.get(
-                "reports",
-                range.toParameter()
-        )
-        if (response.isSuccessful) {
-            return response.fromJson<List<Report>>(client.getSerializer(), genericType<List<Report>>())
-                    .toPageable(response)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getReports(range: Range = Range()): MastodonRequest<Pageable<Report>> {
+        return MastodonRequest<Pageable<Report>>(
+                {
+                    client.get(
+                            "reports",
+                            range.toParameter()
+                    )
+                },
+                {
+                    client.getSerializer().fromJson(it, Report::class.java)
+                }
+        ).toPageable()
     }
 
     /**
@@ -39,22 +38,23 @@ class Reports(private val client: MastodonClient) {
      * comment: A comment to associate with the report.
      */
     @Throws(Mastodon4jRequestException::class)
-    fun postReport(accountId: Long, statusId: Long, comment: String): Report {
+    fun postReport(accountId: Long, statusId: Long, comment: String): MastodonRequest<Report> {
         val parameters = Parameter().apply {
             append("account_id", accountId)
             append("status_ids", statusId)
             append("comment", comment)
         }.build()
-
-        val response = client.post("reports",
-                RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
-                        parameters
-                ))
-        if (response.isSuccessful) {
-            return response.fromJson(client.getSerializer(), Report::class.java)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+        return MastodonRequest<Report>(
+                {
+                    client.post("reports",
+                            RequestBody.create(
+                                    MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                                    parameters
+                            ))
+                },
+                {
+                    client.getSerializer().fromJson(it, Report::class.java)
+                }
+        )
     }
 }

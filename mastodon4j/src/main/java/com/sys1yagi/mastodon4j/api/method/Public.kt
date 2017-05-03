@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
@@ -18,16 +19,15 @@ class Public(private val client: MastodonClient) {
      * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#instances
      */
     @Throws(Mastodon4jRequestException::class)
-    fun getInstance(): Instance {
-        val response = client.get("instance")
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Instance::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getInstance(): MastodonRequest<Instance> {
+        return MastodonRequest(
+                {
+                    client.get("instance")
+                },
+                {
+                    client.getSerializer().fromJson(it, Instance::class.java)
+                }
+        )
     }
 
     /**

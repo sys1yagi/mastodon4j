@@ -11,7 +11,7 @@ class PublicTest {
         val client = MockClient.mock("instance.json")
         val publicMethod = Public(client)
 
-        val instance = publicMethod.getInstance()
+        val instance = publicMethod.getInstance().execute()
         instance.uri shouldEqualTo "test.com"
         instance.title shouldEqualTo "test.com"
         instance.description shouldEqualTo "description"
@@ -19,11 +19,29 @@ class PublicTest {
         instance.version shouldEqualTo "1.3.2"
     }
 
+    @Test
+    fun getInstanceWithJson() {
+        val client = MockClient.mock("instance.json")
+        val publicMethod = Public(client)
+        publicMethod.getInstance()
+                .doOnJson {
+                    it shouldEqualTo """{
+  "uri": "test.com",
+  "title": "test.com",
+  "description": "description",
+  "email": "owner@test.com",
+  "version": "1.3.2"
+}
+"""
+                }
+                .execute()
+    }
+
     @Test(expected = Mastodon4jRequestException::class)
     fun getInstanceWithException() {
         val client = MockClient.ioException()
         val publicMethod = Public(client)
-        publicMethod.getInstance()
+        publicMethod.getInstance().execute()
     }
 
     @Test

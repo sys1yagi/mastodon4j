@@ -18,7 +18,7 @@ open class MastodonRequest<T>(
 
     private var isPageable: Boolean = false
 
-    fun toPageable() = apply {
+    internal fun toPageable() = apply {
         isPageable = true
     }
 

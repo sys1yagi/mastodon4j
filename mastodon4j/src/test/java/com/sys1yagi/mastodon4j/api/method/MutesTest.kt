@@ -12,7 +12,7 @@ class MutesTest {
     fun getMutes() {
         val client = MockClient.mock("mutes.json")
         val mutes = Mutes(client)
-        val pageable = mutes.getMutes()
+        val pageable = mutes.getMutes().execute()
         val account = pageable.part.first()
         account.acct shouldEqualTo "test@test.com"
         account.displayName shouldEqualTo "test"
@@ -23,6 +23,6 @@ class MutesTest {
     fun getMutesWithException() {
         val client = MockClient.ioException()
         val mutes = Mutes(client)
-        mutes.getMutes()
+        mutes.getMutes().execute()
     }
 }

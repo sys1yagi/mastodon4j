@@ -5,6 +5,7 @@ import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Account
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.extension.fromJson
 import com.sys1yagi.mastodon4j.extension.genericType
 import com.sys1yagi.mastodon4j.extension.toPageable
 
@@ -19,11 +20,8 @@ class Blocks(private val client: MastodonClient) {
     fun getBlocks(range: Range = Range()): Pageable<Account> {
         val response = client.get("blocks", range.toParameter())
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Account>>(
-                    body,
-                    genericType<List<Account>>()
-            ).toPageable(response)
+            return response.fromJson<List<Account>>(client.getSerializer(), genericType<List<Account>>())
+                    .toPageable(response)
         } else {
             throw Mastodon4jRequestException(response)
         }

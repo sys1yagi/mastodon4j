@@ -6,6 +6,7 @@ import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Report
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.extension.fromJson
 import com.sys1yagi.mastodon4j.extension.genericType
 import com.sys1yagi.mastodon4j.extension.toPageable
 import okhttp3.MediaType
@@ -24,11 +25,8 @@ class Reports(private val client: MastodonClient) {
                 range.toParameter()
         )
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Report>>(
-                    body,
-                    genericType<List<Report>>()
-            ).toPageable(response)
+            return response.fromJson<List<Report>>(client.getSerializer(), genericType<List<Report>>())
+                    .toPageable(response)
         } else {
             throw Mastodon4jRequestException(response)
         }
@@ -54,11 +52,7 @@ class Reports(private val client: MastodonClient) {
                         parameters
                 ))
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
-                    Report::class.java
-            )
+            return response.fromJson(client.getSerializer(), Report::class.java)
         } else {
             throw Mastodon4jRequestException(response)
         }

@@ -1,10 +1,9 @@
 package com.sys1yagi.mastodon4j.api.method
 
+import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.testtool.MockClient
 import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class BlocksTest {
     @Test
@@ -17,5 +16,13 @@ class BlocksTest {
         block.acct shouldEqualTo "test@test.com"
         block.displayName shouldEqualTo "test"
         block.userName shouldEqualTo "test"
+    }
+
+    @Test(expected = Mastodon4jRequestException::class)
+    fun getBlocksException() {
+        val client = MockClient.ioException()
+
+        val blocks = Blocks(client)
+        blocks.getBlocks()
     }
 }

@@ -1,33 +1,19 @@
 package com.sys1yagi.mastodon4j.api.method
 
-import com.google.gson.Gson
-import com.sys1yagi.kmockito.any
 import com.sys1yagi.kmockito.invoked
 import com.sys1yagi.kmockito.mock
 import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.api.Scope
-import com.sys1yagi.mastodon4j.testtool.AssetsUtil
-import okhttp3.*
+import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import com.sys1yagi.mastodon4j.testtool.MockClient
 import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
-import org.mockito.ArgumentMatchers
 
 class AppsTest {
     @Test
     fun createApp() {
-        val client: MastodonClient = mock()
-        val response: Response = Response.Builder()
-                .code(200)
-                .request(Request.Builder().url("https://test.com/").build())
-                .protocol(Protocol.HTTP_1_1)
-                .body(ResponseBody.create(
-                        MediaType.parse("application/json; charset=utf-8"),
-                        AssetsUtil.readFromAssets("app_registration.json")
-                ))
-                .build()
+        val client: MastodonClient = MockClient.mock("app_registration.json")
         client.getInstanceName().invoked.thenReturn("mastodon.cloud")
-        client.post(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
-        client.getSerializer().invoked.thenReturn(Gson())
 
         val apps = Apps(client)
         val registration = apps.createApp(
@@ -41,6 +27,17 @@ class AppsTest {
         registration.redirectUri shouldEqualTo "urn:ietf:wg:oauth:2.0:oob"
     }
 
+    @Test(expected = Mastodon4jRequestException::class)
+    fun createAppWithException() {
+        val client = MockClient.ioException()
+
+        val apps = Apps(client)
+        apps.createApp(
+                clientName = "mastodon-android-sys1yagi",
+                scope = Scope(Scope.Name.ALL)
+        )
+    }
+
     @Test
     fun getOAuthUrl() {
         val client: MastodonClient = mock()
@@ -48,5 +45,41 @@ class AppsTest {
 
         val url = Apps(client).getOAuthUrl("client_id", Scope(Scope.Name.ALL))
         url shouldEqualTo "https://mastodon.cloud/oauth/authorize?client_id=client_id&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=read write follow"
+    }
+
+    @Test
+    fun getAccessToken() {
+        val client: MastodonClient = MockClient.mock("access_token.json")
+        val apps = Apps(client)
+        val accessToken = apps.getAccessToken("test", "test", code = "test")
+        accessToken.accessToken shouldEqualTo "test"
+        accessToken.scope shouldEqualTo "read write follow"
+        accessToken.tokenType shouldEqualTo "bearer"
+        accessToken.createdAt shouldEqualTo 1493188835
+    }
+
+    @Test(expected = Mastodon4jRequestException::class)
+    fun getAccessTokenWithException() {
+        val client: MastodonClient = MockClient.ioException()
+        val apps = Apps(client)
+        apps.getAccessToken("test", "test", code = "test")
+    }
+
+    @Test
+    fun postUserNameAndPassword() {
+        val client: MastodonClient = MockClient.mock("access_token.json")
+        val apps = Apps(client)
+        val accessToken = apps.postUserNameAndPassword("test", "test", Scope(Scope.Name.ALL), "test", "test")
+        accessToken.accessToken shouldEqualTo "test"
+        accessToken.scope shouldEqualTo "read write follow"
+        accessToken.tokenType shouldEqualTo "bearer"
+        accessToken.createdAt shouldEqualTo 1493188835
+    }
+
+    @Test(expected = Mastodon4jRequestException::class)
+    fun postUserNameAndPasswordWithException() {
+        val client: MastodonClient = MockClient.ioException()
+        val apps = Apps(client)
+        apps.postUserNameAndPassword("test", "test", Scope(Scope.Name.ALL), "test", "test")
     }
 }

@@ -7,6 +7,7 @@ import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.*
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
+import com.sys1yagi.mastodon4j.extension.fromJson
 import com.sys1yagi.mastodon4j.extension.genericType
 import com.sys1yagi.mastodon4j.extension.toPageable
 import okhttp3.MediaType
@@ -22,9 +23,8 @@ class Statuses(private val client: MastodonClient) {
     fun getStatus(statusId: Long): Status {
         val response = client.get("statuses/$statusId")
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Status::class.java
             )
         } else {
@@ -37,9 +37,8 @@ class Statuses(private val client: MastodonClient) {
     fun getContext(statusId: Long): Context {
         val response = client.get("statuses/$statusId/context")
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Context::class.java
             )
         } else {
@@ -52,9 +51,8 @@ class Statuses(private val client: MastodonClient) {
     fun getCard(statusId: Long): Card {
         val response = client.get("statuses/$statusId/card")
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Card::class.java
             )
         } else {
@@ -71,9 +69,8 @@ class Statuses(private val client: MastodonClient) {
                 range.toParameter()
         )
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Account>>(
-                    body,
+            return response.fromJson<List<Account>>(
+                    client.getSerializer(),
                     genericType<List<Account>>()
             ).toPageable(response)
         } else {
@@ -90,9 +87,8 @@ class Statuses(private val client: MastodonClient) {
                 range.toParameter()
         )
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Account>>(
-                    body,
+            return response.fromJson<List<Account>>(
+                    client.getSerializer(),
                     genericType<List<Account>>()
             ).toPageable(response)
         } else {
@@ -140,9 +136,8 @@ class Statuses(private val client: MastodonClient) {
                         parameters
                 ))
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Status::class.java
             )
         } else {
@@ -164,9 +159,8 @@ class Statuses(private val client: MastodonClient) {
     fun postReblog(statusId: Long): Status {
         val response = client.post("statuses/$statusId/reblog", emptyRequestBody())
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Status::class.java
             )
         } else {
@@ -179,9 +173,8 @@ class Statuses(private val client: MastodonClient) {
     fun postUnreblog(statusId: Long): Status {
         val response = client.post("statuses/$statusId/unreblog", emptyRequestBody())
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Status::class.java
             )
         } else {
@@ -194,9 +187,8 @@ class Statuses(private val client: MastodonClient) {
     fun postFavourite(statusId: Long): Status {
         val response = client.post("statuses/$statusId/favourite", emptyRequestBody())
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Status::class.java
             )
         } else {
@@ -209,9 +201,8 @@ class Statuses(private val client: MastodonClient) {
     fun postUnfavourite(statusId: Long): Status {
         val response = client.post("statuses/$statusId/unfavourite", emptyRequestBody())
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Status::class.java
             )
         } else {

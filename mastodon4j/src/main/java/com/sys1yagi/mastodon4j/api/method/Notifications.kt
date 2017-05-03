@@ -6,6 +6,7 @@ import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Notification
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
+import com.sys1yagi.mastodon4j.extension.fromJson
 import com.sys1yagi.mastodon4j.extension.genericType
 import com.sys1yagi.mastodon4j.extension.toPageable
 
@@ -22,11 +23,8 @@ class Notifications(private val client: MastodonClient) {
                 range.toParameter()
         )
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Notification>>(
-                    body,
-                    genericType<List<Notification>>()
-            ).toPageable(response)
+            return response.fromJson<List<Notification>>(client.getSerializer(), genericType<List<Notification>>())
+                    .toPageable(response)
         } else {
             throw Mastodon4jRequestException(response)
         }
@@ -37,11 +35,7 @@ class Notifications(private val client: MastodonClient) {
     fun getNotification(id: Long): Notification {
         val response = client.get("notifications/$id")
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
-                    Notification::class.java
-            )
+            return response.fromJson(client.getSerializer(), Notification::class.java)
         } else {
             throw Mastodon4jRequestException(response)
         }

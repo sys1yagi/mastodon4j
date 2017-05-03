@@ -1,0 +1,17 @@
+{
+  "id": 11111,
+  "username": "test",
+  "acct": "test@test.com",
+  "display_name": "test",
+  "locked": false,
+  "created_at": "2017-04-27T11:12:20.039Z",
+  "followers_count": 371,
+  "following_count": 14547,
+  "statuses_count": 195,
+  "note": "<p>test</p>",
+  "url": "https://test.com/test",
+  "avatar": "test",
+  "avatar_static": "test",
+  "header": "test",
+  "header_static": "test"
+}

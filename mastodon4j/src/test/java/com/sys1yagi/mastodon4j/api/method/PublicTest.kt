@@ -1,5 +1,6 @@
 package com.sys1yagi.mastodon4j.api.method
 
+import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.testtool.MockClient
 import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
@@ -7,7 +8,22 @@ import org.junit.Test
 class PublicTest {
     @Test
     fun getInstance() {
-        // TODO
+        val client = MockClient.mock("instance.json")
+        val publicMethod = Public(client)
+
+        val instance = publicMethod.getInstance()
+        instance.uri shouldEqualTo "test.com"
+        instance.title shouldEqualTo "test.com"
+        instance.description shouldEqualTo "description"
+        instance.email shouldEqualTo "owner@test.com"
+        instance.version shouldEqualTo "1.3.2"
+    }
+
+    @Test(expected = Mastodon4jRequestException::class)
+    fun getInstanceWithException() {
+        val client = MockClient.ioException()
+        val publicMethod = Public(client)
+        publicMethod.getInstance()
     }
 
     @Test
@@ -22,8 +38,15 @@ class PublicTest {
         result.hashtags.size shouldEqualTo 5
     }
 
+    @Test(expected = Mastodon4jRequestException::class)
+    fun getSearchWithException() {
+        val client = MockClient.ioException()
+        val publicMethod = Public(client)
+        publicMethod.getSearch("test")
+    }
+
     @Test
-    fun public() {
+    fun getLocalPublic() {
         val client = MockClient.mock("public_timeline.json", maxId = 3L, sinceId = 1L)
         val publicMethod = Public(client)
         val statuses = publicMethod.getLocalPublic()
@@ -36,12 +59,26 @@ class PublicTest {
         }
     }
 
+    @Test(expected = Mastodon4jRequestException::class)
+    fun getLocalPublicWithException() {
+        val client = MockClient.ioException()
+        val publicMethod = Public(client)
+        publicMethod.getLocalPublic()
+    }
+
     @Test
-    fun tag() {
+    fun getLocalTag() {
         val client = MockClient.mock("tag.json", maxId = 3L, sinceId = 1L)
         val publicMethod = Public(client)
         val statuses = publicMethod.getLocalTag("mastodon")
         statuses.part.size shouldEqualTo 20
+    }
+
+    @Test(expected = Mastodon4jRequestException::class)
+    fun getLocalTagWithException() {
+        val client = MockClient.ioException()
+        val publicMethod = Public(client)
+        publicMethod.getLocalTag("mastodon")
     }
 
 }

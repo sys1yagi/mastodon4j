@@ -9,6 +9,7 @@ import com.sys1yagi.mastodon4j.api.entity.Relationship
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
+import com.sys1yagi.mastodon4j.extension.fromJson
 import com.sys1yagi.mastodon4j.extension.genericType
 import com.sys1yagi.mastodon4j.extension.toPageable
 import okhttp3.MediaType
@@ -23,9 +24,8 @@ class Accounts(private val client: MastodonClient) {
     fun getAccount(accountId: Long): Account {
         val response = client.get("accounts/$accountId")
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Account::class.java
             )
         } else {
@@ -38,9 +38,8 @@ class Accounts(private val client: MastodonClient) {
     fun getVerifyCredentials(): Account {
         val response = client.get("accounts/verify_credentials")
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Account::class.java
             )
         } else {
@@ -77,9 +76,8 @@ class Accounts(private val client: MastodonClient) {
                         parameters
                 ))
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Account::class.java
             )
         } else {
@@ -96,9 +94,8 @@ class Accounts(private val client: MastodonClient) {
                 range.toParameter()
         )
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Account>>(
-                    body,
+            return response.fromJson<List<Account>>(
+                    client.getSerializer(),
                     genericType<List<Account>>()
             ).toPageable(response)
         } else {
@@ -115,9 +112,8 @@ class Accounts(private val client: MastodonClient) {
                 range.toParameter()
         )
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Account>>(
-                    body,
+            return response.fromJson<List<Account>>(
+                    client.getSerializer(),
                     genericType<List<Account>>()
             ).toPageable(response)
         } else {
@@ -138,9 +134,8 @@ class Accounts(private val client: MastodonClient) {
                 parameters
         )
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Status>>(
-                    body,
+            return response.fromJson<List<Status>>(
+                    client.getSerializer(),
                     genericType<List<Status>>()
             ).toPageable(response)
         } else {
@@ -153,9 +148,8 @@ class Accounts(private val client: MastodonClient) {
     fun postFollow(accountId: Long): Relationship {
         val response = client.post("accounts/$accountId/follow", emptyRequestBody())
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Relationship::class.java
             )
         } else {
@@ -168,9 +162,8 @@ class Accounts(private val client: MastodonClient) {
     fun postUnFollow(accountId: Long): Relationship {
         val response = client.post("accounts/$accountId/unfollow", emptyRequestBody())
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Relationship::class.java
             )
         } else {
@@ -183,9 +176,8 @@ class Accounts(private val client: MastodonClient) {
     fun postBlock(accountId: Long): Relationship {
         val response = client.post("accounts/$accountId/block", emptyRequestBody())
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Relationship::class.java
             )
         } else {
@@ -198,9 +190,8 @@ class Accounts(private val client: MastodonClient) {
     fun postUnblock(accountId: Long): Relationship {
         val response = client.post("accounts/$accountId/unblock", emptyRequestBody())
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Relationship::class.java
             )
         } else {
@@ -213,9 +204,8 @@ class Accounts(private val client: MastodonClient) {
     fun postMute(accountId: Long): Relationship {
         val response = client.post("accounts/$accountId/mute", emptyRequestBody())
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Relationship::class.java
             )
         } else {
@@ -228,9 +218,8 @@ class Accounts(private val client: MastodonClient) {
     fun postUnmute(accountId: Long): Relationship {
         val response = client.post("accounts/$accountId/unmute", emptyRequestBody())
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson(
-                    body,
+            return response.fromJson(
+                    client.getSerializer(),
                     Relationship::class.java
             )
         } else {
@@ -240,17 +229,16 @@ class Accounts(private val client: MastodonClient) {
 
     //  GET /api/v1/accounts/relationships
     @Throws(Mastodon4jRequestException::class)
-    fun getRelationships(accountIds: List<Long>): Pageable<Relationship> {
+    fun getRelationships(accountIds: List<Long>): List<Relationship> {
         val response = client.get(
                 "accounts/relationships",
                 Parameter().append("id", accountIds)
         )
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Relationship>>(
-                    body,
+            return response.fromJson<List<Relationship>>(
+                    client.getSerializer(),
                     genericType<List<Relationship>>()
-            ).toPageable(response)
+            )
         } else {
             throw Mastodon4jRequestException(response)
         }
@@ -263,7 +251,7 @@ class Accounts(private val client: MastodonClient) {
      */
     @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    fun getAccountSearch(query: String, limit: Int = 40): Pageable<Account> {
+    fun getAccountSearch(query: String, limit: Int = 40): List<Account> {
         val response = client.get(
                 "accounts/search",
                 Parameter()
@@ -271,11 +259,10 @@ class Accounts(private val client: MastodonClient) {
                         .append("limit", limit)
         )
         if (response.isSuccessful) {
-            val body = response.body().string()
-            return client.getSerializer().fromJson<List<Account>>(
-                    body,
+            return response.fromJson<List<Account>>(
+                    client.getSerializer(),
                     genericType<List<Account>>()
-            ).toPageable(response)
+            )
         } else {
             throw Mastodon4jRequestException(response)
         }

@@ -11,7 +11,7 @@ class StatusTest {
     fun deserialize() {
         val json = AssetsUtil.readFromAssets("status.json")
         val status: Status = Gson().fromJson(json, Status::class.java)
-        status.id shouldEqualTo 172429L
+        status.id shouldEqualTo 11111L
         status.visibility shouldEqualTo Status.Visibility.Public.value
         status.content shouldEqualTo "Test Status"
         val account = status.account

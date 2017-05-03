@@ -1,5 +1,6 @@
 package com.sys1yagi.mastodon4j.api.method
 
+import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.testtool.MockClient
 import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
@@ -18,7 +19,7 @@ class FavouritesTest {
         status.id shouldEqualTo 1111
     }
 
-    @Test(expected = SocketTimeoutException::class)
+    @Test(expected = Mastodon4jRequestException::class)
     fun exception() {
         val client = MockClient.ioException()
 

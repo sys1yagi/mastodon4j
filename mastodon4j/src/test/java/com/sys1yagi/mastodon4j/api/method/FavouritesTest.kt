@@ -14,7 +14,7 @@ class FavouritesTest {
         val client = MockClient.mock("favourites.json")
 
         val favorites = Favourites(client)
-        val pageable = favorites.getFavourites()
+        val pageable = favorites.getFavourites().execute()
         val status = pageable.part.first()
         status.id shouldEqualTo 1111
     }
@@ -24,6 +24,6 @@ class FavouritesTest {
         val client = MockClient.ioException()
 
         val favorites = Favourites(client)
-        favorites.getFavourites()
+        favorites.getFavourites().execute()
     }
 }

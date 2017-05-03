@@ -26,7 +26,7 @@ class Kotlindon {
             val instanceName = args[0]
             val credentialFilePath = args[1]
             val client = appRegistrationIfNeeded(instanceName, credentialFilePath)
-             listenHome(client)
+            listenHome(client)
         }
 
         fun listenHome(client: MastodonClient) {

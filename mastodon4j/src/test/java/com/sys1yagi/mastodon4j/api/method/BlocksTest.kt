@@ -5,8 +5,6 @@ import com.sys1yagi.mastodon4j.testtool.MockClient
 import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
 
-import org.junit.Assert.*
-
 class BlocksTest {
     @Test
     fun getBlocks() {

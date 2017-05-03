@@ -1,0 +1,6 @@
+{
+  "url": "The url associated with the card",
+  "title": "The title of the card",
+  "description": "The card description",
+  "image": "The image associated with the card, if any"
+}

@@ -14,7 +14,7 @@ object GetPublicTimelines {
         val publicMethods = Public(client)
 
         try {
-            val statuses = publicMethods.getLocalPublic(Range())
+            val statuses = publicMethods.getLocalPublic(Range()).execute()
             statuses.part.forEach { status ->
                 println("=============")
                 System.out.println(status.account?.displayName)

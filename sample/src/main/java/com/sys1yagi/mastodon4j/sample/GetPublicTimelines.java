@@ -9,6 +9,7 @@ import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException;
 import com.sys1yagi.mastodon4j.api.method.Favourites;
 import com.sys1yagi.mastodon4j.api.method.Public;
 import com.sys1yagi.mastodon4j.api.method.Timelines;
+import kotlin.Unit;
 import okhttp3.OkHttpClient;
 
 import java.util.List;
@@ -19,7 +20,9 @@ public class GetPublicTimelines {
         Public publicMethod = new Public(client);
 
         try {
-            Pageable<Status> statuses = publicMethod.getLocalPublic(new Range());
+            Pageable<Status> statuses = publicMethod.getLocalPublic(new Range())
+                    .doOnJson(System.out::println)
+                    .execute();
             statuses.getPart().forEach(status -> {
                 System.out.println("=============");
                 System.out.println(status.getAccount().getDisplayName());

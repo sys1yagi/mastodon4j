@@ -10,6 +10,10 @@ open class MastodonRequest<T>(
         private val executor: () -> Response,
         private val mapper: (String) -> Any
 ) {
+    interface Action1<T> {
+        fun invoke(arg: T)
+    }
+
     var action: (String) -> Unit = {}
 
     private var isPageable: Boolean = false
@@ -18,8 +22,13 @@ open class MastodonRequest<T>(
         isPageable = true
     }
 
+    @JvmSynthetic
     fun doOnJson(action: (String) -> Unit) = apply {
         this.action = action
+    }
+
+    fun doOnJson(action: Action1<String>) = apply {
+        this.action = { action.invoke(it) }
     }
 
     @Suppress("UNCHECKED_CAST")

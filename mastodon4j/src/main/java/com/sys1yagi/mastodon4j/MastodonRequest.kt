@@ -14,7 +14,7 @@ open class MastodonRequest<T>(
         fun invoke(arg: T)
     }
 
-    var action: (String) -> Unit = {}
+    private var action: (String) -> Unit = {}
 
     private var isPageable: Boolean = false
 

@@ -1,6 +1,7 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
+import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
@@ -9,9 +10,6 @@ import com.sys1yagi.mastodon4j.api.entity.Relationship
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
-import com.sys1yagi.mastodon4j.extension.fromJson
-import com.sys1yagi.mastodon4j.extension.genericType
-import com.sys1yagi.mastodon4j.extension.toPageable
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
@@ -21,30 +19,20 @@ import okhttp3.RequestBody
 class Accounts(private val client: MastodonClient) {
     // GET /api/v1/accounts/:id
     @Throws(Mastodon4jRequestException::class)
-    fun getAccount(accountId: Long): Account {
-        val response = client.get("accounts/$accountId")
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Account::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getAccount(accountId: Long): MastodonRequest<Account> {
+        return MastodonRequest(
+                { client.get("accounts/$accountId") },
+                { client.getSerializer().fromJson(it, Account::class.java) }
+        )
     }
 
     //  GET /api/v1/accounts/verify_credentials
     @Throws(Mastodon4jRequestException::class)
-    fun getVerifyCredentials(): Account {
-        val response = client.get("accounts/verify_credentials")
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Account::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getVerifyCredentials(): MastodonRequest<Account> {
+        return MastodonRequest(
+                { client.get("accounts/verify_credentials") },
+                { client.getSerializer().fromJson(it, Account::class.java) }
+        )
     }
 
     /**
@@ -55,7 +43,7 @@ class Accounts(private val client: MastodonClient) {
      * header: A base64 encoded image to display as the user's header image (e.g. data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAADrCAYAAAA...)
      */
     @Throws(Mastodon4jRequestException::class)
-    fun updateCredential(displayName: String?, note: String?, avatar: String?, header: String?): Account {
+    fun updateCredential(displayName: String?, note: String?, avatar: String?, header: String?): MastodonRequest<Account> {
         val parameters = Parameter().apply {
             displayName?.let {
                 append("display_name", it)
@@ -70,178 +58,166 @@ class Accounts(private val client: MastodonClient) {
                 append("header", it)
             }
         }.build()
-        val response = client.patch("accounts/update_credentials",
-                RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
-                        parameters
-                ))
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Account::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+        return MastodonRequest(
+                {
+                    client.patch("accounts/update_credentials",
+                            RequestBody.create(
+                                    MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                                    parameters
+                            ))
+                },
+                {
+                    client.getSerializer().fromJson(it, Account::class.java)
+                }
+        )
     }
 
     //  GET /api/v1/accounts/:id/followers
     @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    fun getFollowers(accountId: Long, range: Range = Range()): Pageable<Account> {
-        val response = client.get(
-                "accounts/$accountId/followers",
-                range.toParameter()
-        )
-        if (response.isSuccessful) {
-            return response.fromJson<List<Account>>(
-                    client.getSerializer(),
-                    genericType<List<Account>>()
-            ).toPageable(response)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getFollowers(accountId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
+        return MastodonRequest<Pageable<Account>>(
+                {
+                    client.get(
+                            "accounts/$accountId/followers",
+                            range.toParameter()
+                    )
+                },
+                {
+                    client.getSerializer().fromJson(it, Account::class.java)
+                }
+        ).toPageable()
     }
 
     //  GET /api/v1/accounts/:id/following
     @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    fun getFollowing(accountId: Long, range: Range = Range()): Pageable<Account> {
-        val response = client.get(
-                "accounts/$accountId/following",
-                range.toParameter()
-        )
-        if (response.isSuccessful) {
-            return response.fromJson<List<Account>>(
-                    client.getSerializer(),
-                    genericType<List<Account>>()
-            ).toPageable(response)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun getFollowing(accountId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
+        return MastodonRequest<Pageable<Account>>(
+                {
+                    client.get(
+                            "accounts/$accountId/following",
+                            range.toParameter())
+                },
+                {
+                    client.getSerializer().fromJson(it, Account::class.java)
+                }
+        ).toPageable()
     }
 
     //  GET /api/v1/accounts/:id/statuses
     @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    fun getStatuses(accountId: Long, onlyMedia: Boolean, range: Range = Range()): Pageable<Status> {
+    fun getStatuses(accountId: Long, onlyMedia: Boolean, range: Range = Range()): MastodonRequest<Pageable<Status>> {
         val parameters = range.toParameter()
         if (onlyMedia) {
             parameters.append("only_media", true)
         }
-        val response = client.get(
-                "accounts/$accountId/statuses",
-                parameters
-        )
-        if (response.isSuccessful) {
-            return response.fromJson<List<Status>>(
-                    client.getSerializer(),
-                    genericType<List<Status>>()
-            ).toPageable(response)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+        return MastodonRequest<Pageable<Status>>(
+                {
+                    client.get(
+                            "accounts/$accountId/statuses",
+                            parameters
+                    )
+                },
+                {
+                    client.getSerializer().fromJson(it, Status::class.java)
+                }
+        ).toPageable()
     }
 
     //  POST /api/v1/accounts/:id/follow
     @Throws(Mastodon4jRequestException::class)
-    fun postFollow(accountId: Long): Relationship {
-        val response = client.post("accounts/$accountId/follow", emptyRequestBody())
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Relationship::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun postFollow(accountId: Long): MastodonRequest<Relationship> {
+        return MastodonRequest<Relationship>(
+                {
+                    client.post("accounts/$accountId/follow", emptyRequestBody())
+                },
+                {
+                    client.getSerializer().fromJson(it, Relationship::class.java)
+                }
+        )
     }
 
     //  POST /api/v1/accounts/:id/unfollow
     @Throws(Mastodon4jRequestException::class)
-    fun postUnFollow(accountId: Long): Relationship {
-        val response = client.post("accounts/$accountId/unfollow", emptyRequestBody())
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Relationship::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun postUnFollow(accountId: Long): MastodonRequest<Relationship> {
+        return MastodonRequest<Relationship>(
+                {
+                    client.post("accounts/$accountId/unfollow", emptyRequestBody())
+                },
+                {
+                    client.getSerializer().fromJson(it, Relationship::class.java)
+                }
+        )
     }
 
     //  POST /api/v1/accounts/:id/block
     @Throws(Mastodon4jRequestException::class)
-    fun postBlock(accountId: Long): Relationship {
-        val response = client.post("accounts/$accountId/block", emptyRequestBody())
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Relationship::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun postBlock(accountId: Long): MastodonRequest<Relationship> {
+        return MastodonRequest<Relationship>(
+                {
+                    client.post("accounts/$accountId/block", emptyRequestBody())
+                },
+                {
+                    client.getSerializer().fromJson(it, Relationship::class.java)
+                }
+        )
     }
 
     //  POST /api/v1/accounts/:id/unblock
     @Throws(Mastodon4jRequestException::class)
-    fun postUnblock(accountId: Long): Relationship {
-        val response = client.post("accounts/$accountId/unblock", emptyRequestBody())
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Relationship::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun postUnblock(accountId: Long): MastodonRequest<Relationship> {
+        return MastodonRequest<Relationship>(
+                {
+                    client.post("accounts/$accountId/unblock", emptyRequestBody())
+                },
+                {
+                    client.getSerializer().fromJson(it, Relationship::class.java)
+                }
+        )
     }
 
     //  POST /api/v1/accounts/:id/mute
     @Throws(Mastodon4jRequestException::class)
-    fun postMute(accountId: Long): Relationship {
-        val response = client.post("accounts/$accountId/mute", emptyRequestBody())
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Relationship::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun postMute(accountId: Long): MastodonRequest<Relationship> {
+        return MastodonRequest<Relationship>(
+                {
+                    client.post("accounts/$accountId/mute", emptyRequestBody())
+                },
+                {
+                    client.getSerializer().fromJson(it, Relationship::class.java)
+                }
+        )
     }
 
     //  POST /api/v1/accounts/:id/unmute
     @Throws(Mastodon4jRequestException::class)
-    fun postUnmute(accountId: Long): Relationship {
-        val response = client.post("accounts/$accountId/unmute", emptyRequestBody())
-        if (response.isSuccessful) {
-            return response.fromJson(
-                    client.getSerializer(),
-                    Relationship::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+    fun postUnmute(accountId: Long): MastodonRequest<Relationship> {
+        return MastodonRequest<Relationship>(
+                {
+                    client.post("accounts/$accountId/unmute", emptyRequestBody())
+                },
+                {
+                    client.getSerializer().fromJson(it, Relationship::class.java)
+                }
+        )
     }
 
     //  GET /api/v1/accounts/relationships
     @Throws(Mastodon4jRequestException::class)
-    fun getRelationships(accountIds: List<Long>): List<Relationship> {
-        val response = client.get(
-                "accounts/relationships",
-                Parameter().append("id", accountIds)
+    fun getRelationships(accountIds: List<Long>): MastodonRequest<List<Relationship>> {
+        return MastodonRequest(
+                {
+                    client.get(
+                            "accounts/relationships",
+                            Parameter().append("id", accountIds)
+                    )
+                },
+                {
+                    client.getSerializer().fromJson(it, Relationship::class.java)
+                }
         )
-        if (response.isSuccessful) {
-            return response.fromJson<List<Relationship>>(
-                    client.getSerializer(),
-                    genericType<List<Relationship>>()
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
     }
 
     // GET /api/v1/accounts/search
@@ -251,20 +227,19 @@ class Accounts(private val client: MastodonClient) {
      */
     @JvmOverloads
     @Throws(Mastodon4jRequestException::class)
-    fun getAccountSearch(query: String, limit: Int = 40): List<Account> {
-        val response = client.get(
-                "accounts/search",
-                Parameter()
-                        .append("q", query)
-                        .append("limit", limit)
+    fun getAccountSearch(query: String, limit: Int = 40): MastodonRequest<List<Account>> {
+        return MastodonRequest(
+                {
+                    client.get(
+                            "accounts/search",
+                            Parameter()
+                                    .append("q", query)
+                                    .append("limit", limit)
+                    )
+                },
+                {
+                    client.getSerializer().fromJson(it, Account::class.java)
+                }
         )
-        if (response.isSuccessful) {
-            return response.fromJson<List<Account>>(
-                    client.getSerializer(),
-                    genericType<List<Account>>()
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
     }
 }

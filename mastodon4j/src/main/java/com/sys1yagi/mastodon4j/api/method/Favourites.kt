@@ -17,7 +17,6 @@ class Favourites(private val client: MastodonClient) {
 
     //  GET /api/v1/favourites
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
     fun getFavourites(range: Range = Range()): MastodonRequest<Pageable<Status>> {
         return MastodonRequest<Pageable<Status>>(
                 {

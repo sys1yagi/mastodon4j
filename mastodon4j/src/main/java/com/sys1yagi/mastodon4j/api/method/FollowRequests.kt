@@ -17,7 +17,6 @@ import com.sys1yagi.mastodon4j.extension.toPageable
 class FollowRequests(private val client: MastodonClient) {
     // GET /api/v1/follow_requests
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
     fun getFollowRequests(range: Range = Range()): MastodonRequest<Pageable<Account>> {
         return MastodonRequest<Pageable<Account>>(
                 { client.get("follow_requests", range.toParameter()) },

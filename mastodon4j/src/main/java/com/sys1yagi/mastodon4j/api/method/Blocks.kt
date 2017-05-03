@@ -17,7 +17,6 @@ class Blocks(private val client: MastodonClient) {
 
     //  GET /api/v1/blocks
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
     fun getBlocks(range: Range = Range()):MastodonRequest<Pageable<Account>> {
         return MastodonRequest<Pageable<Account>>(
                 {

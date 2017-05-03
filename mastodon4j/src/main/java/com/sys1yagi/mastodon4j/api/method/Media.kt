@@ -12,7 +12,6 @@ import okhttp3.MultipartBody
  */
 class Media(private val client: MastodonClient) {
     //  POST /api/v1/media
-    @Throws(Mastodon4jRequestException::class)
     fun postMedia(file: MultipartBody.Part): MastodonRequest<Attachment> {
         val requestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)

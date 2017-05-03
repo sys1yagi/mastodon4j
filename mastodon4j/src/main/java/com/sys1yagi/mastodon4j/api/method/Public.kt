@@ -36,26 +36,23 @@ class Public(private val client: MastodonClient) {
      * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#search
      */
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
-    fun getSearch(query: String, resolve: Boolean = false): Results {
-        val response = client.get(
-                "search",
-                Parameter().apply {
-                    append("q", query)
-                    if (resolve) {
-                        append("resolve", resolve)
-                    }
+    fun getSearch(query: String, resolve: Boolean = false): MastodonRequest<Results> {
+        return MastodonRequest<Results>(
+                {
+                    client.get(
+                            "search",
+                            Parameter().apply {
+                                append("q", query)
+                                if (resolve) {
+                                    append("resolve", resolve)
+                                }
+                            }
+                    )
+                },
+                {
+                    client.getSerializer().fromJson(it, Results::class.java)
                 }
         )
-
-        if (response.isSuccessful) {
-            return response.fromJson<Results>(
-                    client.getSerializer(),
-                    Results::class.java
-            )
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
     }
 
     /**
@@ -78,41 +75,36 @@ class Public(private val client: MastodonClient) {
     }
 
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
     fun getLocalPublic(range: Range = Range()) = getPublic(true, range)
 
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
     fun getFederatedPublic(range: Range = Range()) = getPublic(false, range)
 
     /**
      * GET /api/v1/timelines/tag/:tag
      * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
      */
-    private fun getTag(tag: String, local: Boolean, range: Range): Pageable<Status> {
+    private fun getTag(tag: String, local: Boolean, range: Range): MastodonRequest<Pageable<Status>> {
         val parameter = range.toParameter()
         if (local) {
             parameter.append("local", local)
         }
-        val response = client.get(
-                "timelines/tag/$tag",
-                parameter
-        )
-        if (response.isSuccessful) {
-            return response.fromJson<List<Status>>(
-                    client.getSerializer(),
-                    genericType<List<Status>>()
-            ).toPageable(response)
-        } else {
-            throw Mastodon4jRequestException(response)
-        }
+        return MastodonRequest<Pageable<Status>>(
+                {
+                    client.get(
+                            "timelines/tag/$tag",
+                            parameter
+                    )
+                },
+                {
+                    client.getSerializer().fromJson(it, Status::class.java)
+                }
+        ).toPageable()
     }
 
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
     fun getLocalTag(tag: String, range: Range = Range()) = getTag(tag, true, range)
 
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
     fun getFederatedTag(tag: String, range: Range = Range()) = getTag(tag, false, range)
 }

@@ -16,7 +16,6 @@ import com.sys1yagi.mastodon4j.extension.toPageable
 class Mutes(private val client: MastodonClient) {
     // GET /api/v1/mutes
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
     fun getMutes(range: Range = Range()): MastodonRequest<Pageable<Account>> {
         return MastodonRequest<Pageable<Account>>(
                 {

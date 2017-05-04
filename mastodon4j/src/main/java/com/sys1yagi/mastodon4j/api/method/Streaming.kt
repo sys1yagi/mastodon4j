@@ -4,22 +4,20 @@ import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Dispatcher
 import com.sys1yagi.mastodon4j.api.Handler
+import com.sys1yagi.mastodon4j.api.Shutdownable
 import com.sys1yagi.mastodon4j.api.entity.Notification
 import com.sys1yagi.mastodon4j.api.entity.Status
+import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-class Streaming(val client: MastodonClient, val handler: Handler) {
-
-    val dispatcher = Dispatcher()
-    val lock = ReentrantLock()
-
-    fun federatedPublic() {
-        val response = client.get(
-                "streaming/public"
-        )
+class Streaming(private val client: MastodonClient) {
+    @Throws(Mastodon4jRequestException::class)
+    fun federatedPublic(handler: Handler): Shutdownable {
+        val response = client.get("streaming/public")
         if (response.isSuccessful) {
             val reader = response.body().byteStream().bufferedReader()
+            val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
                     val line = reader.readLine()
@@ -39,15 +37,18 @@ class Streaming(val client: MastodonClient, val handler: Handler) {
                     }
                 }
             })
+            return Shutdownable(dispatcher)
+        } else {
+            throw Mastodon4jRequestException(response)
         }
     }
 
-    fun localPublic() {
-        val response = client.get(
-                "streaming/public/local"
-        )
+    @Throws(Mastodon4jRequestException::class)
+    fun localPublic(handler: Handler): Shutdownable {
+        val response = client.get("streaming/public/local")
         if (response.isSuccessful) {
             val reader = response.body().byteStream().bufferedReader()
+            val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
                     val line = reader.readLine()
@@ -67,16 +68,21 @@ class Streaming(val client: MastodonClient, val handler: Handler) {
                     }
                 }
             })
+            return Shutdownable(dispatcher)
+        } else {
+            throw Mastodon4jRequestException(response)
         }
     }
 
-    fun federatedHashtag(tag: String) {
+    @Throws(Mastodon4jRequestException::class)
+    fun federatedHashtag(tag: String, handler: Handler): Shutdownable {
         val response = client.get(
                 "streaming/hashtag",
                 Parameter().append("tag", tag)
         )
         if (response.isSuccessful) {
             val reader = response.body().byteStream().bufferedReader()
+            val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
                     val line = reader.readLine()
@@ -96,16 +102,21 @@ class Streaming(val client: MastodonClient, val handler: Handler) {
                     }
                 }
             })
+            return Shutdownable(dispatcher)
+        } else {
+            throw Mastodon4jRequestException(response)
         }
     }
 
-    fun localHashtag(tag: String) {
+    @Throws(Mastodon4jRequestException::class)
+    fun localHashtag(tag: String, handler: Handler): Shutdownable {
         val response = client.get(
                 "streaming/hashtag/local",
                 Parameter().append("tag", tag)
         )
         if (response.isSuccessful) {
             val reader = response.body().byteStream().bufferedReader()
+            val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
                     val line = reader.readLine()
@@ -125,15 +136,20 @@ class Streaming(val client: MastodonClient, val handler: Handler) {
                     }
                 }
             })
+            return Shutdownable(dispatcher)
+        } else {
+            throw Mastodon4jRequestException(response)
         }
     }
 
-    fun user() {
+    @Throws(Mastodon4jRequestException::class)
+    fun user(handler: Handler): Shutdownable {
         val response = client.get(
                 "streaming/user"
         )
         if (response.isSuccessful) {
             val reader = response.body().byteStream().bufferedReader()
+            val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
                     val line = reader.readLine()
@@ -168,12 +184,9 @@ class Streaming(val client: MastodonClient, val handler: Handler) {
                     }
                 }
             })
-        }
-    }
-
-    fun shutdown() {
-        lock.withLock {
-            dispatcher.shutdown()
+            return Shutdownable(dispatcher)
+        } else {
+            throw Mastodon4jRequestException(response)
         }
     }
 }

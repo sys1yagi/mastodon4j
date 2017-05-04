@@ -16,7 +16,7 @@ import java.util.List;
 
 public class GetPublicTimelines {
     public static void main(String[] args) {
-        MastodonClient client = new MastodonClient("mstdn.jp", new OkHttpClient(), new Gson());
+        MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient.Builder(), new Gson()).build();
         Public publicMethod = new Public(client);
 
         try {

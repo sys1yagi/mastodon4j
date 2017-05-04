@@ -10,7 +10,7 @@ import okhttp3.OkHttpClient;
 
 public class GetAppRegistration {
     public static void main(String[] args) {
-        MastodonClient client = new MastodonClient("mstdn.jp", new OkHttpClient(), new Gson());
+        MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient.Builder(), new Gson()).build();
         Apps apps = new Apps(client);
         try {
             AppRegistration registration = apps.createApp(

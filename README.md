@@ -45,7 +45,7 @@ Check latest version on Jitpack [![](https://jitpack.io/v/sys1yagi/mastodon4j.sv
 __kotlin__
 
 ```kotlin
-val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson())
+val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient(), Gson()).build()
         
 val timelines = Timelines(client)
 val statuses: List<Status> = timelines.getPublic().execute()
@@ -54,7 +54,7 @@ val statuses: List<Status> = timelines.getPublic().execute()
 __java__
 
 ```java
-MastodonClient client = new MastodonClient("mstdn.jp", new OkHttpClient(), new Gson());
+MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient(), new Gson()).build();
 Timelines timelines = new Timelines(client);
 
 try {
@@ -76,7 +76,7 @@ If you want to access the auth required API, you need create client credential a
 __kotlin__
 
 ```kotlin
-val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson())
+val client: MastodonClient = MastodonClient.Builde("mstdn.jp", OkHttpClient(), Gson()).build()
 val apps = Apps(client)
 val appRegistration = apps.createApp(
 	clientName = "client name",
@@ -92,7 +92,7 @@ AppRegistration has client id and client secret.
 __java__
 
 ```java
-MastodonClient client = new MastodonClient("mstdn.jp", new OkHttpClient(), new Gson());
+MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient(), new Gson()).build();
 Apps apps = new Apps(client);
 try {
 	AppRegistration registration = apps.createApp(
@@ -115,7 +115,7 @@ try {
 __kotlin__
 
 ```kotlin
-val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson())
+val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient(), Gson()).build()
 val clientId = appRegistration.clientId
 val apps = Apps(client)
 
@@ -143,7 +143,9 @@ __kotlin__
 
 ```kotlin
 // Need parameter of accessToken
-val client: MastodonClient = MastodonClient("mstdn.jp", OkHttpClient(), Gson(), accessToken)
+val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient(), Gson())
+  .accessToken(accessToken)
+  .build()
 
 val statuses: List<Status> = timelines.getHome().execute()
 ```
@@ -155,7 +157,7 @@ v0.0.7 or later
 __kotlin__
 
 ```kotlin
-val client = //
+val client = //...
 val publicMethod = Public(client)
 
 publicMethod.getLocalPublic()
@@ -164,8 +166,71 @@ publicMethod.getLocalPublic()
     println(jsonString)
   }
   .execute() 
-
 ```
+
+## Streaming API
+
+v1.0.0 or later
+
+__kotlin__
+
+```kotlin
+val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient(), Gson())
+  .accessToken(accessToken)
+  .useStreamingApi()
+  .build()
+
+val handler = object : Handler {
+  override fun onStatus(status: Status) {
+    println(status.content)
+  }
+  override fun onNotification(notification: Notification) {/* no op */}
+  override fun onDelete(id: Long) {/* no op */}
+}
+
+val streaming = Streaming(client)
+try {
+  val shutdownable = streaming.localPublic(handler)
+  Thread.sleep(10000L)
+  shutdownable.shutdown()
+} catch(e: Mastodon4jRequestException) {
+  e.printStackTrace()
+}
+```
+
+__java__
+
+```java
+MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient.Builder(), new Gson())
+        .accessToken(accessToken)
+        .useStreamingApi()
+        .build();
+Handler handler = new Handler() {
+    @Override
+    public void onStatus(@NotNull Status status) {
+        System.out.println(status.getContent());
+    }
+
+    @Override
+    public void onNotification(@NotNull Notification notification) {/* no op */}
+    @Override
+    public void onDelete(long id) {/* no op */}
+};
+
+Streaming streaming = new Streaming(client);
+try {
+    Shutdownable shutdownable = streaming.localPublic(handler);
+    Thread.sleep(10000L);
+    shutdownable.shutdown();
+} catch (Exception e) {
+    e.printStackTrace();
+}
+```
+
+
+# Versioning
+
+[Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html)
 
 # Implementation Progress
 
@@ -216,6 +281,16 @@ publicMethod.getLocalPublic()
 - [x] GET `/api/v1/timelines/public`
 - [x] GET `/api/v1/timelines/tag/:hashtag`
 
+## Streaming
+
+v1.0.0 or later
+
+- [x] `GET /api/v1/streaming/user`
+- [x] `GET /api/v1/streaming/public`
+- [x] `GET /api/v1/streaming/public/local`
+- [x] `GET /api/v1/streaming/hashtag`
+- [x] `GET /api/v1/streaming/hashtag/local`
+
 ## Auth
 
 - [x] Generate Url for OAuth `/oauth/authorize`
@@ -240,6 +315,16 @@ v0.0.2 or later
 - [x] RxSearch
 - [x] RxStatuses
 - [x] RxTimelines
+
+## Rx Streaming
+
+v1.0.0 or later
+
+- [ ] `GET /api/v1/streaming/user`
+- [x] `GET /api/v1/streaming/public`
+- [x] `GET /api/v1/streaming/public/local`
+- [x] `GET /api/v1/streaming/hashtag`
+- [x] `GET /api/v1/streaming/hashtag/local`
 
 # Contribution
 

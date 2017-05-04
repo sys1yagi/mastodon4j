@@ -3,6 +3,7 @@ package com.sys1yagi.mastodon4j.sample;
 import com.google.gson.Gson;
 import com.sys1yagi.mastodon4j.MastodonClient;
 import com.sys1yagi.mastodon4j.api.Handler;
+import com.sys1yagi.mastodon4j.api.Shutdownable;
 import com.sys1yagi.mastodon4j.api.entity.Notification;
 import com.sys1yagi.mastodon4j.api.entity.Status;
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException;
@@ -35,10 +36,11 @@ public class StreamPublicTimeline {
 
             }
         };
-        Streaming streaming = new Streaming(client, handler);
+        Streaming streaming = new Streaming(client);
         try {
-            streaming.federatedPublic();
-            Thread.currentThread().join();
+            Shutdownable shutdownable = streaming.localPublic(handler);
+            Thread.sleep(10000L);
+            shutdownable.shutdown();
         } catch (Exception e) {
             e.printStackTrace();
         }

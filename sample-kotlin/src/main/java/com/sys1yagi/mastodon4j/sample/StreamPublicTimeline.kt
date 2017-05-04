@@ -28,22 +28,17 @@ object StreamPublicTimeline {
 
             }
         }
-        val streaming = Streaming(client, handler)
-        Runtime.getRuntime().addShutdownHook(Thread {
-            println("shutdown..")
-            streaming.shutdown()
-        })
-
+        val streaming = Streaming(client)
         try {
-            streaming.federatedPublic()
+            val shutdownable = streaming.localPublic(handler)
+            Thread.sleep(10000L)
+            shutdownable.shutdown()
         } catch(e: Mastodon4jRequestException) {
             println("error")
             println(e.response?.code())
             println(e.response?.message())
             println(e.response?.body()?.string())
-            System.exit(0)
+            return
         }
-
-        Thread.currentThread().join()
     }
 }

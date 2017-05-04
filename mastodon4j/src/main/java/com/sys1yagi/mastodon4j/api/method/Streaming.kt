@@ -4,19 +4,20 @@ import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Dispatcher
 import com.sys1yagi.mastodon4j.api.Handler
+import com.sys1yagi.mastodon4j.api.Shutdownable
 import com.sys1yagi.mastodon4j.api.entity.Notification
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-class Streaming(val client: MastodonClient, val handler: Handler) {
+class Streaming(val client: MastodonClient) {
 
-    val dispatcher = Dispatcher()
-    val lock = ReentrantLock()
+    private val dispatcher = Dispatcher()
+    private val lock = ReentrantLock()
 
     @Throws(Mastodon4jRequestException::class)
-    fun federatedPublic() {
+    fun federatedPublic(handler: Handler) {
         val response = client.get("streaming/public")
         if (response.isSuccessful) {
             val reader = response.body().byteStream().bufferedReader()
@@ -45,10 +46,11 @@ class Streaming(val client: MastodonClient, val handler: Handler) {
     }
 
     @Throws(Mastodon4jRequestException::class)
-    fun localPublic() {
+    fun localPublic(handler: Handler): Shutdownable {
         val response = client.get("streaming/public/local")
         if (response.isSuccessful) {
             val reader = response.body().byteStream().bufferedReader()
+            val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
                     val line = reader.readLine()
@@ -68,13 +70,14 @@ class Streaming(val client: MastodonClient, val handler: Handler) {
                     }
                 }
             })
+            return Shutdownable(dispatcher)
         } else {
             throw Mastodon4jRequestException(response)
         }
     }
 
     @Throws(Mastodon4jRequestException::class)
-    fun federatedHashtag(tag: String) {
+    fun federatedHashtag(tag: String, handler: Handler) {
         val response = client.get(
                 "streaming/hashtag",
                 Parameter().append("tag", tag)
@@ -106,7 +109,7 @@ class Streaming(val client: MastodonClient, val handler: Handler) {
     }
 
     @Throws(Mastodon4jRequestException::class)
-    fun localHashtag(tag: String) {
+    fun localHashtag(tag: String, handler: Handler) {
         val response = client.get(
                 "streaming/hashtag/local",
                 Parameter().append("tag", tag)
@@ -138,7 +141,7 @@ class Streaming(val client: MastodonClient, val handler: Handler) {
     }
 
     @Throws(Mastodon4jRequestException::class)
-    fun user() {
+    fun user(handler: Handler) {
         val response = client.get(
                 "streaming/user"
         )

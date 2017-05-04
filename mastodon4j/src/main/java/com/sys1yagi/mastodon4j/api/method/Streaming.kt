@@ -11,7 +11,7 @@ import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-class Streaming(val client: MastodonClient) {
+class Streaming(private val client: MastodonClient) {
     @Throws(Mastodon4jRequestException::class)
     fun federatedPublic(handler: Handler): Shutdownable {
         val response = client.get("streaming/public")

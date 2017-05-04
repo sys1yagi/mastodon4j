@@ -19,6 +19,7 @@ public class StreamPublicTimeline {
         String accessToken = "PUT YOUR ACCESS TOKEN";
         MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient.Builder(), new Gson())
                 .accessToken(accessToken)
+                .useStreamingApi()
                 .build();
         Handler handler = new Handler() {
             @Override

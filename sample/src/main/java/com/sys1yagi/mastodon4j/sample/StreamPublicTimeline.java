@@ -14,13 +14,11 @@ import java.util.concurrent.TimeUnit;
 
 public class StreamPublicTimeline {
     public static void main(String[] args) {
-        OkHttpClient httpClient = new OkHttpClient.Builder()
-                .readTimeout(60, TimeUnit.SECONDS)
-                .build();
-
         // require authentication even if public streaming
-        String accessToken = "";
-        MastodonClient client = new MastodonClient("mstdn.jp", httpClient, new Gson(), accessToken);
+        String accessToken = "PUT YOUR ACCESS TOKEN";
+        MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient.Builder(), new Gson())
+                .accessToken(accessToken)
+                .build();
         Handler handler = new Handler() {
             @Override
             public void onStatus(@NotNull Status status) {
@@ -40,6 +38,7 @@ public class StreamPublicTimeline {
         Streaming streaming = new Streaming(client, handler);
         try {
             streaming.federatedPublic();
+            Thread.currentThread().join();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -19,6 +19,7 @@ private constructor(
                   private val gson: Gson) {
 
         private var accessToken: String? = null
+        private var debug = false
 
         fun accessToken(accessToken: String) = apply {
             this.accessToken = accessToken
@@ -28,12 +29,26 @@ private constructor(
             okHttpClientBuilder.readTimeout(60, TimeUnit.SECONDS)
         }
 
+        fun debug() = apply {
+            this.debug = true
+        }
+
         fun build(): MastodonClient {
             return MastodonClient(
                     instanceName,
                     okHttpClientBuilder.addNetworkInterceptor(AuthorizationInterceptor(accessToken)).build(),
                     gson
-            )
+            ).also {
+                it.debug = debug
+            }
+        }
+    }
+
+    private var debug = false
+
+    fun debugPrint(log: String) {
+        if (debug) {
+            println(log)
         }
     }
 
@@ -63,6 +78,7 @@ private constructor(
     open fun get(path: String, parameter: Parameter? = null): Response {
         try {
             val url = "$baseUrl/$path"
+            debugPrint(url)
             val urlWithParams = parameter?.let {
                 "$url?${it.build()}"
             } ?: url
@@ -79,6 +95,7 @@ private constructor(
 
     open fun postUrl(url: String, body: RequestBody): Response {
         try {
+            debugPrint(url)
             val call = client.newCall(
                     Request.Builder()
                             .url(url)
@@ -96,6 +113,7 @@ private constructor(
     open fun patch(path: String, body: RequestBody): Response {
         try {
             val url = "$baseUrl/$path"
+            debugPrint(url)
             val call = client.newCall(
                     Request.Builder()
                             .url(url)
@@ -111,6 +129,7 @@ private constructor(
     open fun delete(path: String): Response {
         try {
             val url = "$baseUrl/$path"
+            debugPrint(url)
             val call = client.newCall(
                     Request.Builder()
                             .url(url)

@@ -5,21 +5,16 @@ import com.sys1yagi.mastodon4j.api.entity.Notification
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.api.method.Streaming
-import okhttp3.ConnectionSpec
-import okhttp3.OkHttpClient
-import java.util.concurrent.TimeUnit
+
 
 object StreamPublicTimeline {
+
     @JvmStatic fun main(args: Array<String>) {
         val instanceName = args[0]
         val credentialFilePath = args[1]
-        val httpClient = OkHttpClient.Builder()
-                .connectionSpecs(listOf(ConnectionSpec.MODERN_TLS))
-                .readTimeout(60, TimeUnit.SECONDS)
-                .build()
 
         // require authentication even if public streaming
-        val client = Authenticator().appRegistrationIfNeeded(instanceName, credentialFilePath, httpClient)
+        val client = Authenticator().appRegistrationIfNeeded(instanceName, credentialFilePath, true)
         val handler = object : Handler {
             override fun onStatus(status: Status) {
                 println(status.content)

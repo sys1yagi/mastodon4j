@@ -11,7 +11,7 @@ import java.io.File
 import java.util.*
 
 class Authenticator {
-    fun appRegistrationIfNeeded(instanceName: String, credentialFilePath: String, okHttpClient: OkHttpClient = OkHttpClient()): MastodonClient {
+    fun appRegistrationIfNeeded(instanceName: String, credentialFilePath: String, useStreaming: Boolean = false): MastodonClient {
         val file = File(credentialFilePath)
         if (!file.exists()) {
             println("create $credentialFilePath.")
@@ -49,7 +49,14 @@ class Authenticator {
         } else {
             println("access token found...")
         }
-        return MastodonClient(instanceName, okHttpClient, Gson(), properties[Kotlindon.ACCESS_TOKEN].toString())
+        return MastodonClient.Builder(instanceName, OkHttpClient.Builder(), Gson())
+                .accessToken(properties[Kotlindon.ACCESS_TOKEN].toString())
+                .apply {
+                    if (useStreaming) {
+                        useStreamingApi()
+                    }
+                }
+                .build()
     }
 
     fun getAccessToken(instanceName: String,
@@ -58,13 +65,13 @@ class Authenticator {
                        email: String,
                        password: String
     ): AccessToken {
-        val client = MastodonClient(instanceName, OkHttpClient(), Gson())
+        val client = MastodonClient.Builder(instanceName, OkHttpClient.Builder(), Gson()).build()
         val apps = Apps(client)
         return apps.postUserNameAndPassword(clientId, clientSecret, Scope(), email, password).execute()
     }
 
     fun appRegistration(instanceName: String): AppRegistration {
-        val client = MastodonClient(instanceName, OkHttpClient(), Gson())
+        val client = MastodonClient.Builder(instanceName, OkHttpClient.Builder(), Gson()).build()
         val apps = Apps(client)
         return apps.createApp(
                 "kotlindon",

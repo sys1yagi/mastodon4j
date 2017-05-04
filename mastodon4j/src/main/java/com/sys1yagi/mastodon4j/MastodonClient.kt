@@ -18,7 +18,11 @@ private constructor(
                   private val okHttpClientBuilder: OkHttpClient.Builder,
                   private val gson: Gson) {
 
-        var accessToken: String? = null
+        private var accessToken: String? = null
+
+        fun accessToken(accessToken: String) = apply {
+            this.accessToken = accessToken
+        }
 
         fun useStreamingApi() = apply {
             okHttpClientBuilder.readTimeout(60, TimeUnit.SECONDS)

@@ -5,6 +5,7 @@ import com.sys1yagi.mastodon4j.MastodonClient;
 import com.sys1yagi.mastodon4j.api.Handler;
 import com.sys1yagi.mastodon4j.api.entity.Notification;
 import com.sys1yagi.mastodon4j.api.entity.Status;
+import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException;
 import com.sys1yagi.mastodon4j.api.method.Streaming;
 import okhttp3.OkHttpClient;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,8 @@ public class StreamPublicTimeline {
                 .build();
 
         // require authentication even if public streaming
-        MastodonClient client = new MastodonClient("mstdn.jp", httpClient, new Gson());
+        String accessToken = "";
+        MastodonClient client = new MastodonClient("mstdn.jp", httpClient, new Gson(), accessToken);
         Handler handler = new Handler() {
             @Override
             public void onStatus(@NotNull Status status) {
@@ -36,9 +38,10 @@ public class StreamPublicTimeline {
             }
         };
         Streaming streaming = new Streaming(client, handler);
-        streaming.federatedPublic();
-
-        while (true) {
+        try {
+            streaming.federatedPublic();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

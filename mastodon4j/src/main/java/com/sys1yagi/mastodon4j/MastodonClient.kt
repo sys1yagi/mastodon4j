@@ -4,16 +4,51 @@ import com.google.gson.Gson
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import okhttp3.*
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 
 open class MastodonClient
-@JvmOverloads
-constructor(
+private constructor(
         private val instanceName: String,
         private val client: OkHttpClient,
-        private val gson: Gson,
-        private val accessToken: String? = null
+        private val gson: Gson
 ) {
+
+    class Builder(private val instanceName: String,
+                  private val okHttpClientBuilder: OkHttpClient.Builder,
+                  private val gson: Gson) {
+
+        var accessToken: String? = null
+
+        fun useStreamingApi() = apply {
+            okHttpClientBuilder.readTimeout(60, TimeUnit.SECONDS)
+        }
+
+        fun build(): MastodonClient {
+            return MastodonClient(
+                    instanceName,
+                    okHttpClientBuilder.addNetworkInterceptor(AuthorizationInterceptor(accessToken)).build(),
+                    gson
+            )
+        }
+    }
+
+    private class AuthorizationInterceptor(val accessToken: String? = null) : Interceptor {
+        @Throws(IOException::class)
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val originalRequest = chain.request()
+            val compressedRequest = originalRequest.newBuilder()
+                    .headers(originalRequest.headers())
+                    .method(originalRequest.method(), originalRequest.body())
+                    .apply {
+                        accessToken?.let {
+                            header("Authorization", String.format("Bearer %s", it));
+                        }
+                    }
+                    .build()
+            return chain.proceed(compressedRequest)
+        }
+    }
 
     val baseUrl = "https://${instanceName}/api/v1"
 
@@ -28,12 +63,12 @@ constructor(
                 "$url?${it.build()}"
             } ?: url
             val call = client.newCall(
-                    authorizationHeader(Request.Builder())
+                    Request.Builder()
                             .url(urlWithParams)
                             .get()
                             .build())
             return call.execute()
-        } catch (e : IOException) {
+        } catch (e: IOException) {
             throw Mastodon4jRequestException(e)
         }
     }
@@ -41,12 +76,12 @@ constructor(
     open fun postUrl(url: String, body: RequestBody): Response {
         try {
             val call = client.newCall(
-                    authorizationHeader(Request.Builder())
+                    Request.Builder()
                             .url(url)
                             .post(body)
                             .build())
             return call.execute()
-        } catch (e : IOException) {
+        } catch (e: IOException) {
             throw Mastodon4jRequestException(e)
         }
     }
@@ -58,13 +93,13 @@ constructor(
         try {
             val url = "$baseUrl/$path"
             val call = client.newCall(
-                    authorizationHeader(Request.Builder())
+                    Request.Builder()
                             .url(url)
                             .patch(body)
                             .build()
             )
             return call.execute()
-        } catch (e : IOException) {
+        } catch (e: IOException) {
             throw Mastodon4jRequestException(e)
         }
     }
@@ -73,21 +108,14 @@ constructor(
         try {
             val url = "$baseUrl/$path"
             val call = client.newCall(
-                    authorizationHeader(Request.Builder())
+                    Request.Builder()
                             .url(url)
                             .delete()
                             .build()
             )
             return call.execute()
-        } catch (e : IOException) {
+        } catch (e: IOException) {
             throw Mastodon4jRequestException(e)
         }
     }
-
-    fun authorizationHeader(builder: Request.Builder) = builder.apply {
-        accessToken?.let {
-            header("Authorization", String.format("Bearer %s", it));
-        }
-    }
-
 }

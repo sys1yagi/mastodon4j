@@ -45,7 +45,7 @@ Check latest version on Jitpack [![](https://jitpack.io/v/sys1yagi/mastodon4j.sv
 __kotlin__
 
 ```kotlin
-val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient(), Gson()).build()
+val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient.Builder(), Gson()).build()
         
 val timelines = Timelines(client)
 val statuses: List<Status> = timelines.getPublic().execute()
@@ -54,7 +54,7 @@ val statuses: List<Status> = timelines.getPublic().execute()
 __java__
 
 ```java
-MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient(), new Gson()).build();
+MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient.Builder(), new Gson()).build();
 Timelines timelines = new Timelines(client);
 
 try {
@@ -76,7 +76,7 @@ If you want to access the auth required API, you need create client credential a
 __kotlin__
 
 ```kotlin
-val client: MastodonClient = MastodonClient.Builde("mstdn.jp", OkHttpClient(), Gson()).build()
+val client: MastodonClient = MastodonClient.Builde("mstdn.jp", OkHttpClient.Builder(), Gson()).build()
 val apps = Apps(client)
 val appRegistration = apps.createApp(
 	clientName = "client name",
@@ -92,7 +92,7 @@ AppRegistration has client id and client secret.
 __java__
 
 ```java
-MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient(), new Gson()).build();
+MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient.Builder(), new Gson()).build();
 Apps apps = new Apps(client);
 try {
 	AppRegistration registration = apps.createApp(
@@ -115,7 +115,7 @@ try {
 __kotlin__
 
 ```kotlin
-val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient(), Gson()).build()
+val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient.Builder(), Gson()).build()
 val clientId = appRegistration.clientId
 val apps = Apps(client)
 
@@ -143,7 +143,7 @@ __kotlin__
 
 ```kotlin
 // Need parameter of accessToken
-val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient(), Gson())
+val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient.Builder(), Gson())
   .accessToken(accessToken)
   .build()
 
@@ -175,7 +175,7 @@ v1.0.0 or later
 __kotlin__
 
 ```kotlin
-val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient(), Gson())
+val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient.Builder(), Gson())
   .accessToken(accessToken)
   .useStreamingApi()
   .build()

@@ -29,6 +29,7 @@ dependencies {
         exclude group: 'com.squareup.okhttp', 'module': 'okhttp'
     }
     testCompile 'org.mockito:mockito-core:2.7.22'
+    testCompile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutine_version"
 }
 
 sourceCompatibility = "1.7"

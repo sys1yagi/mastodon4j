@@ -8,8 +8,10 @@ import com.sys1yagi.kmockito.mock
 import com.sys1yagi.mastodon4j.MastodonClient
 import okhttp3.*
 import okio.BufferedSource
+import okio.Okio
 import org.mockito.ArgumentMatchers
 import java.net.SocketTimeoutException
+
 
 object MockClient {
 
@@ -47,6 +49,35 @@ object MockClient {
                 }
                 .build()
         setResponse(client, response)
+        return client
+    }
+
+    fun mockStreaming(fileName: String): MastodonClient {
+        val data = AssetsUtil.readFromAssets(fileName)
+
+        val responseBody = object : ResponseBody() {
+            override fun contentType(): MediaType {
+                return MediaType.parse("text/plain")
+            }
+
+            override fun contentLength(): Long {
+                return data.length.toLong()
+            }
+
+            override fun source(): BufferedSource {
+                return Okio.buffer(Okio.source(AssetsUtil.openInputStream(fileName)))
+            }
+        }
+
+        val client: MastodonClient = mock()
+        val response: Response = Response.Builder()
+                .code(200)
+                .request(Request.Builder().url("https://test.com/").build())
+                .protocol(Protocol.HTTP_1_1)
+                .body(responseBody)
+                .build()
+        setResponse(client, response)
+
         return client
     }
 

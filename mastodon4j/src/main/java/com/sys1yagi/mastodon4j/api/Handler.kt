@@ -13,4 +13,6 @@ interface Handler {
 
     //ignore if public streaming
     fun onDelete(id: Long)
+
+    fun onDisconnected(retryable: Retryable)
 }

@@ -21,4 +21,12 @@ class StatusTest {
         }
         status.isReblogged shouldEqualTo false
     }
+
+    @Test
+    fun constructor() {
+        val status: Status = Status(id = 123, visibility = Status.Visibility.Private.value)
+        status.id shouldEqualTo 123L
+        status.visibility shouldEqualTo Status.Visibility.Private.value
+        status.content shouldEqualTo ""
+    }
 }

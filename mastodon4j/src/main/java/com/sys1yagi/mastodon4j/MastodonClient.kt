@@ -102,6 +102,8 @@ private constructor(
                             .post(body)
                             .build())
             return call.execute()
+        } catch (e: IllegalArgumentException) {
+            throw Mastodon4jRequestException(e)
         } catch (e: IOException) {
             throw Mastodon4jRequestException(e)
         }

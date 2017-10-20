@@ -15,6 +15,7 @@ class Status(
         @SerializedName("reblog") val reblog: Status? = null,
         @SerializedName("content") val content: String = "",
         @SerializedName("created_at") val createdAt: String = "",
+        @SerializedName("emojis") val emojis: List<Emoji> = emptyList(),
         @SerializedName("reblogs_count") val reblogsCount: Int = 0,
         @SerializedName("favourites_count") val favouritesCount: Int = 0,
         @SerializedName("reblogged") val isReblogged: Boolean = false,

@@ -2,6 +2,7 @@ package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.MastodonRequest
+import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Scope
 import com.sys1yagi.mastodon4j.api.entity.auth.AccessToken
 import com.sys1yagi.mastodon4j.api.entity.auth.AppRegistration
@@ -94,14 +95,15 @@ class Apps(private val client: MastodonClient) {
             password: String
     ): MastodonRequest<AccessToken> {
         val url = "https://${client.getInstanceName()}/oauth/token"
-        val parameters = listOf(
-                "client_id=$clientId",
-                "client_secret=$clientSecret",
-                "scope=$scope",
-                "username=$userName",
-                "password=$password",
-                "grant_type=password"
-        ).joinToString(separator = "&")
+        val parameters = Parameter().apply {
+            append("client_id", clientId)
+            append("client_secret", clientSecret)
+            append("scope", scope.toString())
+            append("username", userName)
+            append("password", password)
+            append("grant_type", "password")
+        }.build()
+
         return MastodonRequest(
                 {
                     client.postUrl(url,

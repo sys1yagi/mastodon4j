@@ -20,22 +20,35 @@ class Streaming(private val client: MastodonClient) {
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
-                    val line = reader.readLine()
-                    if (line == null || line.isEmpty()) {
-                        continue
-                    }
-                    val payload = reader.readLine()
-                    val event = line.split(":")[1].trim()
-                    if (event == "update") {
-                        val start = payload.indexOf(":") + 1
-                        val json = payload.substring(start).trim()
-                        val status = client.getSerializer().fromJson(
-                                json,
-                                Status::class.java
-                        )
-                        handler.onStatus(status)
+                    try{
+                        val line = reader.readLine()
+                        if (line == null || line.isEmpty()) {
+                            continue
+                        }
+                        val type = line.split(":")[0].trim()
+                        if(type != "event"){
+                            continue
+                        }
+                        val event = line.split(":")[1].trim()
+                        val payload = reader.readLine()
+                        val payloadType = payload.split(":")[0].trim()
+                        if(payloadType != "data"){
+                            continue
+                        }
+                        if (event == "update") {
+                            val start = payload.indexOf(":") + 1
+                            val json = payload.substring(start).trim()
+                            val status = client.getSerializer().fromJson(
+                                    json,
+                                    Status::class.java
+                            )
+                            handler.onStatus(status)
+                        }
+                    }catch (e:java.io.InterruptedIOException){
+                        break
                     }
                 }
+                reader.close()
             })
             return Shutdownable(dispatcher)
         } else {
@@ -51,22 +64,35 @@ class Streaming(private val client: MastodonClient) {
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
-                    val line = reader.readLine()
-                    if (line == null || line.isEmpty()) {
-                        continue
-                    }
-                    val payload = reader.readLine()
-                    val event = line.split(":")[1].trim()
-                    if (event == "update") {
-                        val start = payload.indexOf(":") + 1
-                        val json = payload.substring(start).trim()
-                        val status = client.getSerializer().fromJson(
-                                json,
-                                Status::class.java
-                        )
-                        handler.onStatus(status)
+                    try{
+                        val line = reader.readLine()
+                        if (line == null || line.isEmpty()) {
+                            continue
+                        }
+                        val type = line.split(":")[0].trim()
+                        if(type != "event"){
+                            continue
+                        }
+                        val event = line.split(":")[1].trim()
+                        val payload = reader.readLine()
+                        val payloadType = payload.split(":")[0].trim()
+                        if(payloadType != "data"){
+                            continue
+                        }
+                        if (event == "update") {
+                            val start = payload.indexOf(":") + 1
+                            val json = payload.substring(start).trim()
+                            val status = client.getSerializer().fromJson(
+                                    json,
+                                    Status::class.java
+                            )
+                            handler.onStatus(status)
+                        }
+                    }catch (e:java.io.InterruptedIOException){
+                        break
                     }
                 }
+                reader.close()
             })
             return Shutdownable(dispatcher)
         } else {
@@ -85,22 +111,35 @@ class Streaming(private val client: MastodonClient) {
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
-                    val line = reader.readLine()
-                    if (line == null || line.isEmpty()) {
-                        continue
-                    }
-                    val payload = reader.readLine()
-                    val event = line.split(":")[1].trim()
-                    if (event == "update") {
-                        val start = payload.indexOf(":") + 1
-                        val json = payload.substring(start).trim()
-                        val status = client.getSerializer().fromJson(
-                                json,
-                                Status::class.java
-                        )
-                        handler.onStatus(status)
+                    try{
+                        val line = reader.readLine()
+                        if (line == null || line.isEmpty()) {
+                            continue
+                        }
+                        val type = line.split(":")[0].trim()
+                        if(type != "event"){
+                            continue
+                        }
+                        val event = line.split(":")[1].trim()
+                        val payload = reader.readLine()
+                        val payloadType = payload.split(":")[0].trim()
+                        if(payloadType != "data"){
+                            continue
+                        }
+                        if (event == "update") {
+                            val start = payload.indexOf(":") + 1
+                            val json = payload.substring(start).trim()
+                            val status = client.getSerializer().fromJson(
+                                    json,
+                                    Status::class.java
+                            )
+                            handler.onStatus(status)
+                        }
+                    }catch (e:java.io.InterruptedIOException){
+                        break
                     }
                 }
+                reader.close()
             })
             return Shutdownable(dispatcher)
         } else {
@@ -119,22 +158,35 @@ class Streaming(private val client: MastodonClient) {
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
-                    val line = reader.readLine()
-                    if (line == null || line.isEmpty()) {
-                        continue
-                    }
-                    val payload = reader.readLine()
-                    val event = line.split(":")[1].trim()
-                    if (event == "update") {
-                        val start = payload.indexOf(":") + 1
-                        val json = payload.substring(start).trim()
-                        val status = client.getSerializer().fromJson(
-                                json,
-                                Status::class.java
-                        )
-                        handler.onStatus(status)
+                    try{
+                        val line = reader.readLine()
+                        if (line == null || line.isEmpty()) {
+                            continue
+                        }
+                        val type = line.split(":")[0].trim()
+                        if(type != "event"){
+                            continue
+                        }
+                        val event = line.split(":")[1].trim()
+                        val payload = reader.readLine()
+                        val payloadType = payload.split(":")[0].trim()
+                        if(payloadType != "data"){
+                            continue
+                        }
+                        if (event == "update") {
+                            val start = payload.indexOf(":") + 1
+                            val json = payload.substring(start).trim()
+                            val status = client.getSerializer().fromJson(
+                                    json,
+                                    Status::class.java
+                            )
+                            handler.onStatus(status)
+                        }
+                    }catch (e:java.io.InterruptedIOException){
+                        break
                     }
                 }
+                reader.close()
             })
             return Shutdownable(dispatcher)
         } else {
@@ -152,37 +204,50 @@ class Streaming(private val client: MastodonClient) {
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
-                    val line = reader.readLine()
-                    if (line == null || line.isEmpty()) {
-                        continue
-                    }
-                    val event = line.split(":")[1].trim()
+                    try{
+                        val line = reader.readLine()
+                        if (line == null || line.isEmpty()) {
+                            continue
+                        }
+                        val type = line.split(":")[0].trim()
+                        if(type != "event"){
+                            continue
+                        }
+                        val event = line.split(":")[1].trim()
+                        val payload = reader.readLine()
+                        val payloadType = payload.split(":")[0].trim()
+                        if(payloadType != "data"){
+                            continue
+                        }
 
-                    val payload = reader.readLine()
-                    val start = payload.indexOf(":") + 1
-                    val json = payload.substring(start).trim()
-                    if (event == "update") {
-                        val status = client.getSerializer().fromJson(
-                                json,
-                                Status::class.java
-                        )
-                        handler.onStatus(status)
-                    }
-                    if (event == "notification") {
-                        val notification = client.getSerializer().fromJson(
-                                json,
-                                Notification::class.java
-                        )
-                        handler.onNotification(notification)
-                    }
-                    if (event == "delete") {
-                        val id = client.getSerializer().fromJson(
-                                json,
-                                Long::class.java
-                        )
-                        handler.onDelete(id)
+                        val start = payload.indexOf(":") + 1
+                        val json = payload.substring(start).trim()
+                        if (event == "update") {
+                            val status = client.getSerializer().fromJson(
+                                    json,
+                                    Status::class.java
+                            )
+                            handler.onStatus(status)
+                        }
+                        if (event == "notification") {
+                            val notification = client.getSerializer().fromJson(
+                                    json,
+                                    Notification::class.java
+                            )
+                            handler.onNotification(notification)
+                        }
+                        if (event == "delete") {
+                            val id = client.getSerializer().fromJson(
+                                    json,
+                                    Long::class.java
+                            )
+                            handler.onDelete(id)
+                        }
+                    }catch (e:java.io.InterruptedIOException){
+                        break
                     }
                 }
+                reader.close()
             })
             return Shutdownable(dispatcher)
         } else {

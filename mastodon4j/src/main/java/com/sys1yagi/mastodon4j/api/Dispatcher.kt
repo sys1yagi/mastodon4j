@@ -14,7 +14,7 @@ class Dispatcher {
     })
 
     val lock = ReentrantLock()
-    val shutdownTime = 5000L
+    val shutdownTime = 1000L
 
     fun invokeLater(task: Runnable) = executorService.execute(task)
 

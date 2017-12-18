@@ -3,6 +3,7 @@ package com.sys1yagi.mastodon4j.api.method
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.testtool.MockClient
 import org.amshove.kluent.shouldEqualTo
+import org.amshove.kluent.shouldNotBe
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -47,7 +48,7 @@ class StatusesTest {
         card.url shouldEqualTo "The url associated with the card"
         card.title shouldEqualTo "The title of the card"
         card.description shouldEqualTo "The card description"
-        card.image shouldEqualTo "The image associated with the card, if any"
+        card.image shouldNotBe null
     }
 
     @Test(expected = Mastodon4jRequestException::class)

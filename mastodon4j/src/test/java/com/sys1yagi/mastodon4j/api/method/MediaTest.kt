@@ -5,6 +5,7 @@ import com.sys1yagi.mastodon4j.extension.emptyRequestBody
 import com.sys1yagi.mastodon4j.testtool.MockClient
 import okhttp3.MultipartBody
 import org.amshove.kluent.shouldEqualTo
+import org.amshove.kluent.shouldNotBe
 import org.junit.Test
 
 class MediaTest {
@@ -16,9 +17,9 @@ class MediaTest {
         attachment.id shouldEqualTo 10
         attachment.type shouldEqualTo "video"
         attachment.url shouldEqualTo "youtube"
-        attachment.remoteUrl shouldEqualTo "remote"
+        attachment.remoteUrl shouldNotBe null
         attachment.previewUrl shouldEqualTo "preview"
-        attachment.textUrl shouldEqualTo "text"
+        attachment.textUrl shouldNotBe  null
     }
 
     @Test(expected = Mastodon4jRequestException::class)

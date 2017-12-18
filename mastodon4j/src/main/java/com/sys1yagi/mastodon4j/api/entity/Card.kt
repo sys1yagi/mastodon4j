@@ -16,5 +16,5 @@ class Card(
         val description: String = "",
 
         @SerializedName("image")
-        val image: String = "") {
+        val image: String? = null) {
 }

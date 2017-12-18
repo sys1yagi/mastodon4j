@@ -10,5 +10,5 @@ class Application(
         val name: String = "",
 
         @SerializedName("website")
-        val website: String = "") {
+        val website: String? = null) {
 }

@@ -75,6 +75,8 @@ private constructor(
 
     open fun getInstanceName() = instanceName
 
+    open fun getOkHttpClient() = client
+
     open fun get(path: String, parameter: Parameter? = null): Response {
         try {
             val url = "$baseUrl/$path"

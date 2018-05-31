@@ -102,10 +102,22 @@ class Accounts(private val client: MastodonClient) {
 
     //  GET /api/v1/accounts/:id/statuses
     @JvmOverloads
-    fun getStatuses(accountId: Long, onlyMedia: Boolean, range: Range = Range()): MastodonRequest<Pageable<Status>> {
+    fun getStatuses(
+            accountId: Long,
+            onlyMedia: Boolean = false,
+            excludeReplies: Boolean = false,
+            pinned: Boolean = false,
+            range: Range = Range()
+    ): MastodonRequest<Pageable<Status>> {
         val parameters = range.toParameter()
         if (onlyMedia) {
             parameters.append("only_media", true)
+        }
+        if (pinned) {
+            parameters.append("pinned", true)
+        }
+        if (excludeReplies) {
+            parameters.append("exclude_replies", true)
         }
         return MastodonRequest<Pageable<Status>>(
                 {

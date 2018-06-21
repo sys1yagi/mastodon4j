@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#instance
  */
-class Instance(
+data class Instance(
         @SerializedName("uri")
         val uri: String = "",
 
@@ -19,5 +19,14 @@ class Instance(
         val email: String = "",
 
         @SerializedName("version")
-        val version: String = "") {
+        val version: String = "",
+
+        @SerializedName("urls")
+        val urls: InstanceUrls? = null,
+
+        @SerializedName("languages")
+        val languages: List<String> = emptyList(),
+
+        @SerializedName("contact_account")
+        val contact_account: Account? = null) {
 }

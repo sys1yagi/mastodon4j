@@ -17,12 +17,16 @@ import com.sys1yagi.mastodon4j.extension.toPageable
 class Notifications(private val client: MastodonClient) {
     // GET /api/v1/notifications
     @JvmOverloads
-    fun getNotifications(range: Range = Range()): MastodonRequest<Pageable<Notification>> {
+    fun getNotifications(range: Range = Range(), excludeTypes: List<Notification.Type>? = null): MastodonRequest<Pageable<Notification>> {
+        val parameter = range.toParameter()
+        if (excludeTypes != null) {
+            parameter.append("exclude_types", excludeTypes.map { it.value })
+        }
         return MastodonRequest<Pageable<Notification>>(
                 {
                     client.get(
                             "notifications",
-                            range.toParameter()
+                            parameter
                     )
                 },
                 {

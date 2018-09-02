@@ -5,6 +5,7 @@ import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Dispatcher
 import com.sys1yagi.mastodon4j.api.Handler
 import com.sys1yagi.mastodon4j.api.Shutdownable
+import com.sys1yagi.mastodon4j.api.entity.MastodonList
 import com.sys1yagi.mastodon4j.api.entity.Notification
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
@@ -256,9 +257,12 @@ class Streaming(private val client: MastodonClient) {
     }
 
     @Throws(Mastodon4jRequestException::class)
-    fun userList(handler: Handler): Shutdownable {
+    fun userList(handler: Handler, listID: String): Shutdownable {
         val response = client.get(
-                "streaming/list"
+                "streaming/list",
+                Parameter().apply {
+                    append("list", listID)
+                }
         )
         if (response.isSuccessful) {
             val reader = response.body().byteStream().bufferedReader()

@@ -7,7 +7,7 @@ group = "com.sys1yagi"
 version = '1.6.0'
 
 jacoco {
-    toolVersion = "0.7.9"
+    toolVersion = "0.8.2"
 }
 jacocoTestReport {
     reports {

@@ -1,6 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'kotlin'
 apply plugin: "jacoco"
+apply plugin: 'maven'
+
+group = "com.sys1yagi"
+version = '1.5.0'
 
 jacoco {
     toolVersion = "0.7.9"

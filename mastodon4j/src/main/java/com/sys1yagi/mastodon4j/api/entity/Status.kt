@@ -26,7 +26,9 @@ class Status(
         @SerializedName("media_attachments") val mediaAttachments: List<Attachment> = emptyList(),
         @SerializedName("mentions") val mentions: List<Mention> = emptyList(),
         @SerializedName("tags") val tags: List<Tag> = emptyList(),
-        @SerializedName("application") val application: Application? = null) {
+        @SerializedName("application") val application: Application? = null,
+        @SerializedName("language") val language: String? = null,
+        @SerializedName("pinned") val pinned: Boolean? = null) {
     enum class Visibility(val value: String) {
         Public("public"),
         Unlisted("unlisted"),

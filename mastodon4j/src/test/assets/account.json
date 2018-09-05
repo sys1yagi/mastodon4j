@@ -13,6 +13,14 @@
   "avatar": "test",
   "avatar_static": "test",
   "header": "test",
-  "header_static": "test"
+  "header_static": "test",
+  "emojis": [
+    {
+      "shortcode": "test",
+      "url": "https://test.jp/images/custom_emojis/images/000/001/576/original/test.png",
+      "static_url": "https://test.jp/images/custom_emojis/images/000/001/576/static/test.png",
+      "visible_in_picker": true
+    }
+  ]
 }
 

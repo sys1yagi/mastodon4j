@@ -5,6 +5,7 @@ import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Dispatcher
 import com.sys1yagi.mastodon4j.api.Handler
 import com.sys1yagi.mastodon4j.api.Shutdownable
+import com.sys1yagi.mastodon4j.api.entity.MastodonList
 import com.sys1yagi.mastodon4j.api.entity.Notification
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
@@ -198,6 +199,70 @@ class Streaming(private val client: MastodonClient) {
     fun user(handler: Handler): Shutdownable {
         val response = client.get(
                 "streaming/user"
+        )
+        if (response.isSuccessful) {
+            val reader = response.body().byteStream().bufferedReader()
+            val dispatcher = Dispatcher()
+            dispatcher.invokeLater(Runnable {
+                while (true) {
+                    try{
+                        val line = reader.readLine()
+                        if (line == null || line.isEmpty()) {
+                            continue
+                        }
+                        val type = line.split(":")[0].trim()
+                        if(type != "event"){
+                            continue
+                        }
+                        val event = line.split(":")[1].trim()
+                        val payload = reader.readLine()
+                        val payloadType = payload.split(":")[0].trim()
+                        if(payloadType != "data"){
+                            continue
+                        }
+
+                        val start = payload.indexOf(":") + 1
+                        val json = payload.substring(start).trim()
+                        if (event == "update") {
+                            val status = client.getSerializer().fromJson(
+                                    json,
+                                    Status::class.java
+                            )
+                            handler.onStatus(status)
+                        }
+                        if (event == "notification") {
+                            val notification = client.getSerializer().fromJson(
+                                    json,
+                                    Notification::class.java
+                            )
+                            handler.onNotification(notification)
+                        }
+                        if (event == "delete") {
+                            val id = client.getSerializer().fromJson(
+                                    json,
+                                    Long::class.java
+                            )
+                            handler.onDelete(id)
+                        }
+                    }catch (e:java.io.InterruptedIOException){
+                        break
+                    }
+                }
+                reader.close()
+            })
+            return Shutdownable(dispatcher)
+        } else {
+            throw Mastodon4jRequestException(response)
+        }
+    }
+
+    @Throws(Mastodon4jRequestException::class)
+    fun userList(handler: Handler, listID: String): Shutdownable {
+        val response = client.get(
+                "streaming/list",
+                Parameter().apply {
+                    append("list", listID)
+                }
         )
         if (response.isSuccessful) {
             val reader = response.body().byteStream().bufferedReader()

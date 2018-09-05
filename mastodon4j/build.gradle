@@ -4,7 +4,7 @@ apply plugin: "jacoco"
 apply plugin: 'maven'
 
 group = "com.sys1yagi"
-version = '1.5.0'
+version = '1.6.0'
 
 jacoco {
     toolVersion = "0.7.9"
@@ -34,9 +34,6 @@ dependencies {
     }
     testCompile 'org.mockito:mockito-core:2.7.22'
 }
-
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"
 
 buildscript {
     repositories {

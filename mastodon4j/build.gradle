@@ -4,7 +4,7 @@ apply plugin: "jacoco"
 apply plugin: 'maven'
 
 group = "com.sys1yagi"
-version = '1.6.0'
+version = '1.7.0'
 
 jacoco {
     toolVersion = "0.8.2"

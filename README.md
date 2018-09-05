@@ -76,7 +76,7 @@ If you want to access the auth required API, you need create client credential a
 __kotlin__
 
 ```kotlin
-val client: MastodonClient = MastodonClient.Builde("mstdn.jp", OkHttpClient.Builder(), Gson()).build()
+val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient.Builder(), Gson()).build()
 val apps = Apps(client)
 val appRegistration = apps.createApp(
 	clientName = "client name",

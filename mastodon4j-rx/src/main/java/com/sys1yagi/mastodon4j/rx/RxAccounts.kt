@@ -18,7 +18,7 @@ class RxAccounts(client: MastodonClient) {
             try {
                 val account = accounts.getAccount(accountId).execute()
                 it.onSuccess(account)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }
@@ -29,7 +29,7 @@ class RxAccounts(client: MastodonClient) {
             try {
                 val credential = accounts.getVerifyCredentials().execute()
                 it.onSuccess(credential)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }
@@ -40,7 +40,7 @@ class RxAccounts(client: MastodonClient) {
             try {
                 val credential = accounts.updateCredential(displayName, note, avatar, header).execute()
                 it.onSuccess(credential)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }
@@ -51,7 +51,7 @@ class RxAccounts(client: MastodonClient) {
             try {
                 val followers = accounts.getFollowers(accountId, range).execute()
                 it.onSuccess(followers)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }
@@ -62,7 +62,7 @@ class RxAccounts(client: MastodonClient) {
             try {
                 val following = accounts.getFollowing(accountId, range).execute()
                 it.onSuccess(following)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }
@@ -71,9 +71,9 @@ class RxAccounts(client: MastodonClient) {
     fun getStatuses(accountId: Long, onlyMedia: Boolean, range: Range): Single<Pageable<Status>> {
         return Single.create {
             try {
-                val statuses = accounts.getStatuses(accountId, onlyMedia, range).execute()
+                val statuses = accounts.getStatuses(accountId, onlyMedia, range = range).execute()
                 it.onSuccess(statuses)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }
@@ -84,7 +84,7 @@ class RxAccounts(client: MastodonClient) {
             try {
                 val relationship = accounts.postFollow(accountId).execute()
                 it.onSuccess(relationship)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }
@@ -95,7 +95,7 @@ class RxAccounts(client: MastodonClient) {
             try {
                 val relationship = accounts.postUnFollow(accountId).execute()
                 it.onSuccess(relationship)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }
@@ -106,7 +106,7 @@ class RxAccounts(client: MastodonClient) {
             try {
                 val relationship = accounts.postBlock(accountId).execute()
                 it.onSuccess(relationship)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }
@@ -117,7 +117,7 @@ class RxAccounts(client: MastodonClient) {
             try {
                 val relationship = accounts.postUnblock(accountId).execute()
                 it.onSuccess(relationship)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }
@@ -128,7 +128,7 @@ class RxAccounts(client: MastodonClient) {
             try {
                 val relationship = accounts.postMute(accountId).execute()
                 it.onSuccess(relationship)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }
@@ -139,7 +139,7 @@ class RxAccounts(client: MastodonClient) {
             try {
                 val relationship = accounts.postUnmute(accountId).execute()
                 it.onSuccess(relationship)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }
@@ -150,7 +150,7 @@ class RxAccounts(client: MastodonClient) {
             try {
                 val relationships = accounts.getRelationships(accountIds).execute()
                 it.onSuccess(relationships)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }
@@ -161,7 +161,7 @@ class RxAccounts(client: MastodonClient) {
             try {
                 val accounts = accounts.getAccountSearch(query, limit).execute()
                 it.onSuccess(accounts)
-            } catch(throwable: Throwable) {
+            } catch (throwable: Throwable) {
                 it.onErrorIfNotDisposed(throwable)
             }
         }

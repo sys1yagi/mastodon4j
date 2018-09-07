@@ -10,7 +10,11 @@ import okhttp3.OkHttpClient
 import java.io.File
 import java.util.*
 
-class Authenticator {
+object Authenticator {
+    const val CLIENT_ID = "client_id"
+    const val CLIENT_SECRET = "client_secret"
+    const val ACCESS_TOKEN = "access_token"
+
     fun appRegistrationIfNeeded(instanceName: String, credentialFilePath: String, useStreaming: Boolean = false): MastodonClient {
         val file = File(credentialFilePath)
         if (!file.exists()) {
@@ -20,19 +24,19 @@ class Authenticator {
         val properties = Properties()
         println("load $credentialFilePath.")
         properties.load(file.inputStream())
-        if (properties[Kotlindon.CLIENT_ID] == null) {
+        if (properties[CLIENT_ID] == null) {
             println("try app registration...")
             val appRegistration = appRegistration(instanceName)
-            properties.put(Kotlindon.CLIENT_ID, appRegistration.clientId)
-            properties.put(Kotlindon.CLIENT_SECRET, appRegistration.clientSecret)
+            properties.put(CLIENT_ID, appRegistration.clientId)
+            properties.put(CLIENT_SECRET, appRegistration.clientSecret)
             properties.store(file.outputStream(), "app registration")
         } else {
             println("app registration found...")
         }
-        val clientId = properties[Kotlindon.CLIENT_ID]?.toString() ?: throw IllegalStateException("client id not found")
-        val clientSecret = properties[Kotlindon.CLIENT_SECRET]?.toString() ?: throw IllegalStateException("client secret not found")
+        val clientId = properties[CLIENT_ID]?.toString() ?: throw IllegalStateException("client id not found")
+        val clientSecret = properties[CLIENT_SECRET]?.toString() ?: throw IllegalStateException("client secret not found")
 
-        if (properties[Kotlindon.ACCESS_TOKEN] == null) {
+        if (properties[ACCESS_TOKEN] == null) {
             println("get access token for $instanceName...")
             println("please input your email...")
             val email = System.`in`.bufferedReader().readLine()
@@ -44,13 +48,13 @@ class Authenticator {
                     email,
                     pass
             )
-            properties.put(Kotlindon.ACCESS_TOKEN, accessToken.accessToken)
+            properties.put(ACCESS_TOKEN, accessToken.accessToken)
             properties.store(file.outputStream(), "app registration")
         } else {
             println("access token found...")
         }
         return MastodonClient.Builder(instanceName, OkHttpClient.Builder(), Gson())
-                .accessToken(properties[Kotlindon.ACCESS_TOKEN].toString())
+                .accessToken(properties[ACCESS_TOKEN].toString())
                 .apply {
                     if (useStreaming) {
                         useStreamingApi()

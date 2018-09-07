@@ -14,7 +14,7 @@ object StreamPublicTimeline {
         val credentialFilePath = args[1]
 
         // require authentication even if public streaming
-        val client = Authenticator().appRegistrationIfNeeded(instanceName, credentialFilePath, true)
+        val client = Authenticator.appRegistrationIfNeeded(instanceName, credentialFilePath, true)
         val handler = object : Handler {
             override fun onStatus(status: Status) {
                 println(status.content)

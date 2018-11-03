@@ -121,7 +121,7 @@ val apps = Apps(client)
 
 val url = apps.getOAuthUrl(clientId, Scope(Scope.Name.ALL))
 // url like bellow
-// https://:instance_name/oauth/authorize?client_id=:client_id&redirect_uri=:redirect_uri&response_type=code&scope=read 
+// https://:instance_name/oauth/authorize?client_id=:client_id&redirect_uri=:redirect_uri&response_type=code&scopes=read
 // open url and OAuth login and get auth code
 
 val authCode = //...

@@ -44,7 +44,7 @@ class AppsTest {
         client.getInstanceName().invoked.thenReturn("mastodon.cloud")
 
         val url = Apps(client).getOAuthUrl("client_id", Scope(Scope.Name.ALL))
-        url shouldEqualTo "https://mastodon.cloud/oauth/authorize?client_id=client_id&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scope=read write follow"
+        url shouldEqualTo "https://mastodon.cloud/oauth/authorize?client_id=client_id&redirect_uri=urn:ietf:wg:oauth:2.0:oob&response_type=code&scopes=read write follow"
     }
 
     @Test

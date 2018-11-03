@@ -50,7 +50,7 @@ class Apps(private val client: MastodonClient) {
                 "client_id=$clientId",
                 "redirect_uri=$redirectUri",
                 "response_type=code",
-                "scope=$scope"
+                "scopes=$scope"
         ).joinToString(separator = "&")
         return "https://${client.getInstanceName()}$endpoint?$parameters"
     }

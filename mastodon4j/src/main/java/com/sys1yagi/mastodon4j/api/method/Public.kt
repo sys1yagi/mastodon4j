@@ -5,6 +5,7 @@ import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
+import com.sys1yagi.mastodon4j.api.entity.Emoji
 import com.sys1yagi.mastodon4j.api.entity.Instance
 import com.sys1yagi.mastodon4j.api.entity.Results
 import com.sys1yagi.mastodon4j.api.entity.Status
@@ -21,6 +22,21 @@ class Public(private val client: MastodonClient) {
                 },
                 { json ->
                     client.getSerializer().fromJson(json, Instance::class.java)
+                }
+        )
+    }
+
+    /**
+     * GET /api/v1/custom_emojis
+     * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#getting-current-instances-custom-emojis
+     */
+    fun getCustomEmojis(): MastodonRequest<List<Emoji>> {
+        return MastodonRequest(
+                {
+                    client.get("custom_emojis")
+                },
+                { json ->
+                    client.getSerializer().fromJson(json, Emoji::class.java)
                 }
         )
     }

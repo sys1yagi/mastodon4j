@@ -5,13 +5,10 @@ import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
+import com.sys1yagi.mastodon4j.api.entity.Emoji
 import com.sys1yagi.mastodon4j.api.entity.Instance
 import com.sys1yagi.mastodon4j.api.entity.Results
 import com.sys1yagi.mastodon4j.api.entity.Status
-import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import com.sys1yagi.mastodon4j.extension.fromJson
-import com.sys1yagi.mastodon4j.extension.genericType
-import com.sys1yagi.mastodon4j.extension.toPageable
 
 class Public(private val client: MastodonClient) {
     /**
@@ -25,6 +22,21 @@ class Public(private val client: MastodonClient) {
                 },
                 { json ->
                     client.getSerializer().fromJson(json, Instance::class.java)
+                }
+        )
+    }
+
+    /**
+     * GET /api/v1/custom_emojis
+     * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#getting-current-instances-custom-emojis
+     */
+    fun getCustomEmojis(): MastodonRequest<List<Emoji>> {
+        return MastodonRequest(
+                {
+                    client.get("custom_emojis")
+                },
+                { json ->
+                    client.getSerializer().fromJson(json, Emoji::class.java)
                 }
         )
     }
@@ -59,10 +71,13 @@ class Public(private val client: MastodonClient) {
      *  GET /api/v1/timelines/public
      * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
      */
-    private fun getPublic(local: Boolean, range: Range): MastodonRequest<Pageable<Status>> {
+    private fun getPublic(local: Boolean, range: Range, only_media: Boolean): MastodonRequest<Pageable<Status>> {
         val parameter = range.toParameter()
         if (local) {
             parameter.append("local", local)
+        }
+        if (only_media) {
+            parameter.append("only_media", true)
         }
         return MastodonRequest<Pageable<Status>>(
                 {
@@ -75,10 +90,10 @@ class Public(private val client: MastodonClient) {
     }
 
     @JvmOverloads
-    fun getLocalPublic(range: Range = Range()) = getPublic(true, range)
+    fun getLocalPublic(range: Range = Range(), only_media: Boolean = false) = getPublic(true, range, only_media)
 
     @JvmOverloads
-    fun getFederatedPublic(range: Range = Range()) = getPublic(false, range)
+    fun getFederatedPublic(range: Range = Range(), only_media: Boolean = false) = getPublic(false, range, only_media)
 
     /**
      * GET /api/v1/timelines/tag/:tag

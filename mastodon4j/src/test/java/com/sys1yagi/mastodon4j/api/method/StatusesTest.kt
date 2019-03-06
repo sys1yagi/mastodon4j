@@ -98,7 +98,7 @@ class StatusesTest {
     fun postStatus() {
         val client = MockClient.mock("status.json")
         val statuses = Statuses(client)
-        val status = statuses.postStatus("a", null, null, false, null).execute()
+        val status = statuses.postStatus("a", null, null, null, false, null).execute()
         status.id shouldEqualTo 11111L
     }
 
@@ -106,7 +106,7 @@ class StatusesTest {
     fun postStatusWithException() {
         val client = MockClient.ioException()
         val statuses = Statuses(client)
-        statuses.postStatus("a", null, null, false, null).execute()
+        statuses.postStatus("a", null, null, null, false, null).execute()
     }
 
     @Test

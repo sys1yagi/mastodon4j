@@ -82,7 +82,7 @@ class RxStatuses(client: MastodonClient) {
     ): Single<Status> {
         return Single.create {
             try {
-                val result = statuses.postStatus(status, inReplyToId, mediaIds, sensitive, spoilerText, visibility)
+                val result = statuses.postStatus(status, inReplyToId, mediaIds, null, sensitive, spoilerText, visibility)
                 it.onSuccess(result.execute())
             } catch (e: Throwable) {
                 it.onError(e)

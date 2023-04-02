@@ -13,8 +13,8 @@ class Account(
         @SerializedName("header") val header: String = "",
         @SerializedName("locked") val isLocked: Boolean = false,
         @SerializedName("created_at") val createdAt: String = "",
-        @SerializedName("followers_count") val followersCount: Int = 0,
-        @SerializedName("following_count") val followingCount: Int = 0,
-        @SerializedName("statuses_count") val statusesCount: Int = 0,
+        @SerializedName("followers_count") val followersCount: Long = 0,
+        @SerializedName("following_count") val followingCount: Long = 0,
+        @SerializedName("statuses_count") val statusesCount: Long = 0,
         @SerializedName("emojis") val emojis: List<Emoji> = emptyList()){
 }

@@ -2,28 +2,33 @@ package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.testtool.MockClient
-import org.amshove.kluent.shouldEqualTo
-import org.junit.Test
+import org.amshove.kluent.shouldBeEqualTo
+import kotlin.test.Test
+import kotlin.test.Ignore
+
+import kotlin.test.assertFailsWith
 
 import org.junit.Assert.*
 
 class FollowsTest {
-    @Test
+    @Test 
     fun postRemoteFollow() {
         val client = MockClient.mock("follow.json")
 
         val follows = Follows(client)
         val account = follows.postRemoteFollow("test").execute()
-        account.acct shouldEqualTo "test@test.com"
-        account.displayName shouldEqualTo "test"
-        account.userName shouldEqualTo "test"
+        account.acct shouldBeEqualTo "test@test.com"
+        account.displayName shouldBeEqualTo "test"
+        account.userName shouldBeEqualTo "test"
     }
 
-    @Test(expected = Mastodon4jRequestException::class)
+    @Test 
     fun postRemoteFollowWithException() {
-        val client = MockClient.ioException()
-        val follows = Follows(client)
-        follows.postRemoteFollow("test").execute()
+        assertFailsWith<Mastodon4jRequestException>{
+            val client = MockClient.ioException()
+            val follows = Follows(client)
+            follows.postRemoteFollow("test").execute()
+        }
     }
 
 }

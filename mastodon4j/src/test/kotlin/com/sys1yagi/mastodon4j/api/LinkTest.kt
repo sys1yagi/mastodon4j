@@ -1,7 +1,7 @@
 package com.sys1yagi.mastodon4j.api
 
-import org.amshove.kluent.shouldEqualTo
-import org.junit.Test
+import org.amshove.kluent.shouldBeEqualTo
+import kotlin.test.Test
 
 import org.junit.Assert.*
 
@@ -19,8 +19,8 @@ class LinkTest {
                 fail()
                 return
             }
-            link.maxId shouldEqualTo 1552
-            link.sinceId shouldEqualTo 105
+            link.maxId shouldBeEqualTo 1552
+            link.sinceId shouldBeEqualTo 105
         }
 
         // max
@@ -34,9 +34,9 @@ class LinkTest {
                 fail()
                 return
             }
-            link.maxId shouldEqualTo 1553
-            link.sinceId shouldEqualTo 0
-            link.prevPath shouldEqualTo ""
+            link.maxId shouldBeEqualTo 1553
+            link.sinceId shouldBeEqualTo 0
+            link.prevPath shouldBeEqualTo ""
         }
 
         // since
@@ -50,9 +50,9 @@ class LinkTest {
                 fail()
                 return
             }
-            link.maxId shouldEqualTo 0
-            link.nextPath shouldEqualTo ""
-            link.sinceId shouldEqualTo 105
+            link.maxId shouldBeEqualTo 0
+            link.nextPath shouldBeEqualTo ""
+            link.sinceId shouldBeEqualTo 105
         }
     }
 }
